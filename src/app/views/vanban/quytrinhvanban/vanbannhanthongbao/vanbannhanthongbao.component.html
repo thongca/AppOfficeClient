@@ -1,0 +1,180 @@
+<div class="animated fadeIn">
+    <div class="card-header">
+        <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
+            <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh" aria-hidden="true"></i></span>
+            <a class="ml-1">
+                Refresh
+            </a>
+        </button>
+    </div>
+    <div class="card-body p-0 border-0 scroll-card-body">
+        <div class="row mx-0">
+            <div class="col-md-4 pl-1">
+                <div class="card mt-1 border-0">
+                    <div class="card-body p-0">
+                        <table class="table">
+                            <tbody>
+                                <tr *ngFor="let item of listSoHoaVbs" class="hover-cusor"
+                                    [style.background-color]="IdVb===item.Id ? '#fff9cc' : 'white'">
+                                    <td width=40 class="py-2" style="vertical-align: middle;">
+                                        <img *ngIf="IdVb===item.Id" src="assets/icon/radio.svg" alt="radio" width="18">
+                                    </td>
+                                    <td class="py-1" (click)="SelectIDEditModel(item.Id)">
+                                        <p class="mb-1"><strong class="font-vb">{{item.TenNguoiGui}}</strong> </p>
+                                        <p class="mb-1">Trích yếu: {{item.TrichYeu}}</p>
+                                        <p class="mb-0 font-color">Số ký hiệu: {{item.SoKyHieu}} | Ngày ký:
+                                            {{item.NgayBanHanh | date: 'dd/MM/yyyy'}} | Ngày tạo:
+                                            {{item.CreateDate | date: 'dd/MM/yyyy'}}</p>
+                                    </td>
+                
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--/.row-->
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-md-8 px-0">
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="header-coll">
+                                Trích yếu: {{modelView.TrichYeu}}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="mb-1 backgroud">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <span>Số ký hiệu: <strong>{{modelView.SoKyHieu}}</strong></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Ngày ký: <strong>{{modelView.NgayBanHanh| date: 'dd/MM/yyyy'}}</strong></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Người tạo: <strong>{{modelView.TenNguoiTao}}</strong></span>
+                                </div>
+                            </div>
+                            <div class="row pt-3">
+                                <div class="col-sm-4">
+                                    <span>Loại văn bản: <strong>{{modelView.NameLoaiVb}}</strong></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Lĩnh vực: <strong>{{modelView.NameField}}</strong></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span>Công ty: <strong>Công ty cổ phần bao bi & in nông nghiệp</strong></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="mb-1 mt-2">File văn bản gốc:</p>
+                                    <ng-container *ngFor="let item of filesView">
+                                        <a href="{{item.Path | urlFileReplace}}" target="_blank" (click)="changeUrlpdf(item.Path)">{{item.Name}}</a><span>({{item.Size/1048576 | number: '1.2-2'}}MB)</span>
+                                    </ng-container>
+                                    
+                                  
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-md-12"  *ngIf="pdfSrc !== undefined">
+                                <ngx-doc-viewer url="{{pdfSrc}}" viewer="pdf"  style="width:100%;height:93vh;">
+                                </ngx-doc-viewer>
+                
+                            </div>
+                        </div>
+                        <mat-action-row>
+                            <button mat-button color="primary" class="btn btn-outline-primary" (click)="nextStep()">Tiếp theo</button>
+                        </mat-action-row>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="header-coll">
+                                Theo dõi quy trình luân chuyển
+                            </mat-panel-title>
+
+                        </mat-expansion-panel-header>
+
+                        <table class="table table-sm table-bordered ">
+                            <thead>
+                                <tr class="text-center">
+                                    <th width=150>Người nhận</th>
+                                    <th>Nội dung</th>
+                                    <th width=120>Ngày đọc</th>
+                                    <th width=120>Ngày xử lý</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let item of listLcvb">
+                                    <ng-container *ngIf="item.TrangThaiXuLy === 1; else trangThaiKhacOne">
+                                        <tr>
+                                            <td colspan="4">
+                                               <strong>{{item.TenNguoiGui}} số hóa văn bản lúc {{item.ThoiGianGui|date: 'HH:mm dd/MM/yyyy'}}</strong> 
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-template #trangThaiKhacOne>
+                                        <tr>
+                                            <td colspan="4">
+                                               <span><strong>{{item.TenNguoiGui}}</strong>({{item.PositionNG}})  gửi đến <strong>{{item.TenNguoiNhan}}</strong>({{item.PositionNN}}) lúc {{item.ThoiGianGui|date: 'HH:mm dd/MM/yyyy'}}</span> 
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                    <tr >
+                                        <td class="text-center" style="vertical-align: middle;">
+                                            {{item.TenNguoiNhan}}
+                                        </td>
+                                        <td >
+                                            <span style="font-size: 14px;" class="badge bcolor-lcvb-{{item.TrangThaiXuLy}}">
+                                                {{item.TrangThaiXuLy |trangThaiXuLy: 'vanban'}}</span>
+                                           <p>{{item.NoiDung}}</p> 
+                                        </td>
+                                        <td class="text-center">
+                                            {{item.NgayDoc|date: 'dd/MM/yyyy HH:mm'}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{item.NgayXuLy | date : 'dd/MM/yyyy HH:mm'}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                
+                               
+                            </tbody>
+                        </table>
+
+                        <mat-action-row>
+                            <button mat-button color="warn" class="btn btn-outline-primary" (click)="prevStep()">Quay lại</button>
+                            <button mat-button color="primary" class="btn btn-outline-primary ml-1" (click)="nextStep()">Tiếp theo</button>
+                        </mat-action-row>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="header-coll">
+                                Sơ đồ mô tả quy trình luân chuyển
+                            </mat-panel-title>
+                          
+                        </mat-expansion-panel-header>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <app-tree-diagram #treediagram (listLcvb) =listLcvb typeStatus='vanban'></app-tree-diagram>
+                            </div>
+                            
+                        </div>
+                           
+                        <mat-action-row>
+                            <button mat-button color="warn" class="btn btn-outline-primary" (click)="prevStep()">Quay lại</button>
+                            <button mat-button color="primary" class="btn btn-outline-primary ml-1" (click)="nextStep()">Kết thúc</button>
+                        </mat-action-row>
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+</div>

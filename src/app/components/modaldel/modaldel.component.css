@@ -1,0 +1,7 @@
+.modal-header{
+    padding: 5px 10px;
+}
+.modal-header .close{
+    padding: 5px 5px;
+    margin: 0;
+}

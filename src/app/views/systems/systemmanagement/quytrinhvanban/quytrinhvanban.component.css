@@ -1,0 +1,9 @@
+.style-icon-close{
+    font-size: 20px;
+}
+.style-icon-close:hover{
+    cursor: pointer;
+}
+.span-hover{
+    cursor: pointer;
+}

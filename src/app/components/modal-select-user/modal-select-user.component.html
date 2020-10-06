@@ -1,0 +1,134 @@
+<button type="button" class="btn btn-outline-primary w-100" (click)="showModal()" title="Thêm mới">
+    <span class="btntext-middle"><i class="fa fa-user-plus" aria-hidden="true"></i>
+    </span>
+    <a class="ml-1">
+        {{NameBtn}}
+    </a>
+</button>
+
+<!-- Thêm xin ý kiến-->
+<div bsModal #modalSelectUser="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <form #modalSelectUser="ngForm" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="hideModal()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <div class="card-header py-1">
+                                        <h4 class="modal-title">Danh sách phòng ban</h4>
+                                    </div>
+                                    <div class="card-body scroll-card-body">
+                                        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+                                            <!-- This is the tree node template for leaf nodes -->
+                                           
+                                            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                                                <ng-container >
+                                                    <span style="color: #f5d770;" class="material-icons">
+                                                        folder
+                                                        </span>
+                                                  </ng-container>
+                                              <li class="mat-tree-node">
+                                                <!-- use a disabled button to provide padding for tree leaf -->
+                                                <span class="ml-1 hover-cusor" (click)="getListUserByComId(node.Loai, node.Id, node.Name)">{{node.Name}}</span>
+                                              </li>
+                                              
+                                            </mat-tree-node>
+                                            <!-- This is the tree node template for expandable nodes -->
+                                            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+                                              <li>
+                                                <div class="mat-tree-node">
+                                                  <button  mat-icon-button matTreeNodeToggle
+                                                          [attr.aria-label]="'toggle ' + node.Name" class="btn-material-tree">
+                                                          <ng-container *ngIf="node.Loai === 0">
+                                                            <span style="color: #f5d770;" class="material-icons">
+                                                                folder_shared
+                                                                </span>
+                                                          </ng-container>
+                                                          <ng-container *ngIf="node.Loai === 1">
+                                                            <span style="color: #f5d770;" class="material-icons">
+                                                                folder
+                                                                </span>
+                                                          </ng-container>
+                                                        
+                                                    <mat-icon class="mat-icon-rtl-mirror">
+                                              
+                                                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                                    </mat-icon>
+                                                  </button>
+                                                  <span class="Rank-{{node.Loai}} hover-cusor" (click)="getListUserByComId(node.Loai, node.Id, node.Name)">
+                                                    {{node.Name}}
+                                                  </span>
+                                                </div>
+                                                <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                                                  <ng-container matTreeNodeOutlet></ng-container>
+                                                </ul>
+                                              </li>
+                                            </mat-nested-tree-node>
+                                          </mat-tree>
+                                    </div>
+                                </div>
+                         
+                        
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-header py-1">
+                                        <h4 class="modal-title">{{nameDanhSach}}</h4>
+                                    </div>
+                                    <div class="card-body px-2 scroll-card-body">
+                                        <input type="text" class="form-control mb-2">
+                                      
+                                        <table class="table table-sm table-bordered">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                 
+                                                    <th>Tên đầy đủ</th>
+                                                    <th width=150 class="text-center">Tên đăng nhập</th>
+                                                    <th width=100 class="text-center">Trạng thái</th>
+                                                    <th width=50 title="Chức năng" class="text-center">C/N</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of listUser" (click)="hideModalPassData(item)">
+                                                 
+                                                    <td>{{item.FullName}}</td>
+                                                    <td>{{item.Username}}</td>
+                                                   
+                                                    <td class="text-center">
+                                                        <span [ngClass]="{'badge': true, 'badge-success' : item.IsActive == true}">
+                                                            {{item.IsActive == true ? 'Hoạt động': 'Không'}}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                       
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="hideModal()">Đóng</button>
+                    <button [disabled]="modalSelectUser.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

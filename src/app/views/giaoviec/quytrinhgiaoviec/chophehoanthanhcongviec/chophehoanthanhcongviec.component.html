@@ -1,0 +1,73 @@
+<div class="animated fadeIn">
+    <div class="card-header py-2">
+
+        <app-select-command #selectLenh MenuId="GV0105" (refreshPaList)="refreshList()">
+        </app-select-command>
+        <ng-container *appPermitdel='true'>
+            <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
+                (xacNhan)="r4DelData($event)"></app-modaldel>
+        </ng-container>
+    </div>
+    <div class="card-body p-0 border-0 scroll-card-body">
+        <div class="row mx-0">
+            <div class="col-md-4 pl-1">
+                <div class="card mt-1 border-0">
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr *ngFor="let item of listCongViecs" class="hover-cusor"
+                                    [style.background-color]="WorkFlowId===item.Id ? '#fff9cc' : 'white'">
+                                    <td class="py-1" (click)="SelectIDEditModel(item)">
+                                        <p class="mb-1"><strong class="font-vb">{{item.TaskName}}</strong>
+
+                                        </p>
+
+                                        <p class="mb-0 font-color">Mã công việc: {{item.Code}} | Bắt đầu:
+                                            {{item.ExpectedDate | date: 'dd/MM/yyyy'}} | Kết thúc:
+                                            {{item.EndDate | date: 'dd/MM/yyyy'}}</p>
+                                        <p class="mb-0">
+                                            <ng-container *ngTemplateOutlet="status; context:{ status: item.Status }">
+                                            </ng-container>
+                                            <!-- <ng-container *ngFor="let ttem of item.TypeFlow">
+                                                <ng-container
+                                                    *ngTemplateOutlet="typeflow; context:{ typeflow: ttem.TypeFlow }">
+                                                </ng-container>
+                                            </ng-container> -->
+                                        </p>
+                                    </td>
+                                    <td width=80 class="py-1" class="s-icon-cn">
+                                        <span title="Thêm mới công việc" class="mr-1"><i
+                                                class="iconedit-fontsize fas fa-plus" aria-hidden="true"></i></span>
+                                        <span title="Sửa" class="mr-1"><i
+                                                class="iconedit-fontsize fa fa-pencil-square-o"
+                                                aria-hidden="true"></i></span>
+                                        <span title="Xóa"><i class="iconedit-fontsize fa fa-trash"
+                                                aria-hidden="true"></i></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--/.row-->
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-md-8 px-0">
+                <app-workflow-detail></app-workflow-detail>
+            </div>
+            <!--/.col-->
+        </div>
+
+        <!--/.row-->
+    </div>
+</div>
+
+<ng-template #badgetem let-cyclework="cyclework">
+    <span class="badge status-{{cyclework}}">{{cyclework | vongDoiCongViec}} </span>
+</ng-template>
+<ng-template #status let-status="status">
+    <span class="badge deadline-{{status}}">{{status | hanCongViec}} </span>
+</ng-template>
+<ng-template #typeflow let-typeflow="typeflow">
+    <span class="badge workflow-{{typeflow}}">{{typeflow | trangThaiXuLy: 'giaoviec'}} </span>
+</ng-template>

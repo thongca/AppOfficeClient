@@ -1,0 +1,142 @@
+<div class="animated fadeIn">
+    <div class="card-header">
+        <app-option-congty isShowDepartment="1" isShowNest="1" (changeCongtys)="selectCompany($event)"
+            (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)"></app-option-congty>
+    </div>
+    <div class="card-body card-body-overf">
+        <div class="row" [ngStyle]="{'margin': 0}">
+            <div class="col-sm-5 pl-0">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Danh sách nhóm quyền</strong>
+
+                    </div>
+                    <div class="card-body" [ngStyle]="{'padding': 0}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" width="50">STT</th>
+                                            <th>Tên nhóm quyền</th>
+                                            <th width="100" class="text-center">Quản trị</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let m of listGroupRole; let i = index"
+                                            class="item-row-nhomnguoidung isSelect-{{m.check}}"
+                                            (click)="SelectRow(m.Id, m.Name)">
+                                            <td class="text-center">{{i + 1}}</td>
+                                            <td>
+                                                {{m.Name}}
+                                            </td>
+                                            <td class="text-center text-midle">
+                                                <span class="badge badge-success"
+                                                    [ngStyle]="{'background-color': m.IsAdmin === true ? '' : 'red'}">{{m.IsAdmin === true ? 'Quản trị' : 'Không'}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-sm-7" [ngStyle]="{'padding-left': 0,'padding-right': 0}">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>{{NameMenu}}</strong>
+
+                    </div>
+                    <div class="card-body card-media-1280" [ngStyle]="{'padding': 0}">
+                        <div class="col-lg-12" [ngStyle]="{'padding': 0}">
+                            <table class="table table-bordered tables-pq">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" width="50">STT</th>
+                                        <th class="width1280">Menu</th>
+                                        <th class="text-center" width="80">Hiện thị</th>
+                                        <th class="text-center" width="80">Thêm</th>
+                                        <th class="text-center" width="80">Sửa</th>
+                                        <th class="text-center" width="80">Xóa</th>
+                                        <th class="text-center" width="80">Xuất BC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of listData; let i = index">
+                                        <tr>
+                                            <td class="text-center">
+                                                {{i + 1}}
+                                            </td>
+                                            <td class="level-1">{{item.Name}}</td>
+                                        </tr>
+                                        <ng-container *ngFor="let ttem of item.children; let j = index">
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{j + 1}}
+                                                </td>
+                                                <td class="level-2">{{ttem.Name}}</td>
+
+                                            </tr>
+                                            <tr *ngFor="let thtem of ttem.children; let k = index" >
+                                                <td class="text-center">
+                                                    {{k + 1}}
+                                                </td>
+                                                <td class="level-3">{{thtem.Name}}</td>
+                                                <td class="text-center">
+                                                    <input class="table-checkbox " type="checkbox" id="checkallist"
+                                                        value="checkitem" [checked]="thtem.ViewPer"
+                                                        [(ngModel)]="thtem.ViewPer" name="ViewPer"  (click)="r2_AddData(thtem, thtem.ViewPer, 1)">
+                                                </td >
+                                                <td class="text-center"> <input class="table-checkbox " type="checkbox" id="checkallist"
+                                                        value="checkitem" [checked]="thtem.AddPer"
+                                                        [(ngModel)]="thtem.AddPer" name="AddPer"  (click)="r2_AddData(thtem, thtem.AddPer, 2)"></td>
+                                                <td class="text-center"><input class="table-checkbox " type="checkbox" id="checkallist"
+                                                    value="checkitem" [checked]="thtem.EditPer"
+                                                    [(ngModel)]="thtem.EditPer" name="EditPer" (click)="r2_AddData(thtem, thtem.EditPer, 3)"></td>
+                                                <td class="text-center"><input class="table-checkbox " type="checkbox" id="checkallist"
+                                                    value="checkitem" [checked]="thtem.DelPer"
+                                                    [(ngModel)]="thtem.DelPer" name="DelPer" (click)="r2_AddData(thtem, thtem.DelPer, 4)"></td>
+                                                <td class="text-center"><input class="table-checkbox " type="checkbox" id="checkallist"
+                                                    value="checkitem" [checked]="thtem.ExportPer"
+                                                    [(ngModel)]="thtem.ExportPer" name="ExportPer" (click)="r2_AddData(thtem, thtem.ExportPer, 5)"></td>
+                                            </tr>
+                                        </ng-container>
+
+
+                                    </ng-container>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+</div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Thông báo</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="notifyerr">{{errormodal}}&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Thoát</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

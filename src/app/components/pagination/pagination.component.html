@@ -1,0 +1,23 @@
+<nav *ngIf="options.totalpage > 1">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" (click)="StartPage()" *ngIf="curentPage > 1">Trang đầu</a></li>
+      <ng-container *ngIf="curentPage > 1">
+        <li class="page-item" >
+            <a class="page-link" (click)="BackLine()">...</a>
+          </li>
+      </ng-container>
+      <ng-container *ngFor="let item of listPage">
+        <li class="page-item" >
+            <a [ngClass]="{'page-link': true, 'bgr-color': this.options.p === item.pageNumber}" (click)="MovePage(item.pageNumber)"> {{item.pageNumber}}</a>
+          </li>
+      </ng-container>
+      <ng-container  *ngIf="(options.totalpage / 10) > curentPage">
+        <li class="page-item">
+            <a class="page-link" (click)="NextLine()">...</a>
+          </li>
+      </ng-container>
+      
+     
+      <li class="page-item" (click)="EndPage()" *ngIf="(options.totalpage / 10) > curentPage"><a class="page-link">Trang cuối</a></li>
+    </ul>
+  </nav>

@@ -1,0 +1,28 @@
+<button  (click)="showModal()" type="button" class="btn btn-outline-primary" title="Xóa">
+    <span class="btntext-middle"><i class="btnicon-font-size fa fa-trash"
+            aria-hidden="true"></i></span>
+    <a class="ml-1">
+        Xóa
+    </a>
+</button>
+
+<div bsModal #delModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-warning" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{titleDetail}}</h4>
+                <button type="button" class="close" (click)="delModal.hide()" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa các trường đã chọn không ?&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="delModal.hide()">Thoát</button>
+                <button type="button" class="btn btn-warning" (click)="XacNhan()">Đồng ý</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

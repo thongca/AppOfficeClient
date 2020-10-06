@@ -1,0 +1,410 @@
+<mat-card class="p-1 m-1">
+    <mat-tab-group>
+        <mat-tab label="Thông tin cơ bản">
+
+            <div class="row mx-0">
+                <div class="col-md-12 px-0">
+                    <div class="row p-1">
+                        <div class="col-sm-4">
+                            <span>Mã công việc: <strong>{{modelView.Code}}</strong></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>B/Đ dự kiến:
+                                <strong>{{modelView.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>K/T dự kiến:
+                                <strong>{{modelView.EndDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4">
+                            <span>B/Đ thực tế:
+                                <strong>{{modelView.StartDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>K/T thực tế:
+                                <strong>{{modelView.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4">
+                            <span>Người chủ trì: {{modelView.UserTaskName}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Người phối hợp: {{modelView.Suporter}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Công ty: <strong>Công ty cổ phần bao bi & in nông nghiệp</strong></span>
+                        </div>
+                    </div>
+                    <div class="row p-1" *ngIf="modelView.Predecessor !== null">
+                        <div class="col-sm-4">
+                            <span>Tiên quyết: {{modelView.Predecessor}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Thời hạn: {{modelView.PreWorkDeadline | date: 'dd/MM/yyyy HH:mm'}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Điều kiện: {{modelView.PreWorkType}}</span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-4">
+                            <span>Tổng t/g làm việc: {{modelView.WorkTime * 60 | number:'1.1-2'}}
+                                (phút)</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Tổng t/g tạm dừng: {{modelView.PauseTime * 60 | number:'1.1-2'}}
+                                (phút)</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <span>Tổng số lỗi: {{modelView.TotalPoint}}</span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-sm-12">
+                            <span>Ghi chú: {{modelView.Note}}</span>
+                        </div>
+
+                    </div>
+                    <p><strong>KẾ HOẠCH THỰC HIỆN CÔNG VIỆC</strong> </p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <app-tree-schedule (outshowModal)="showModal($event)">
+
+                            </app-tree-schedule>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </mat-tab>
+        <mat-tab label="Dòng chảy công việc">
+            <div class="row  mx-0">
+                <div class="col-md-12 px-0">
+                    <mat-accordion class="example-headers-align">
+                        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="header-coll">
+                                    Theo dõi dòng chảy công việc
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+
+                            <table class="table table-sm table-bordered ">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th width=150>Người nhận</th>
+                                        <th>Nội dung</th>
+                                        <th width=120>Ngày đọc</th>
+                                        <th width=120>Ngày xử lý</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let item of listWorkFlows">
+                                        <ng-container *ngIf="item.TypeFlow === 0; else trangThaiKhacOne">
+                                            <tr>
+                                                <td colspan="4">
+                                                    <strong>{{item.SendName}} </strong> tạo công việc
+                                                    mới lúc <strong
+                                                        style="font-style: italic;">{{item.SendDate|date: 'HH:mm dd/MM/yyyy'}}</strong>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-template #trangThaiKhacOne>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <span><strong>{{item.SendName}}</strong>({{item.PositionSend}})
+                                                        gửi đến
+                                                        <strong>{{item.DeliverName}}</strong>({{item.PositionDeli}})
+                                                        lúc <strong
+                                                            style="font-style: italic;">{{item.SendDate|date: 'HH:mm dd/MM/yyyy'}}</strong>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <tr>
+                                            <td class="text-center" style="vertical-align: middle;">
+                                                {{item.DeliverName}}
+
+                                            </td>
+                                            <td>
+                                                <span style="font-size: 14px;" class="badge workflow-{{item.TypeFlow}}">
+                                                    {{item.TypeFlow |trangThaiXuLy: 'giaoviec'}}</span>
+                                                <ng-container *ngFor="let ftem of item.Files">
+                                                    <a href="{{ftem.Path | urlFileReplace}}" target="_blank"
+                                                        (click)="changeUrlpdf(ftem.Path)">{{ftem.Name}}</a><span>({{ftem.Size | number: '1.2-2'}}MB)</span>
+                                                </ng-container>
+                                                <p class="mb-0"><strong>N/D:</strong> {{item.Note}}</p>
+                                                <p class="mb-0"><strong>Y/C:</strong> {{item.Require}}
+                                                </p>
+                                            </td>
+                                            <td class="text-center">
+                                                {{item.ReadDate|date: 'dd/MM/yyyy HH:mm'}}
+                                            </td>
+                                            <td class="text-center">
+                                                {{item.HandleDate | date : 'dd/MM/yyyy HH:mm'}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+
+
+                                </tbody>
+                            </table>
+
+                            <mat-action-row>
+                                <button mat-button color="warn" class="btn btn-outline-primary"
+                                    (click)="prevStep()">Quay lại</button>
+                                <button mat-button color="primary" class="btn btn-outline-primary ml-1"
+                                    (click)="nextStep()">Tiếp theo</button>
+                            </mat-action-row>
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="header-coll">
+                                    Sơ đồ mô tả dòng chảy công việc
+                                </mat-panel-title>
+
+                            </mat-expansion-panel-header>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <app-tree-diagram #treediagram (listLcvb)=listWorkFlows typeStatus='giaoviec'>
+                                    </app-tree-diagram>
+                                </div>
+
+                            </div>
+
+                            <mat-action-row>
+                                <button mat-button color="warn" class="btn btn-outline-primary"
+                                    (click)="prevStep()">Quay lại</button>
+                                <button mat-button color="primary" class="btn btn-outline-primary ml-1"
+                                    (click)="nextStep()">Kết thúc</button>
+                            </mat-action-row>
+                        </mat-expansion-panel>
+
+                    </mat-accordion>
+                </div>
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Nhật ký công việc">
+            <div class="row mx-0">
+                <div class="col-md-12 px-0">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" width=100>Mã</th>
+                                <th>Công việc</th>
+                                <th width=150 class="text-center">Trạng thái</th>
+                                <th width=130 class="text-center">Thời gian</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of listHistory">
+                                <td class="text-center">{{item.TaskCode}}</td>
+                                <td>{{item.TaskName}}</td>
+                                <td class="text-center">
+                                    <span
+                                        class="badge status-{{item.CycleWork}}">{{item.CycleWork | vongDoiCongViec: 'listhistory'}}</span>
+                                </td>
+                                <td class="text-center">
+                                    {{item.CreateDate | date: 'dd/MM/yyyy HH:mm'}}
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Chi tiết lỗi">
+            <div class="row mx-0">
+                <div class="col-md-12 px-0">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" width=50>STT</th>
+                                <th>Lỗi đánh giá</th>
+                                <th width=150 class="text-center">Người đánh giá</th>
+                                <th width=150 class="text-center">Người thực hiện</th>
+                                <th width=150 class="text-center">Điểm</th>
+                                <th width=130 class="text-center">Thời gian</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of listErrors; let i = index">
+                                <td class="text-center">{{i + 1}}</td>
+                                <td>{{item.ErrorName}}</td>
+                                <td class="text-center">{{item.NguoiPhat}}</td>
+                                <td class="text-center">{{item.NguoiBiPhat}}</td>
+                                <td class="text-center">
+                                    {{item.Point}}
+                                </td>
+                                <td class="text-center">
+                                    {{item.CreateDate | date: 'dd/MM/yyyy HH:mm'}}
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Công việc tiên quyết" *ngIf="listWorkFlowPres.length > 0">
+            <div class="row  mx-0">
+                <div class="col-md-12 px-0">
+                    <table class="table table-sm table-bordered ">
+                        <thead>
+                            <tr class="text-center">
+                                <th width=150>Người nhận</th>
+                                <th>Nội dung</th>
+                                <th width=120>Ngày đọc</th>
+                                <th width=120>Ngày xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of listWorkFlowPres">
+                                <ng-container *ngIf="item.TypeFlow === 0; else trangThaiKhacOne">
+                                    <tr>
+                                        <td colspan="4">
+                                            <strong>{{item.SendName}} </strong> tạo công việc
+                                            mới lúc <strong
+                                                style="font-style: italic;">{{item.SendDate|date: 'HH:mm dd/MM/yyyy'}}</strong>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <ng-template #trangThaiKhacOne>
+                                    <tr>
+                                        <td colspan="4">
+                                            <span><strong>{{item.SendName}}</strong>({{item.PositionSend}})
+                                                gửi đến
+                                                <strong>{{item.DeliverName}}</strong>({{item.PositionDeli}})
+                                                lúc <strong
+                                                    style="font-style: italic;">{{item.SendDate|date: 'HH:mm dd/MM/yyyy'}}</strong>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <tr>
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        {{item.DeliverName}}
+
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 14px;" class="badge workflow-{{item.TypeFlow}}">
+                                            {{item.TypeFlow |trangThaiXuLy: 'giaoviec'}}</span>
+                                        <ng-container *ngFor="let ftem of item.Files">
+                                            <a href="{{ftem.Path | urlFileReplace}}" target="_blank"
+                                                (click)="changeUrlpdf(ftem.Path)">{{ftem.Name}}</a><span>({{ftem.Size | number: '1.2-2'}}MB)</span>
+                                        </ng-container>
+                                        <p class="mb-0"><strong>N/D:</strong> {{item.Note}}</p>
+                                        <p class="mb-0"><strong>Y/C:</strong> {{item.Require}}
+                                        </p>
+                                    </td>
+                                    <td class="text-center">
+                                        {{item.ReadDate|date: 'dd/MM/yyyy HH:mm'}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{item.HandleDate | date : 'dd/MM/yyyy HH:mm'}}
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </mat-tab>
+    </mat-tab-group>
+
+</mat-card>
+
+ <!-- Thêm sửa-->
+ <div bsModal #modalAddCV="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+ aria-labelledby="myModalLabel" aria-hidden="true" 
+ data-keyboard="false">
+     <div class="modal-dialog modal-lg" role="document">
+         <form #CongViecNhanh="ngForm" (ngSubmit)="r2AddScheduleWork()" enctype="multipart/form-data"
+             class="form-horizontal" novalidate autocomplete="off">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h4 class="modal-title">Thêm công việc nhánh</h4>
+                     <button type="button" class="close" (click)="modalAddCV.hide()" aria-label="Close">
+                         <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                     </button>
+                 </div>
+                 <div class="modal-body px-2">
+                     <div class="animated fadeIn">
+                         <div class="row m-0">
+                                     
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Công việc
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="text" class="form-control rounded-0" required #TaskName="ngModel" [class.is-invalid]="TaskName.invalid && TaskName.touched"  name="TaskName" [(ngModel)]="modelSchedule.TaskName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <app-input-date require=true label="T/g bắt đầu" (changeDate)="dateSelectbd($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Giờ bắt đầu
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeStart"
+                                        [(ngModel)]="modelSchedule.TimeStart"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <app-input-date require=true label="T/g kết thúc" (changeDate)="dateSelectkt($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Giờ kết thúc
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
+                                        [(ngModel)]="modelSchedule.TimeEnd"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Thực hiện
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="userName" name="userName" class="form-control padding-select-congty"
+                                          [(ngModel)]="modelSchedule.UserDeliverId">
+                                          <option [ngValue]="null">----- Người thực hiện -----</option>
+                                          <option *ngFor="let item of listSupporters" [ngValue]="item.UserId" >{{item.FullName}}
+                                        </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                         <!--/.row-->
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" (click)="modalAddCV.hide()">Đóng</button>
+                     <button [disabled]="CongViecNhanh.form.invalid" type="submit" class="btn btn-primary">Lưu
+                         lại</button>
+                 </div>
+             </div><!-- /.modal-content -->
+         </form>
+     </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->

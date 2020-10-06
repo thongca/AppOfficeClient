@@ -1,0 +1,30 @@
+<button (click)="showModal()" type="button" class="btn btn-outline-primary" title="Thêm mới">
+    <span class="btntext-middle"><i class="btnicon-font-size fas fa-plus"
+            aria-hidden="true"></i></span>
+    <a class="ml-1">
+        Thêm mới
+    </a>
+</button>
+
+<div bsModal #addModal="bs-modal" class="modal fade" id="giftModal" tabindex="-1" role="dialog"
+aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+data-keyboard="false">
+<div class="modal-dialog modal-{{sizeModal}}" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">{{titleDetail}}</h4>
+        <button type="button" class="close" (click)="addModal.hide()" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-content></ng-content>
+    </div>  
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="addModal.hide()">Đóng</button>
+        <ng-content select=".btn-add"></ng-content>
+        
+    </div>  
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,176 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-0">
+                <div class="card-header">
+                    <button *appPermitadd='true' (click)="showModal()" type="button" class="btn btn-outline-primary" title="Thêm mới">
+                        <span class="btntext-middle"><i class="btnicon-font-size fas fa-plus"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Thêm mới
+                        </a>
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Refresh
+                        </a>
+                    </button>
+                    <ng-container *appPermitdel='true'>
+                        <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
+                            (xacNhan)="r4DelData($event)"></app-modaldel>
+                    </ng-container>
+                    <app-option-congty isShowDepartment="1" isShowNest="1" (changeCongtys)="selectCompany($event)"
+                        (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
+                    </app-option-congty>
+                </div>
+
+                <div class="card-body p-0 max-height-card-body">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th *appPermitdel="true" width=40 class="text-center">
+                                    <app-check-all [list] = listData (checkAll) = "CheckAll($event)"></app-check-all>
+                                </th>
+                                <th>Tên đầy đủ</th>
+                                <th width=150 class="text-center">Tên đăng nhập</th>
+                                <th width=100 class="text-center">Trạng thái</th>
+                                <th width=50 title="Chức năng" class="text-center">C/N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of listData">
+                                <td *appPermitdel="true" class="text-center">
+                                    <input class="table-checkbox " type="checkbox" id="checkallist" value="checkitem"
+                                        [checked]="item.check" [(ngModel)]="item.check" name="check"
+                                        (click)="CheckedList(!item.check, item.Id)">
+                                </td>
+                                <td>{{item.FullName}}</td>
+                                <td>{{item.Username}}</td>
+                               
+                                <td class="text-center">
+                                    <span [ngClass]="{'badge': true, 'badge-success' : item.IsActive == true}">
+                                        {{item.IsActive == true ? 'Hoạt động': 'Không'}}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span title="Sửa" (click)="SelectIDEditModel(item.Id)"><i class="iconedit-fontsize fa fa-pencil-square-o"
+                                            aria-hidden="true"></i></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+  <!-- Thêm sửa-->
+  <div bsModal #modaldata="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+      <form #groupRoleForm="ngForm" (ngSubmit)="r2_AddData()" enctype="multipart/form-data" class="form-horizontal" novalidate autocomplete="off">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{modeltitle}}</h4>
+            <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
+                <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="animated fadeIn">
+              <div class="row m-0">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="title-text col-form-label" for="name"> Tên
+                                <span>*</span>
+                            </label>
+                            <div class="input-text">
+                                <input type="text" class="form-control rounded-0" required #FullName="ngModel" [class.is-invalid]="FullName.invalid && FullName.touched"  name="FullName" [(ngModel)]="model.FullName">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row  ml-0">
+                            <label class="title-text col-form-label" for="name"> Mã
+                            </label>
+                            <div class="input-text">
+                                <input type="number" class="form-control rounded-0" required #Code="ngModel" [class.is-invalid]="Code.invalid && Code.touched"  name="Code" [(ngModel)]="model.Code">
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="title-text col-form-label" for="name"> Tên đăng nhập
+                                <span>*</span>
+                            </label>
+                            <div class="input-text">
+                                <input type="text" class="form-control rounded-0" required #Username="ngModel" [class.is-invalid]="Username.invalid && Username.touched"  name="Username" [(ngModel)]="model.UserName">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row ml-0">
+                            <label class="title-text col-form-label" for="name"> Mật khẩu
+                                <span>*</span>
+                            </label>
+                            <div class="input-text">
+                                <input type="password" class="form-control rounded-0" required #Password="ngModel" [class.is-invalid]="Password.invalid && Password.touched"  name="Password" [(ngModel)]="model.Password">
+                            </div>
+                        </div>
+                       
+                    </div>
+                    
+
+                    <div class="col-md-6" >
+                        <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
+                        (changeRadio)="radioKichHoat($event)"></app-input-radio-checkbox>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row ml-0">
+                            <label class="title-text col-form-label" for="name"> Chức vụ
+                            </label>
+                            <div class="input-text">
+                                <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="model.PositionId">
+                                    <option value=0>----- Chọn chức vụ -----</option>
+                                    <option *ngFor="let item of listPosition" [value]="item.Id">{{item.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="title-text col-form-label" for="name"> Nhóm quyền
+                            </label>
+                            <div class="input-text">
+                                <ng-multiselect-dropdown name="selectedItems" class="multiple-select" [placeholder]="'----- Chọn nhóm quyền -----'" [data]="dropdownList"
+                                [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                             </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                       
+                    </div>
+                   
+                 
+              </div>
+              <!--/.row-->
+            </div>
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modaldata.hide()">Đóng</button>
+          <button [disabled]="groupRoleForm.form.invalid" type="submit" class="btn btn-primary">Lưu lại</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  

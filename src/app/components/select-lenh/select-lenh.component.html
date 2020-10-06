@@ -1,0 +1,381 @@
+<div *ngIf="isShowBtn === true" ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i class="fa fa-paper-plane mr-2"
+            aria-hidden="true"></i>Chuyển</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <ng-container *ngFor="let item of listLenh">
+            <button ngbDropdownItem (click)="ShowModal(item.Code, item.BuocLenhGroupId)"><i class="fa fa-paper-plane mr-2"
+                    aria-hidden="true"></i> {{item.Name}}</button>
+        </ng-container>
+    </div>
+</div>
+<!-- Thêm xin ý kiến-->
+<div bsModal #modalOpinion="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-700" role="document">
+        <form #groupRoleForm="ngForm" (ngSubmit)="r2_AddXinYKien()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalOpinion.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <strong>
+                                        Thời gian
+                                    </strong>
+
+                                </div>
+                                <div class="row mb-2">
+                                    Người gửi
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn="Lãnh đạo phê ý kiến" [BuocLenhGroupId]=BuocLenhGroupId></app-modal-select-user>
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    03/07/2020 14:36:44
+                                </div>
+                                <div class="row mb-2">
+                                    <strong>Nguyễn Đình Thông</strong>
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" class="w-100 form-control" placeholder="Nguyễn Đức Huỳnh">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    Về việc
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    <textarea name="VeViec" class="w-100" rows="2" placeholder="V/v:"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <span class="btntext-middle"> <i class="fa fa-exclamation-circle"
+                                            style="color: red;" aria-hidden="true"></i></span>
+                                    <span class="ml-1">Ưu tiên</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row float-right mr-0">
+                                    <app-input-date require=true label="Hạn xử lý" (changeDate)="dateSelect($event)">
+                                    </app-input-date>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-12 p-0">
+                                <p class="mb-1"><strong>Nội dung</strong></p>
+                            </div>
+                            <textarea name="NoiDung" class="w-100"></textarea>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalOpinion.hide()">Đóng</button>
+                    <button [disabled]="groupRoleForm.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- Thêm trình ký-->
+<div bsModal #modalTrinhKy="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-700" role="document">
+        <form #groupTrinhKy="ngForm" (ngSubmit)="r2_XuLyData()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalTrinhKy.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <strong>
+                                        Thời gian
+                                    </strong>
+
+                                </div>
+                                <div class="row mb-2">
+                                    Người gửi
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn="Người xử lý" [BuocLenhGroupId]=BuocLenhGroupId (user)="getNguoiNhanTK($event)"></app-modal-select-user>
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    {{modelChuyenXuLy.Time | date: 'dd/MM/yyyy HH:mm'}}
+                                </div>
+                                <div class="row mb-2">
+                                    <strong>{{modelChuyenXuLy.NameNguoiGui}}</strong>
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" readonly required class="w-100 form-control  s-input-modal" [(ngModel)]="modelChuyenXuLy.TenNguoiKy" name="TenNguoiKy" placeholder="Người nhận">
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    Về việc
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    <textarea name="TieuDe" [(ngModel)]="modelChuyenXuLy.TieuDe" class="w-100" rows="2" placeholder="V/v:"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <span class="btntext-middle"> <i class="fa fa-exclamation-circle"
+                                            style="color: red;" aria-hidden="true"></i></span>
+                                    <span class="ml-1">Ưu tiên</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row float-right mr-0">
+                                    <app-input-date require=true label="Hạn xử lý" (changeDate)="dateSelect($event)">
+                                    </app-input-date>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-12 p-0">
+                                <p class="mb-1"><strong>Nội dung</strong></p>
+                            </div>
+                            <textarea name="NoiDung" [(ngModel)]="modelChuyenXuLy.NoiDung" class="w-100"></textarea>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalTrinhKy.hide()">Đóng</button>
+                    <button [disabled]="groupTrinhKy.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Thêm chuyển xử lý-->
+<div bsModal #modalMoveProcess="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-700" role="document">
+        <form #groupRoleForm="ngForm" (ngSubmit)="r2_ChuyenXuLy()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalMoveProcess.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <strong>
+                                        Thời gian
+                                    </strong>
+
+                                </div>
+                                <div class="row mb-2">
+                                    Người gửi
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn="Người chỉ đạo" [BuocLenhGroupId]=BuocLenhGroupId (user)="getUserInfo($event)"></app-modal-select-user>
+
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn="Người xử lý chính" [BuocLenhGroupId]=BuocLenhGroupId (user)="getNXLC($event)"></app-modal-select-user>
+                                   
+
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn="Người đồng xử lý" [BuocLenhGroupId]=BuocLenhGroupId (user)="getNDXL($event)"></app-modal-select-user>
+                                   
+
+                                </div>
+                                <div class="row mb-2 mr-0">
+                                    <app-modal-select-user NameBtn=" Người nhận để biết" [BuocLenhGroupId]=BuocLenhGroupId (user)="getNNDB($event)"></app-modal-select-user>
+                                </div>
+
+
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    {{modelChuyenXuLy.Time | date: 'dd/MM/yyyy HH:mm'}}
+                                </div>
+                                <div class="row mb-2">
+                                    <strong>{{modelChuyenXuLy.NameNguoiGui}}</strong>
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" required class="w-100 form-control s-input-modal" placeholder="Chọn người chỉ đạo" [(ngModel)]="modelUserNhan.TenNguoiChiDao" name="TenNguoiChiDao">
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" required class="w-100 form-control s-input-modal" placeholder="Chọn người xử lý chính" [(ngModel)]="modelUserNhan.TenNguoiXuLy" name="TenNguoiXuLy">
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" class="w-100 form-control s-input-modal" placeholder="Chọn người đồng xử lý"  [(ngModel)]="modelUserNhan.TenNguoiDXuLy" name="TenNguoiDXuLy">
+                                </div>
+                                <div class="row mb-2">
+                                    <input type="text" class="w-100 form-control s-input-modal" placeholder="Chọn người nhận để biết"  [(ngModel)]="modelUserNhan.TenNguoiNDB" name="TenNguoiNDB">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    Về việc
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row mb-2">
+                                    <textarea name="TieuDe" class="w-100" rows="2" placeholder="V/v:"  [(ngModel)]="modelChuyenXuLy.TieuDe"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-4">
+                                <div class="row mb-2">
+                                    <span class="btntext-middle"> <i class="fa fa-exclamation-circle"
+                                            style="color: red;" aria-hidden="true"></i></span>
+                                    <span class="ml-1">Ưu tiên</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row float-right mr-0">
+                                    <app-input-date require=true label="Hạn xử lý" (changeDate)="dateSelect($event)">
+                                    </app-input-date>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-sm-12 p-0">
+                                <p><strong>Nội dung</strong></p>
+                            </div>
+                            <textarea name="NoiDung" class="w-100" [(ngModel)]="modelChuyenXuLy.NoiDung"></textarea>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalMoveProcess.hide()">Đóng</button>
+                    <button [disabled]="groupRoleForm.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Xác nhận hoàn thành-->
+<div bsModal #modalXNHT="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-md" role="document">
+        <form #xnhtForm="ngForm" (ngSubmit)="r2_XNHT()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalXNHT.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-sm-12 p-0">
+                                <p class="mb-1"><strong>Nội dung</strong></p>
+                            </div>
+                            <textarea name="NoiDung" [(ngModel)]="modelChuyenXuLy.NoiDung" class="w-100"></textarea>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalXNHT.hide()">Đóng</button>
+                    <button [disabled]="xnhtForm.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Thu hồi-->
+<div bsModal #modalTraLai="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-md" role="document">
+        <form #thuHoiForm="ngForm" (ngSubmit)="r2_TralaiVb()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalTraLai.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-sm-12 p-0">
+                                <p class="mb-1"><strong>Nội dung</strong></p>
+                            </div>
+                            <textarea required name="NoiDung" [(ngModel)]="modelChuyenXuLy.NoiDung" class="w-100"></textarea>
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalTraLai.hide()">Đóng</button>
+                    <button [disabled]="thuHoiForm.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

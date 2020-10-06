@@ -1,0 +1,9 @@
+
+    <label class="title-text col-form-label" for="name">{{label}}
+      <span *ngIf="requireLocal==true">*</span>
+    </label>
+    <div class="input-text">
+      <input class="form-control rounded-0" [(ngModel)]="dateSelect" (ngModelChange)="dateChange()"  name="date" placeholder="DD/MM/YYYY" bsDatepicker
+         placement="bottom"
+        [bsConfig]="datePickerConfig" (onShown)="onOpenCalendar($event)">
+    </div>

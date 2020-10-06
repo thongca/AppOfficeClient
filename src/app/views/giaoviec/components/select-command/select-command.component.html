@@ -1,0 +1,613 @@
+<div *ngIf="isShowBtn === true" ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle><i class="fa fa-paper-plane mr-2"
+            aria-hidden="true"></i>Chuyển</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <ng-container *ngFor="let item of listLenh">
+            <button ngbDropdownItem (click)="ShowModal(item.Code, item.BuocLenhGroupId)"><i class="fa fa-paper-plane mr-2"
+                    aria-hidden="true"></i> {{item.Name}}</button>
+        </ng-container>
+    </div>
+</div>
+<!-- Thêm trình ký-->
+<div bsModal #modalTrinhThoiHan="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #trinhPheThoiHan="ngForm" (ngSubmit)="r2_TrinhPheThoiHan()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalTrinhThoiHan.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người gửi:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người duyệt
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người duyệt -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filetth type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                            (change)="onSelectFile(filetth.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalTrinhThoiHan.hide()">Đóng</button>
+                    <button [disabled]="trinhPheThoiHan.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Trình hoàn thành công việc-->
+<div bsModal #modalTrinhHT="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #trinhHoanThanh="ngForm" (ngSubmit)="r2_TrinhHoanThanh()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalTrinhHT.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người gửi:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người duyệt
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="modelTTH.UserManagerId">
+                                            <option [value]=null>----- Người duyệt -----</option>
+                                            <option *ngFor="let item of dropdownList" [value]="item.UserId">{{item.FullName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Kế thừa
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="modelTTH.UserNextId">
+                                            <option [ngValue]="null">----- Người kế tiếp -----</option>
+                                            <option *ngFor="let item of dropdownList" [ngValue]="item.UserId">{{item.FullName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Theo dõi
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người theo dõi -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filethtcv type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filethtcv.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalTrinhHT.hide()">Đóng</button>
+                    <button [disabled]="trinhHoanThanh.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Duyệt hoàn thành công việc-->
+<div bsModal #modalDuyetHT="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #duyetHoanThanh="ngForm" (ngSubmit)="r2_PheHoanThanh()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalDuyetHT.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người gửi:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Theo dõi
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người theo dõi -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filedht type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filedht.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalDuyetHT.hide()">Đóng</button>
+                    <button [disabled]="duyetHoanThanh.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Yêu cầu chỉnh sửa công việc-->
+<div bsModal #modalRejectHT="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #traLai="ngForm" (ngSubmit)="r2_YeuCauChinhSua()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalRejectHT.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người y/c:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <app-input-date require=false label="Điều chỉnh" (changeDate)="dateSelectdc($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Giờ
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
+                                        [(ngModel)]="timeHour"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Theo dõi
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người theo dõi -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filetraLai type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filetraLai.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalRejectHT.hide()">Đóng</button>
+                    <button [disabled]="traLai.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Duyệt trình ký thời hạn-->
+<div bsModal #modalDuyetThoiHan="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #pheThoiHan="ngForm" (ngSubmit)="r2_PheThoiHan()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalDuyetThoiHan.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người duyệt:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <app-input-date require=false label="Điều chỉnh" (changeDate)="dateSelectdc($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Giờ
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
+                                        [(ngModel)]="timeHour"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filepth type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filepth.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalDuyetThoiHan.hide()">Đóng</button>
+                    <button [disabled]="pheThoiHan.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Đánh giá chất lượng-->
+<div bsModal #modalDanhGiaCL="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-700" role="document">
+        <form #danhGia="ngForm" (ngSubmit)="r2_DanhGiaChatLuong()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalDanhGiaCL.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người duyệt:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Lỗi:
+                                    <span>*</span>
+                                </label>
+                                <div class="input-text">
+                                    <ng-multiselect-dropdown name="selectedErrors" class="multiple-select"
+                                    [placeholder]="'----- Chọn lỗi -----'" [data]="dropdownErrorList"
+                                    [settings]="droperrorSettings" [(ngModel)]="selectedErrors">
+                                </ng-multiselect-dropdown>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedUsers" class="multiple-select"
+                                        [placeholder]="'----- Chọn người nhận -----'" [data]="dropdownUserList"
+                                        [settings]="dropuserSettings" [(ngModel)]="selectedUsers">
+                                    </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                   
+                                       <table class="table table-sm table-bordered">
+                                           <thead>
+                                               <tr>
+                                                  <th>
+                                                    Tên lỗi
+                                                  </th>
+                                                  <th width=100>
+                                                    Điều chỉnh
+                                                  </th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                               <tr *ngFor="let item of selectedErrors">
+                                                   <td class="py-0" style="vertical-align: middle;">
+                                                    {{item.ErrorName}}
+                                                   </td>
+                                                   <td class="p-0">
+                                                       <input type="text" class="form-control rounded-0 border-0" name="Point" [(ngModel)]="item.Point">
+                                                   </td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filedg type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filedg.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalDanhGiaCL.hide()">Đóng</button>
+                    <button [disabled]="danhGia.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

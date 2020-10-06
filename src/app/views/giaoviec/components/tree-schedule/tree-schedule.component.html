@@ -1,0 +1,111 @@
+<table class="table table-sm table-bordered " style="min-width: 1300px;">
+    <thead>
+      <tr>
+        <th width=100 class="text-center">
+          Chức năng
+        </th>
+        <th width=100 class="text-center">
+          Trạng thái
+        </th>
+        <th>
+          Công việc
+        </th>
+        <th width=150>
+          Nguồn lực
+        </th>
+        <th width=130 class="text-center">
+          Bắt đầu
+        </th>
+        <th width=130 class="text-center">
+          Kết thúc
+        </th>
+        <th width=130 class="text-center">
+          Hoàn thành
+        </th>
+  
+      </tr>
+    </thead>
+    <tbody>
+  
+        <ng-container *ngFor="let item of list">
+          <tr *ngIf="item.TaskName !== null">
+            <td>
+              <span class="mr-3" title="Thêm công việc"  (click)="showModal(item)"><i class="iconedit-fontsize fas fa-plus" aria-hidden="true"></i></span>
+            </td>
+            <td width=120>
+              <span class="badge status-{{item.StatusWork}}"> {{item.StatusWork | trangthaiSchedule}} </span>
+              
+             </td>
+            <td>{{item.TaskName}}</td>
+            <td>{{item.FullName}}</td>
+            <td>{{item.StartDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+            <td>{{item.EndDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+    
+          </tr>
+          <ng-container *ngTemplateOutlet="child; context:{ list: item.children }">
+          </ng-container>
+        </ng-container>
+        <ng-template #child let-list="list">
+    
+          <ng-container *ngFor="let item of list">
+            <tr>
+              <td class="text-center"> 
+              
+                <ng-container *ngIf="item.StatusWork < 3">
+                  <span class="mr-3" title="Thêm công việc" (click)="showModal(item)"><i class="iconedit-fontsize fas fa-plus" aria-hidden="true"></i></span>
+                  <span title="Xóa"  (click)="r4RemoveSchedule(item.Id, item.MyWorkId)"><i class="iconedit-fontsize fa fa-trash" aria-hidden="true"></i></span>
+                </ng-container>
+                
+               
+              </td>
+              <td class="text-center">
+                <select id="select2" name="select2" class="padding-select-congty" [(ngModel)]="item.StatusWork" (change)="ChangeTrangThai(item)">
+                  <option value=0>--- Trạng thái ---</option>
+                  <option *ngFor="let ktem of listTTs" [value]="ktem.Id">{{ktem.Name}}</option>
+              </select>
+              </td>
+              <td class="">
+                <ng-container *ngIf="item.StatusWork > 1; else NameCV">
+                  <span _ngcontent-fmw-c4="" style="font-size: 14px;" class="badge bcolor-lccv-{{item.StatusWork}}">
+                    {{item.TaskName}} 
+                  </span>
+                  <span _ngcontent-fmw-c4="" *ngIf="item.CompleDate > item.EndDate" style="font-size: 14px;" class="badge bcolor-lccv-4">
+                    Quá hạn
+                  </span>
+                </ng-container>
+                <ng-template #NameCV>
+                  {{item.TaskName}} 
+                </ng-template>
+                
+                
+               
+              </td>
+              <td>{{item.FullName}}</td>
+              <td class="text-center">{{item.StartDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+              <td class="text-center">{{item.EndDate | date: 'dd/MM/yyyy HH:mm'}}</td>
+              <td class="text-center">
+                <ng-container *ngIf="item.DateComplete !== null; else CompleDate">
+                  {{item.DateComplete | date: 'dd/MM/yyyy HH:mm'}}
+                </ng-container>
+                <ng-template #CompleDate>
+                  {{item.DateComplete}}
+                </ng-template>
+                
+              </td>
+  
+              
+            </tr>
+            <ng-container *ngIf="item.children.length > 0">
+              <ng-container *ngTemplateOutlet="child; context:{ list: item.children }">
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+      
+  
+    </tbody>
+  </table>
+ 
+
+
+

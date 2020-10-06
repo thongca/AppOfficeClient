@@ -1,0 +1,209 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+body{
+  font-family: arial !important;
+}
+h4{
+  font-family: arial !important;
+}
+strong{
+  font-family: arial !important;
+}
+.btnicon-font-size{
+    font-size: 1.25em;
+}
+.btntext-middle{
+    vertical-align: middle;
+}
+.text-middle{
+  vertical-align: middle !important;
+}
+.iconedit-fontsize{
+    font-size: 1.25em;
+}
+.iconedit-fontsize:hover{
+    cursor: pointer;
+}
+.max-height-card-body{
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+}
+.max-height-card-body::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  /* Track */
+  .max-height-card-body::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  .max-height-card-body::-webkit-scrollbar-thumb {
+    background: rgb(182, 182, 182); 
+  }
+  
+  /* Handle on hover */
+  .max-height-card-body::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  // css search
+.input-searh{
+    border-radius: 20px 0 0 20px;
+}
+.form-search{
+    width: 500px;
+    margin-bottom: 0;
+}
+button.btn.btn-primary.btn-search {
+    border-radius: 0 20px 20px 0;
+}
+.btn-add-modal{
+    background-color: #fff;
+    padding: 5px 15px 3px 15px;
+}
+.btn-add-modal i{
+    font-size: 20px;
+}
+.btn-secondary:hover {
+    background-color: #20a8d8;
+    border-color: #20a8d8;
+}
+.btn-secondary:hover i {
+    color: #fff;
+}
+ // css search
+input{
+    box-shadow: none !important;
+}
+input:focus{
+    border: 1px solid #20a8d8 !important;
+}
+// input 
+.title-text{
+    width: 100px;
+    font-weight: 600;
+    float: left;
+    color: #333;
+}
+.title-text span{
+    color: red;
+}
+.input-text{
+    width: calc(100% - 100px);
+    display: inline-block;
+}
+
+// modal
+.modal-header{
+    padding: 5px 10px;
+}
+.modal-header .close{
+    padding: 5px 5px;
+    margin: 0;
+}
+.modal-title{
+    margin: 5px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+@media (min-width: 992px)
+{
+.modal-w-700 {
+    max-width: 700px;
+}
+}
+.hover-cusor:hover {
+    cursor: pointer;
+}
+// văn bản
+.bcolor-lcvb-1{
+    background-color: #28a745;
+    color: white;
+  }
+  .bcolor-lcvb-2{
+    background-color: #007bff;
+    color: white;
+  }
+  .bcolor-lcvb-3{
+    background-color: #ff8d00;
+    color: white;
+  }
+  .bcolor-lcvb-4{
+    background-color: #dc3545;
+    color: white;
+  }
+  .bcolor-lcvb-5{
+    background-color: #e2dd42;
+    color: white;
+  }
+//văn bản
+// giao việc
+.status-0{
+    background-color: #007bff;
+    color: white;
+  }
+  .status-2{
+    background-color: #ff8d00;
+    color: white;
+  }
+  .status-3{
+    background-color: #7f7fd4;
+    color: white;
+  }
+  .status-4{
+    background-color: #28a745;
+    color: white;
+  }
+  .status-1{
+    background-color: #7f7fd4;
+    color: white;
+  }
+ .deadline-1, .deadline-4, .deadline-6, .deadline-8 {
+  background-color: #dc3545;
+  color: white;
+ }
+ .deadline-2, .deadline-7{
+  background-color: #007bff;
+  color: white;
+ }
+ .deadline-3, .deadline-9, .deadline-5{
+  background-color: #28a745;
+  color: white;
+ }
+ .deadline-0{
+  background-color: #007bff;
+  color: white;
+ }
+ .workflow-0{
+  background-color: #17a2b8;
+  color: white;
+ }
+ .workflow-1, .workflow-4, .workflow-7,.workflow-11, .workflow-12  {
+  background-color: #007bff;
+  color: white;
+ }
+
+ .workflow-2, .workflow-5{
+  background-color: #ff8d00;
+  color: white;
+ }
+ .workflow-3,.workflow-6 {
+  background-color: #28a745;
+  color: white;
+ }
+ .workflow-8,.workflow-9, .workflow-10 {
+  background-color: #dc3545;
+  color: white;
+ }
+//giao việc
+.fonts-intalic{
+    font-style: italic;
+}

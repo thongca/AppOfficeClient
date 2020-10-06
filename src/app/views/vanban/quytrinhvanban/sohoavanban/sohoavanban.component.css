@@ -1,0 +1,54 @@
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+.header-coll{
+    font-size: 18px;
+    font-weight: bold;
+    color: #1573ff;
+}
+.font-vb{
+  font-size: 16px;
+}
+.hover-cusor:hover{
+background-color: #eeeeefd4;
+}
+.font-color{
+  color: #c3c3c3;
+}
+.scroll-card-body{
+  max-height: calc(100vh - 116px);
+  overflow-y: auto;
+}
+.scroll-card-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+.scroll-card-body::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.scroll-card-body::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.scroll-card-body::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.s-icon-cn{
+  font-size: 10px;
+  text-align: right;
+}

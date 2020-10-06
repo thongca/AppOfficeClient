@@ -1,0 +1,105 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-0">
+                <div class="card-header">
+
+                    <ng-container *appPermitadd='true'>
+                        <app-modaladd titleModal="Thêm mới công ty">
+                            <ng-container *ngTemplateOutlet="formAdd">
+                            </ng-container>
+                            <button type="submit" class="btn-add btn btn-primary" (click)="r2_AddData()">Lưu
+                                lại</button>
+                        </app-modaladd>
+                    </ng-container>
+                    <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Refresh
+                        </a>
+                    </button>
+                    <ng-container *appPermitdel='true'>
+                        <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận công ty"
+                            (xacNhan)="r4DelData($event)"></app-modaldel>
+                    </ng-container>
+                    <button type="button" class="btn btn-outline-primary" title="Thực hiện">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-filter"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Thực hiện
+                        </a>
+                    </button>
+                    <app-option-congty></app-option-congty>
+                </div>
+
+                <div class="card-body p-0 max-height-card-body">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th *appPermitdel="true" width=40></th>
+                                <th class="text-center">Mã công ty</th>
+                                <th>Tên công ty</th>
+                                <th width=100 class="text-center">Ngày tạo</th>
+
+                                <th width=100 class="text-center">Trạng thái</th>
+                                <th width=50 title="Chức năng" class="text-center">C/N</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of listData">
+                                <td *appPermitdel="true" class="text-center">
+                                    <input class="table-checkbox " type="checkbox" id="checkallist" value="checkitem"
+                                        [checked]="item.check" [(ngModel)]="item.check" name="check"
+                                        (click)="CheckedList(!item.check, item.Id)">
+                                </td>
+                                <td class="text-center">{{item.Code}}</td>
+                                <td>{{item.Name}}</td>
+                                <td class="text-center">{{item.CreateDate | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center">
+                                    <span [ngClass]="{'badge badge-success' : item.IsActive === true}">
+                                        {{item.IsActive == true ? 'Hoạt động': 'Không'}}</span>
+                                </td>
+                                <td class="text-center">
+                                    <span title="Sửa"><i class="iconedit-fontsize fa fa-pencil-square-o"
+                                            aria-hidden="true"></i></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <app-pagination *ngIf="listData != undefined" [options]=options [total]=options.total
+                        (rePage)="PhanTrang($event)"></app-pagination>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+
+<ng-template #formAdd>
+    <form #form="ngForm" autocomplete="off" class="form-horizontal">
+        <div class="animated fadeIn">
+            <div class="card box-card-md mb-0 border-0">
+                <div class="card-body box-cardbody-md border-0 p-0">
+                    <div class="row ml-0 mr-0">
+                        <div class="col-md-8">
+                            <app-input-date require=true label="Ngày tạo" (changeDate)="dateSelect($event)">
+                            </app-input-date>
+                            <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
+                                (changeRadio)="radiobtnSelect($event)"></app-input-radio-checkbox>
+                        </div>
+                        <div class="col-md-4">
+                            <app-input-file-image (changeImage)="fileSelect($event)"></app-input-file-image>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+
+    </form>
+
+</ng-template>

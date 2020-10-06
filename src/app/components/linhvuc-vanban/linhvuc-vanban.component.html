@@ -1,0 +1,17 @@
+<ng-container *ngIf="isShowLVb === '1'" >
+    <div class="widthselect">
+        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="LoaiVbId" (change)="ChangeLoaiVb(LoaiVbId)">
+            <option value=0>----- Chọn loại văn bản -----</option>
+            <option *ngFor="let item of listLoaiVbs" [value]="item.Id">{{item.Name}}</option>
+        </select>
+    </div>
+</ng-container>
+<ng-container *ngIf="isShowLinhVuc === '1'">
+    <div class="widthselect">
+        <select id="select2" name="select3" class="form-control padding-select-congty" [(ngModel)]="LinhVucId" (change)="ChangeLinhVuc(LinhVucId)">
+            <option value=0>----- Chọn lĩnh vực -----</option>
+            <option *ngFor="let item of listLinhVucs" [value]="item.Id">{{item.Name}}</option>
+        </select>
+    </div> 
+</ng-container>
+

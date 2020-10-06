@@ -1,0 +1,150 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-0">
+                <div class="card-header">
+                    <button *appPermitadd='true' (click)="showModal()" type="button" class="btn btn-outline-primary" title="Thêm mới">
+                        <span class="btntext-middle"><i class="btnicon-font-size fas fa-plus"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Thêm mới
+                        </a>
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Refresh
+                        </a>
+                    </button>
+                    <ng-container *appPermitdel='true'>
+                        <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
+                            (xacNhan)="r4DelData($event)"></app-modaldel>
+                    </ng-container>
+                    <app-option-congty isShowDepartment="0" isShowNest="0" (changeCongtys)="selectCompany($event)"
+                        (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
+                    </app-option-congty>
+                </div>
+
+                <div class="card-body p-0 max-height-card-body">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tên quy trình</th>
+                                <th width=200 title="Chức năng" class="text-center">Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of listData">
+                                <td>{{item.Name}}</td>
+                                <td class="text-center">
+                                    <span title="Sửa" (click)="r1GetDataBuocQuyTrinh(item.Id)"><i class="iconedit-fontsize fa fa-pencil-square-o"
+                                            aria-hidden="true"></i></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+   <!-- Thêm sửa-->
+   <div bsModal #modaldata="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+   data-keyboard="false">
+   <div class="modal-dialog modal-lg" role="document">
+     <form #groupRoleForm="ngForm" enctype="multipart/form-data" class="form-horizontal" novalidate autocomplete="off">
+     <div class="modal-content">
+       <div class="modal-header">
+           <h4 class="modal-title">{{modeltitle}}</h4>
+           <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
+               <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </button>
+       </div>
+       <div class="modal-body p-0">
+           <div class="animated fadeIn">
+            <table class="table table-sm table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th width=150>Các bước</th>
+                        <th>Lệnh tương tác</th>
+                        <th width=200 title="Chức năng" class="text-center">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listBuocLenh">
+                        <td>{{item.Name}}</td>
+                        <td>
+                            <span *ngFor="let ktem of item.children" class="badge badge-success mr-1 span-hover"> {{ktem.Name}} <i class="fa fa-times style-icon-close" aria-hidden="true" (click)="r4DelData(item.Id, ktem.Id)"></i></span>
+                        </td>
+                        <td class="text-center">
+                            <span title="Thêm lệnh tương tác" (click)="r1GetDataLenhTuongTac(item.Id)"><i class="iconedit-fontsize fa fa-plus"
+                                    aria-hidden="true"></i></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+             <!--/.row-->
+           </div>
+        
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" (click)="modaldata.hide()">Đóng</button>
+         <button [disabled]="groupRoleForm.form.invalid" type="submit" class="btn btn-primary">Lưu lại</button>
+       </div>
+     </div><!-- /.modal-content -->
+   </form>
+   </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+
+   <!-- Thêm sửa-->
+   <div bsModal #modalLenh="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+   aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+   data-keyboard="false">
+   <div class="modal-dialog modal-md" role="document">
+     <form #LTTForm="ngForm" enctype="multipart/form-data" class="form-horizontal" novalidate autocomplete="off">
+     <div class="modal-content">
+       <div class="modal-header">
+           <h4 class="modal-title">Chọn lệnh tương tác</h4>
+           <button type="button" class="close" (click)="modalLenh.hide()" aria-label="Close">
+               <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </button>
+       </div>
+       <div class="modal-body p-0">
+           <div class="animated fadeIn">
+            <table class="table table-sm table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th width=40 class="text-center">
+                        </th>
+                        <th>Mã lệnh</th>
+                        <th>Lệnh tương tác</th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listLenhTuongTac">
+                        <td class="text-center"> <input class="table-checkbox " type="checkbox" id="checkallist" value="{{item.check}}"
+                            [checked]="item.check" [(ngModel)]="item.check"  name="check"
+                            (click)="r2_AddDataBuocLenhTT(!item.check, item.Id)"></td>
+                        <td>{{item.Code}}</td>
+                        <td>{{item.Name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+             <!--/.row-->
+           </div>
+        
+       </div>
+       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalLenh.hide()">Đóng</button>
+      </div>
+     </div><!-- /.modal-content -->
+   </form>
+   </div><!-- /.modal-dialog -->
+ </div><!-- /.modal -->
+
+  

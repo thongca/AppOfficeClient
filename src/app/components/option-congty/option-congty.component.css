@@ -1,0 +1,10 @@
+.widthselect{
+    width: 250px;
+    display: inline-block;
+}
+.padding-select-congty{
+    padding-bottom: 7px;
+    padding-top: 3px;
+    height: calc(1.5em + 0.75rem + 5px);
+    box-shadow: none;
+}

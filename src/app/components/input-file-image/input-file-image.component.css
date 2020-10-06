@@ -1,0 +1,10 @@
+.avataruser{
+    display: none;
+}
+.img-avatarUser{
+    object-fit: cover;
+    float: right;
+}
+.img-avatarUser:hover{
+    cursor: pointer;
+}

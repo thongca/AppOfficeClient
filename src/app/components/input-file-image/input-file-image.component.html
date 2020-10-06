@@ -1,0 +1,5 @@
+<div class="w-100 text-center">
+    <input #file type="file" accept='image/*' class="inputimgFileWorks avataruser"
+    (change)="preview(file.files)" />
+    <img [src]="imgURL" class="img-avatarUser" title="Chọn logo" (click)="openAttachfile('works')" height="200">
+</div>

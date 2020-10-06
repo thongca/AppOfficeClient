@@ -1,0 +1,27 @@
+<ng-container *ngIf="permission === 0">
+    <div class="widthselect">
+        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="options.companyId" (change)="ChangeCongty(options.companyId)">
+            <option value=0>----- Chọn công ty -----</option>
+            <option *ngFor="let item of listCompanys" [value]="item.Id">{{item.Name}}</option>
+        </select>
+    </div>
+</ng-container>
+<ng-container *ngIf="permission <= 1 && isShowDepartment === '1'">
+    <div class="widthselect">
+        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="options.departmentId" (change)="ChangeDepartment(options.departmentId)">
+            <option value=0>----- Chọn phòng ban -----</option>
+            <option *ngFor="let item of listPhongBans" [value]="item.Id">{{item.Name}}</option>
+        </select>
+    </div>
+</ng-container>
+<ng-container *ngIf="permission <= 2 && isShowDepartment === '1' && isShowNest === '1'">
+    <div class="widthselect">
+        <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="options.nestId" (change)="ChangeNest(options.nestId)">
+            <option [value]=0>----- Chọn tổ -----</option>
+            <option *ngFor="let item of listNests" [value]="item.Id">{{item.Name}}</option>
+        </select>
+    </div>
+</ng-container>
+
+
+
