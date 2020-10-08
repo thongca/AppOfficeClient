@@ -1,4 +1,3 @@
-
 <div class="animated fadeIn">
     <div class="card-header">
         <button *appPermitadd='true' (click)="showModal()" type="button" class="btn btn-outline-primary"
@@ -20,6 +19,7 @@
                 {{nameBtn}}
             </a>
         </button>
+        <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()"></app-del-my-work>
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">
@@ -61,15 +61,6 @@
                                             </ng-container> -->
 
                                         </p>
-                                    </td>
-                                    <td width=80 class="py-1" class="s-icon-cn">
-                                        <span title="Thêm mới công việc" class="mr-1"><i
-                                                class="iconedit-fontsize fas fa-plus" aria-hidden="true"></i></span>
-                                        <span title="Sửa" class="mr-1"><i
-                                                class="iconedit-fontsize fa fa-pencil-square-o"
-                                                aria-hidden="true"></i></span>
-                                        <span title="Xóa"><i class="iconedit-fontsize fa fa-trash"
-                                                aria-hidden="true"></i></span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -138,9 +129,11 @@
                                     </label>
                                     <div class="input-text">
                                         <select id="dokho" name="dokho" class="form-control padding-select-congty"
-                                          [(ngModel)]="model.PointTask">
-                                          <option *ngFor="let item of _sharedmyWork.listKhos"[selected]="model.PointTask == item.Id" [ngValue]="item.Id" >{{item.Name}}
-                                        </option>
+                                            [(ngModel)]="model.PointTask">
+                                            <option *ngFor="let item of _sharedmyWork.listKhos"
+                                                [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
+                                                {{item.Name}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -150,10 +143,11 @@
                                     <label class="title-text col-form-label" for="name"> Độ vội
                                     </label>
                                     <div class="input-text">
-                                        <select  name="dovoi" class="form-control padding-select-congty" 
-                                        [(ngModel)]="model.PointTime" >
-                                     
-                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id" [selected]="item.Id === model.PointTime">{{item.Name}}
+                                        <select name="dovoi" class="form-control padding-select-congty"
+                                            [(ngModel)]="model.PointTime">
+
+                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id"
+                                                [selected]="item.Id === model.PointTime">{{item.Name}}
                                             </option>
                                         </select>
                                     </div>
@@ -193,6 +187,19 @@
                                         <select id="select2" name="select2" class="form-control padding-select-congty"
                                             [(ngModel)]="model.TypeTask">
                                             <option *ngFor="let item of typeTasks" [ngValue]="item.Id">{{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Mức độ
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="repossibility" name="repossibility" class="form-control padding-select-congty"
+                                            [(ngModel)]="model.Repossibility">
+                                            <option *ngFor="let item of typeUserTasks" [ngValue]="item.Id">{{item.Name}}
                                             </option>
                                         </select>
                                     </div>

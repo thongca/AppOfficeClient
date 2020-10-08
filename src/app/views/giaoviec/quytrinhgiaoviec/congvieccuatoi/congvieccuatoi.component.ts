@@ -52,7 +52,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     PointTask: 0,
     PointTime: 0,
     DepartmentId: this.userlogin.departmentId,
-    ExpectedDate: new Date
+    ExpectedDate: new Date,
+    Repossibility: 1
   };
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
@@ -77,7 +78,16 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
       Name: 'Công việc đột xuất'
     }
   ];
-
+  typeUserTasks = [
+    {
+      Id: 1,
+      Name: 'Chủ trì'
+    },
+    {
+      Id: 2,
+      Name: 'Phối hợp'
+    }
+  ];
   selectedItems = [];
   dropdownList = [];
   dropdownSettings = {};
@@ -136,6 +146,7 @@ console.log(value);
       Id: Id
     };
     this.WorkFlowId = Id;
+    this.MyWorkId = Id;
     this.selectLenh.showBtn(true, workFlow);
   }
   changeCycleWork(CycleCurrent, TypeComplete) {

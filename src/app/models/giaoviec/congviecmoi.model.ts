@@ -27,6 +27,7 @@ TimeStart?: Date;
 TimeEnd?: Date;
 CreatedDate?: Date;
 ExpectedDate?: Date;
+Repossibility?: number;
 }
 export class CVQTFlowWork {
     Id: string;

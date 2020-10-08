@@ -9,6 +9,7 @@ import { ChophehoanthanhcongviecComponent } from './chophehoanthanhcongviec/chop
 import { HieuquacongviecComponent } from './hieuquacongviec/hieuquacongviec.component';
 import { NhatkycongviecComponent } from './nhatkycongviec/nhatkycongviec.component';
 import { CongviectoiphoihopComponent } from './congviectoiphoihop/congviectoiphoihop.component';
+import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     path: 'congviectoiphoihop',
     component: CongviectoiphoihopComponent
+  },
+  {
+    canActivateChild: [AuthGuard],
+    path: 'tonghopthoigian',
+    component: TonghopthoigianComponent
   },
 ];
 
