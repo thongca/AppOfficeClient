@@ -85,4 +85,7 @@ export class CongviecthuongxuyenComponent implements OnInit {
     this.modeltitle = 'Thêm mới công việc thường xuyên';
     this.modaldata.show();
   }
+  RefreshData() {
+
+  }
 }

@@ -51,4 +51,7 @@ export class TonghopthoigianComponent implements OnInit {
           this.listTotalTime = res['data'];
         });
     }
+    RefreshData() {
+
+    }
 }

@@ -45,4 +45,7 @@ export class NhatkycongviecComponent implements OnInit {
           this.listKpis = res['data'];
         });
     }
+    RefreshData() {
+
+    }
 }

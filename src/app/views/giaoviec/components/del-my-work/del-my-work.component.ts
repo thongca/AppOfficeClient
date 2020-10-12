@@ -15,6 +15,7 @@ this.MyWorkId = myWorkId;
 }
 @Output() xacNhanXoa = new EventEmitter();
 @ViewChild('delModal', { static: false }) public delModal: ModalDirective;
+titleDetail: '';
   constructor(
     private _apiService: ApiService,
     private toastr: ToastrService,

@@ -68,4 +68,7 @@ TotalKpi = 0;
         this.listKpis = res['data'];
       });
   }
+  RefreshData() {
+
+  }
 }

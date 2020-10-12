@@ -28,6 +28,8 @@ TimeEnd?: Date;
 CreatedDate?: Date;
 ExpectedDate?: Date;
 Repossibility?: number;
+Suporter?: any;
+TotalPoint?: any;
 }
 export class CVQTFlowWork {
     Id: string;

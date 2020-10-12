@@ -67,7 +67,6 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     });
     this._workFlowDetail.myworkFlowPre$.subscribe(data => {
       this.listWorkFlowPres = data;
-      this.treediagram.getStartWorkFlow(this.listWorkFlowPres);
     });
     this._workFlowDetail.fileWorkFlow$.subscribe(data => {
       if (data[0] !== null) {

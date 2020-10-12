@@ -68,6 +68,9 @@ export class LoidanhgiaComponent implements OnInit {
     this.dmdgservice.r1_getDataById(Id);
     this.modaldata.show();
   }
+  RefreshData() {
+
+  }
   showModal() {
     this.dmdgservice.model = {
       Id: 0,
