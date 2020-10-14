@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { BaseUrlService } from '../common/base-url.service';
 import { OptionHeader } from '../common/option';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private _baseUrl: string;
   constructor(
-    private _baseURLService_: BaseUrlService,
     private http: HttpClient,
   ) {
-    this._baseUrl = this._baseURLService_.baseUrl;
+    this._baseUrl = environment.apiUrl;
   }
    // GET: lấy thông tin danh sách dữ liệu
    r1_Get_List_Data(url: string) {

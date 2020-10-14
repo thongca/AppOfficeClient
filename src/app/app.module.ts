@@ -98,7 +98,8 @@ import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
   ],
   providers: [SearchService, {
     provide: LocationStrategy,
-    useClass: PathLocationStrategy
+    useClass: PathLocationStrategy,
+    useValue: { baseUrl: 'http://localhost:63893/' }
   }, AuthGuard],
   bootstrap: [ AppComponent ]
 })

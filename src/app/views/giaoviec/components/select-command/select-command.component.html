@@ -394,7 +394,105 @@
         </form>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<!-- Nhắc nhở và gia hạn công việc-->
+<div bsModal #modalNNGH="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #nhacnho="ngForm" (ngSubmit)="r2_NhacNhoGiaHan()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalNNGH.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong > {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" title="Người nhắc nhở" for="name"> Người n/n:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <app-input-date require=false label="Gia hạn" (changeDate)="dateSelectdc($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Giờ
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
+                                        [(ngModel)]="timeHour"></timepicker>
+                                </div>
 
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Theo dõi
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người theo dõi -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+                                    
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+                                     
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filetraLai type="file" accept='.pdf' class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filetraLai.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalNNGH.hide()">Đóng</button>
+                    <button [disabled]="nhacnho.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                        </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- Duyệt trình ký thời hạn-->
 <div bsModal #modalDuyetThoiHan="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"

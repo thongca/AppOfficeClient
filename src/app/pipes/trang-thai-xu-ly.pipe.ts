@@ -45,11 +45,11 @@ export class TrangThaiXuLyPipe implements PipeTransform {
           case 6:
             return 'Đạt chất lượng';
           case 7:
-            return 'Xin gia hạn thêm thời gian';
+            return 'Trình chỉnh sửa phát sinh';
           case 8:
-            return 'Nhắc nhở và gia hạn';
+            return 'Duyệt chỉnh sửa phát sinh';
           case 9:
-            return 'Bị tính lỗi nặng';
+            return 'Nhắc nhở gia hạn';
           case 10:
             return 'Bị đ/g chất lượng cv';
           case 11:

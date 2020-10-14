@@ -74,6 +74,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   @ViewChild('modalTrinhHT', { static: false }) public modalTrinhHT: ModalDirective;
   @ViewChild('modalDuyetHT', { static: false }) public modalDuyetHT: ModalDirective;
   @ViewChild('modalRejectHT', { static: false }) public modalRejectHT: ModalDirective;
+  @ViewChild('modalNNGH', { static: false }) public modalNNGH: ModalDirective;
   ModalTitle = 'Trình';
   isShowBtn = false;
   listLenh: BuocLenhGroupSelect[] = [];
@@ -254,6 +255,33 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
           }
         });
     }
+    r2_NhacNhoGiaHan() {
+      this.modelTTH.UserDelivers = this.selectedItems;
+      this.modalDuyetThoiHan.hide();
+      if (this.modelTTH.DateChange === null) {
+        this.toastr.error('Thời gian gia hạn không được để trống!', 'Thông báo');
+        return;
+      }
+      this.modelTTH.DateChange = this._commonService.setTimeToDateAndChangeTimeZone(this.modelTTH.DateChange, this.timeHour);
+      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowNhacNhoGiaHan')
+        .subscribe(res => {
+          if (res.type === HttpEventType.Response) {
+            this.modalRejectHT.hide();
+            if (res === undefined) {
+              this.toastr.error('Lỗi khi nhắc nhở và gia hạn công việc!', 'Thông báo');
+              return;
+            }
+            if (res['body']['error'] === 1) {
+              this.toastr.error(res['body']['ms'], 'Thông báo');
+              return;
+            }
+            this.toastr.success(res['body']['ms'], 'Thông báo');
+            this._signalService.GetNguoiNhanThongBao('');
+            this._apiSharedService.reloadMyWorkByChangeData();
+            return;
+          }
+        });
+    }
     // đánhg giá chất lượng
     r2_DanhGiaChatLuong() {
       this.modelTTH.Errors = this.selectedErrors;
@@ -307,6 +335,10 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
       case 'CV_YEUCAUCHINHSUA':
         this.modalRejectHT.show();
         this.ModalTitle = 'Yêu cầu chỉnh sửa';
+        break;
+      case 'CV_NHACNHOGIAHAN':
+          this.modalNNGH.show(); // nhắc nhở gia hạn
+          this.ModalTitle = 'Nhắc nhở và gia hạn';
         break;
       default:
         break;
