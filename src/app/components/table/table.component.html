@@ -1,0 +1,13 @@
+<div style="padding: 32px">
+    <div class="example-container mat-elevation-z8">
+      <mat-table mat-table [dataSource]="dataSource">
+        <ng-container *ngFor="let col of displayedShow"  [matColumnDef]="col">
+          <mat-header-cell *matHeaderCellDef> {{col}} </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row[col]}} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedShow"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedShow;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+
