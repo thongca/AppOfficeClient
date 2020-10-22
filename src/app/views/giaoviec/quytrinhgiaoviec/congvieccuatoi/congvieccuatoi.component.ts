@@ -15,6 +15,7 @@ import { SelectCommandComponent } from '../../components/select-command/select-c
 import { WorkdetailService } from '../../../../shared/workdetail.service';
 import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service';
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
+import { Perenum } from '../../../../common/perenum.enum';
 
 @Component({
   selector: 'app-congvieccuatoi',
@@ -34,6 +35,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   WorkFlowId = '';
   MyWorkId = '';
   isShowPrecedor = false;
+  Predecessor: number; // mã code của công việc tiên quyết
   timeTQ = new Date;
   model: CVQTMyWork = {
     Id: null,
@@ -138,6 +140,7 @@ console.log(value);
     this.selectaRow(item.Id, item.MyWorkId);
     this.MyWorkId = item.MyWorkId;
     this.optionsCV.MyWorkId = item.MyWorkId;
+    this.Predecessor = item.Predecessor; // mã code của công việc tiên quyết
     this.changeCycleWork(item.CycleWork, item.TypeComplete);
   }
   selectaRow(Id, MyWorkId) {
@@ -188,7 +191,8 @@ console.log(value);
   }
   ThayDoiTrangThai() {
     const model = {
-      Id: this.MyWorkId
+      Id: this.MyWorkId,
+      Predecessor: this.Predecessor // khi công việc tiên quyết chưa hoàn thành thì không được bắt đầu công việc sau
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
       if (res !== undefined) {

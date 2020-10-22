@@ -130,7 +130,7 @@
                                     <div class="input-text">
                                         <select id="dokho" name="dokho" class="form-control padding-select-congty"
                                             [(ngModel)]="model.PointTask">
-                                            <option *ngFor="let item of _sharedmyWork.listKhos"
+                                            <option *ngFor="let item of _sharedmyWork.listKhos" 
                                                 [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
                                                 {{item.Name}}
                                             </option>

@@ -13,6 +13,8 @@ export class WorkdetailService {
   public historyWorkFlow$ = this.historyWorkFlow.asObservable();
   private infoWorkFlow = new Subject<CVQTMyWork>();
   public infoWorkFlow$ = this.infoWorkFlow.asObservable();
+  private predecWork = new Subject<CVQTMyWork>();
+  public predecWork$ = this.predecWork.asObservable();
   private myworkFlow = new Subject<any>();
   public myworkFlow$ = this.myworkFlow.asObservable();
   private myworkFlowPre = new Subject<any>();
@@ -39,6 +41,7 @@ export class WorkdetailService {
         res => {
           this.historyWorkFlow.next(res[0]['history']);
           this.infoWorkFlow.next(res[0]['data']);
+          this.predecWork.next(res[0]['predecWork']);
           this.myworkFlow.next(res[0]['workFlows']);
           this.myworkFlowPre.next(res[0]['workFlowPres']);
           this.fileWorkFlow.next(res[0]['files']);

@@ -58,6 +58,7 @@ export class CVQTFlowWork {
     Repossibility?: number;
     CycleWork?: number;
     CompleteDate?: Date;
+    Predecessor?: number;
     TypeComplete?: number;
     }
 export class TreeSchedule {

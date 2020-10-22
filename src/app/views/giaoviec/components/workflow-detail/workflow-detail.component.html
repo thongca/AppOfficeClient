@@ -4,70 +4,222 @@
 
             <div class="row mx-0">
                 <div class="col-md-12 px-0">
-                    <div class="row p-1">
-                        <div class="col-sm-4">
-                            <span>Mã công việc: <strong>{{modelView.Code}}</strong></span>
+                    <div class="border-work-current my-2">
+                        <span class="span-title-work px-1">Công việc hiện tại</span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Mã công việc:
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Code}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">B/Đ dự kiến:
+                                
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                               
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">K/T dự kiến:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.EndDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            <span>B/Đ dự kiến:
-                                <strong>{{modelView.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người chủ trì:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.UserTaskName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người phối hợp:
+                                 
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Suporter}}</span>
+                                </div>
+                              
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Công ty:
+                                 
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>Công ty cổ phần bao bi & in nông nghiệp</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            <span>K/T dự kiến:
-                                <strong>{{modelView.EndDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">B/Đ thực tế:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.StartDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">K/T thực tế:
+                                    
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-sm-4">
-                            <span>B/Đ thực tế:
-                                <strong>{{modelView.StartDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name"> T/g làm việc:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.WorkTime * 60 | number:'1.1-2'}} (phút)</span>
+                                </div>
+                             
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">T/g tạm dừng:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.PauseTime * 60 | number:'1.1-2'}} (phút)</span>
+                                </div>
+                             
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Tổng số lỗi:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.TotalPoint}}</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            <span>K/T thực tế:
-                                <strong>{{modelView.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</strong></span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-12">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Ghi chú:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Note}}</span>
+                                </div>
+                            </div>
+    
                         </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-sm-4">
-                            <span>Người chủ trì: {{modelView.UserTaskName}}</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Người phối hợp: {{modelView.Suporter}}</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Công ty: <strong>Công ty cổ phần bao bi & in nông nghiệp</strong></span>
-                        </div>
-                    </div>
-                    <div class="row p-1" *ngIf="modelView.Predecessor !== null">
-                        <div class="col-sm-4">
-                            <span>Tiên quyết: {{modelView.Predecessor}}</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Thời hạn: {{modelView.PreWorkDeadline | date: 'dd/MM/yyyy HH:mm'}}</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Điều kiện: {{modelView.PreWorkType}}</span>
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-sm-4">
-                            <span>Tổng t/g làm việc: {{modelView.WorkTime * 60 | number:'1.1-2'}}
-                                (phút)</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Tổng t/g tạm dừng: {{modelView.PauseTime * 60 | number:'1.1-2'}}
-                                (phút)</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>Tổng số lỗi: {{modelView.TotalPoint}}</span>
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-sm-12">
-                            <span>Ghi chú: {{modelView.Note}}</span>
-                        </div>
-
-                    </div>
+                    </div> <!--My Work Detail End-->
+                    <div class="border-work-predec mt-3 mb-2" *ngIf="modelView.Predecessor > 0"> <!--Predec work start-->
+                        <span class="span-title-work px-1">Công việc tiên quyết</span>
+                        <div class="row border-bottom-row px-1" > <!--Row start-->
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Mã tiên quyết:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.Code}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="title-text py-1 mb-0 float-left" title="Thời hạn yêu cầu hoàn thành công việc" for="name">Tên công việc:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.TaskName}}</span>
+                                </div>
+                            </div>
+                        </div><!--Row end-->
+                        <div class="row border-bottom-row px-1"> <!--Row start-->
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người chủ trì:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.UserTaskName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người phối hợp:
+                                 
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.Suporter}}</span>
+                                </div>
+                              
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Công ty:
+                                 
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>Công ty cổ phần bao bi & in nông nghiệp</span>
+                                </div>
+                            </div>
+                        </div> <!--Row end-->
+                        <div class="row border-bottom-row px-1"> <!--Row start-->
+                          
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">B/Đ dự kiến:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">K/T dự kiến:
+                                    
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.EndDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" title="Kết thúc thực tế" for="name">Thời hạn:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.PreWorkDeadline | date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                        </div><!--Row end-->
+                       
+                        <div class="row border-bottom-row px-1"> <!--Row start-->
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">B/Đ thực tế:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.StartDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">K/T thực tế:
+                                    
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelPre.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Điều kiện:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.PreWorkType}}</span>
+                                </div>
+                            </div>
+                        </div><!--Row end-->
+                    </div><!--Predec work end-->
+                  
                     <p><strong>KẾ HOẠCH THỰC HIỆN CÔNG VIỆC</strong> </p>
                     <div class="row">
                         <div class="col-md-12">

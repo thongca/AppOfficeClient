@@ -31,6 +31,7 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     Predecessor: 0,
   };
   modelView: CVQTMyWork = new CVQTMyWork();
+  modelPre: CVQTMyWork = new CVQTMyWork();
   filesView: [];
   listWorks = [];
   listSupporters = [];
@@ -54,6 +55,9 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this._workFlowDetail.infoWorkFlow$.subscribe(data => {
       this.modelView = data;
+    });
+    this._workFlowDetail.predecWork$.subscribe(data => {
+      this.modelPre = data;
     });
     this._workFlowDetail.listsupporter$.subscribe(data => {
       this.listSupporters = data;
