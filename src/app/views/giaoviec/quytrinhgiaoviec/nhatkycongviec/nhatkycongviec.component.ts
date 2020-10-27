@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { ApiService } from '../../../../shared/api.service';
+import { ExportExcelService } from '../../../../shared/export-excel.service';
 
 @Component({
   selector: 'app-nhatkycongviec',
@@ -8,6 +10,7 @@ import { ApiService } from '../../../../shared/api.service';
   styleUrls: ['./nhatkycongviec.component.css']
 })
 export class NhatkycongviecComponent implements OnInit {
+  @ViewChild('TableBody', { static: false }) TableBody: ElementRef;
   totalErrorhead = 0;
   listError = [];
   listKpis = [];
@@ -15,6 +18,7 @@ export class NhatkycongviecComponent implements OnInit {
   TotalKpi = 0;
     constructor(
       private _apiService: ApiService,
+      private _exportService: ExportExcelService,
     ) { }
     ngOnInit(): void {
       this.r1GetDataError();
@@ -45,6 +49,9 @@ export class NhatkycongviecComponent implements OnInit {
           this.listKpis = res['data'];
         });
     }
+    ExportKpiClick() {
+      this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_NKCV', 2);
+      }
     RefreshData() {
 
     }

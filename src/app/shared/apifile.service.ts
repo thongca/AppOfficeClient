@@ -12,7 +12,19 @@ export class ApifileService {
   ) {
     this._baseUrl = this._baseURLService_.baseUrl;
    }
-
+  // request only file to serve
+  r2_addonlyFile(files, childUrl) {
+    const tokenHeader = new HttpHeaders({
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    });
+    const formData = new FormData();
+    let uploadReq;
+    // tslint:disable-next-line:max-line-length
+    formData.append(files.name, files);
+    uploadReq = new HttpRequest('POST', this._baseUrl + childUrl,
+    formData, { reportProgress: true, headers: tokenHeader, responseType: 'blob'});
+    return this.http.request(uploadReq).pipe();
+  }
     // request file to serve
     r2_addFileModel(files, model, childUrl) {
       const tokenHeader = new HttpHeaders({

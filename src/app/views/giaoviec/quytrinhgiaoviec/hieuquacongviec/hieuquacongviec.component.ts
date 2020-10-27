@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../shared/api.service';
 import { map } from 'rxjs/internal/operators/map';
 import { ParseError } from '@angular/compiler';
+import { ExportExcelService } from '../../../../shared/export-excel.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-hieuquacongviec',
@@ -9,6 +11,7 @@ import { ParseError } from '@angular/compiler';
   styleUrls: ['./hieuquacongviec.component.css']
 })
 export class HieuquacongviecComponent implements OnInit {
+  @ViewChild('TableBody', { static: false }) TableBody: ElementRef;
   totalErrorhead = 0;
 listError = [];
 listKpis = [];
@@ -16,6 +19,7 @@ TotalPoint = 0;
 TotalKpi = 0;
   constructor(
     private _apiService: ApiService,
+    private _exportService: ExportExcelService,
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +71,9 @@ TotalKpi = 0;
         }
         this.listKpis = res['data'];
       });
+  }
+  ExportKpiClick() {
+  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm') + '_Kpi', 1);
   }
   RefreshData() {
 

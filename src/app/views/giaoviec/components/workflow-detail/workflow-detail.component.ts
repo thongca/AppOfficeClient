@@ -74,7 +74,9 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     });
     this._workFlowDetail.fileWorkFlow$.subscribe(data => {
       if (data[0] !== null) {
-        this.pdfSrc = this._commonService.replaceUrlImage(data[0].Path);
+        if (data.length > 0) {
+          this.pdfSrc = this._commonService.replaceUrlImage(data[0].Path);
+        }
       }
     });
     this._workFlowDetail.errorForMyWorks$.subscribe(data => {

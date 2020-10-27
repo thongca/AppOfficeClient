@@ -9,9 +9,10 @@ import { environment } from '../../environments/environment';
 export class ApiService {
   private _baseUrl: string;
   constructor(
+    private base: BaseUrlService,
     private http: HttpClient,
   ) {
-    this._baseUrl = environment.apiUrl;
+    this._baseUrl = this.base.baseUrl;
   }
    // GET: lấy thông tin danh sách dữ liệu
    r1_Get_List_Data(url: string) {
