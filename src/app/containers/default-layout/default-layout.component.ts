@@ -29,6 +29,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   load = false;
   userLoginId: number = this._commonService.getUserId();
   todos$ = this.search.$search;
+  menuName: string;
   constructor(
     private _signalSer: SignalRealTimeService,
     private _commonService: CommonService,
@@ -73,6 +74,9 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     });
     this._defaultService.total$.subscribe(res => {
       this.total = res;
+    });
+    this._commonService.nameMenu$.subscribe(res => {
+      this.menuName = res;
     });
   }
   updateDaXemThongBao(Id) {

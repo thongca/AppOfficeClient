@@ -14,6 +14,23 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   private sub: Subscription;
   private listMenu:  Menu[];
   private listMenuFake:  Menu[];
+  private listEnumMenu = [{
+    url: '/giaoviec/quytrinhgiaoviec/congvieccuatoi',
+    Name: 'Công việc của tôi'
+  },
+  {
+    url: '/giaoviec/quytrinhgiaoviec/congviecchophethoihan',
+    Name: 'Công việc chờ phê thời hạn'
+  },
+  {
+    url: '/giaoviec/quytrinhgiaoviec/congviecchophehoanthanh',
+    Name: 'Công việc chờ phê hoàn thành'
+  },
+  {
+    url: '/giaoviec/quytrinhgiaoviec/congviecdangthuchien',
+    Name: 'Công việc đang thực hiện'
+  }];
+
   constructor(
     private _menuService: MenuService,
     private _commonService: CommonService,
@@ -47,11 +64,18 @@ export class AuthGuard implements CanActivate, CanActivateChild {
       this.router.navigateByUrl('/login');
       return false;
     }
+
     if (this.listMenu.filter(x => x.RouterLink === state.url).length === 0) {
       this.router.navigate(['/trangchu']);
       return false;
     } else {
       this._ssearchService.SearchRoot('');
+      const menu = this.listEnumMenu.filter(x => x.url === state.url);
+      if (menu.length > 0) {
+        this._commonService.showNameMenu(menu[0].Name);
+      } else {
+        this._commonService.showNameMenu('');
+      }
       return true;
     }
   }

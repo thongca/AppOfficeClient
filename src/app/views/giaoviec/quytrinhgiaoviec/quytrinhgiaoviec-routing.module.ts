@@ -10,6 +10,7 @@ import { HieuquacongviecComponent } from './hieuquacongviec/hieuquacongviec.comp
 import { NhatkycongviecComponent } from './nhatkycongviec/nhatkycongviec.component';
 import { CongviectoiphoihopComponent } from './congviectoiphoihop/congviectoiphoihop.component';
 import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
+import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.component';
 
 
 const routes: Routes = [
@@ -57,6 +58,11 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     path: 'tonghopthoigian',
     component: TonghopthoigianComponent
+  },
+  {
+    canActivateChild: [AuthGuard],
+    path: 'duyetlamthemgio',
+    component: CongviecovertimeComponent
   },
 ];
 

@@ -32,6 +32,8 @@ import { TrangthaiSchedulePipe } from '../../../pipes/myworks/trangthai-schedule
 import { CongviectoiphoihopComponent } from './congviectoiphoihop/congviectoiphoihop.component';
 import { DelMyWorkComponent } from '../components/del-my-work/del-my-work.component';
 import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
+import { ViewdetailinfoComponent } from '../components/viewdetailinfo/viewdetailinfo.component';
+import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.component';
 @NgModule({
   declarations: [CongviecmoiComponent, CongvieccuatoiComponent, TreeScheduleComponent, VongDoiCongViecPipe, TypeflowPipe, HanCongViecPipe,
     SelectCommandComponent, WorkflowDetailComponent,
@@ -43,7 +45,9 @@ import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.comp
     TrangthaiSchedulePipe,
     CongviectoiphoihopComponent,
     DelMyWorkComponent,
-    TonghopthoigianComponent
+    TonghopthoigianComponent,
+    ViewdetailinfoComponent,
+    CongviecovertimeComponent
   ],
   imports: [
     CommonModule,

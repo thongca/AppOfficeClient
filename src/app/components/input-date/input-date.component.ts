@@ -3,6 +3,7 @@ import { BsLocaleService, BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { viLocale } from 'ngx-bootstrap/locale';
 import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 defineLocale('vi', viLocale);
 @Component({
   selector: 'app-input-date',
@@ -11,7 +12,16 @@ defineLocale('vi', viLocale);
 })
 export class InputDateComponent implements OnInit {
   @Input() label: string;
+  @Input() note: string;
   @Input() require: string;
+  placeholder = 'DD/MM/YYYY';
+  @Input() set dateInit(date: Date) {
+    if (date === undefined || date === null) {
+      this.placeholder = 'DD/MM/YYYY';
+    } else {
+      this.placeholder = moment(date).format('DD/MM/YYYY');
+    }
+  }
   @Output() changeDate = new EventEmitter();
   requireLocal: boolean;
   dateSelect: Date;
@@ -24,7 +34,7 @@ export class InputDateComponent implements OnInit {
         containerClass: 'theme-dark-blue',
         showWeekNumbers: false,
         dateInputFormat: 'DD/MM/YYYY',
-        minDate: new Date()
+        minDate: new Date(),
       }
       );
     this.datelageService.use('vi');

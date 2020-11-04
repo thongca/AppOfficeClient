@@ -1,0 +1,316 @@
+<div class="animated fadeIn">
+    <div class="card-header">
+        <button *appPermitadd='true' (click)="showModal()" type="button" class="btn btn-outline-primary"
+            title="Thêm mới">
+            <span class="btntext-middle"><i class="btnicon-font-size fas fa-plus" aria-hidden="true"></i></span>
+            <a class="ml-1">
+                Thêm mới
+            </a>
+        </button>
+        <app-select-command #selectLenh MenuId="GV0101" (refreshPaList)="refreshList()">
+        </app-select-command>
+        <ng-container *appPermitdel='true'>
+            <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
+                (xacNhan)="r4DelData($event)"></app-modaldel>
+        </ng-container>
+        <button *ngIf="WorkFlowId !== '' && nameBtn !== ''" (click)="ThayDoiTrangThai()" type="button"
+            class="btn btn-outline-primary" title="{{nameBtn}}">
+            <a class="ml-1">
+                {{nameBtn}}
+            </a>
+        </button>
+        <ng-container *ngIf="MyWorkId !== ''">
+            <button (click)="showModal()" type="button" class="btn btn-outline-primary"
+            title="Làm ngoài giờ">
+            <span class="btntext-middle"><i class="btnicon-font-size fas fa-time" aria-hidden="true"></i></span>
+            <a class="ml-1">
+                Làm ngoài giờ
+            </a>
+        </button>
+        </ng-container>
+        
+
+        <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()">
+        </app-del-my-work>
+    </div>
+    <div class="card-body p-0 border-0 scroll-card-body">
+        <div class="row mx-0">
+            <div class="col-md-4 pl-1">
+                <div class="card mt-1 border-0">
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr *ngFor="let item of listCongViecs" class="hover-cusor"
+                                    [style.background-color]="WorkFlowId===item.Id ? '#fff9cc' : 'white'">
+                                    <td class="py-1" (click)="SelectIDEditModel(item)">
+                                        <p class="mb-1"><strong class="font-vb">{{item.TaskName}}</strong>
+
+                                        </p>
+
+                                        <p class="mb-0 font-color">Mã công việc: {{item.Code}} | Bắt đầu:
+                                            {{item.ExpectedDate | date: 'dd/MM/yyyy HH:mm'}} | Kết thúc:
+                                            {{item.EndDate | date: 'dd/MM/yyyy HH:mm'}}</p>
+                                        <p class="mb-0">
+                                            <ng-container *ngIf="item.Status != 4">
+                                                <ng-container *ngIf="item.Status != 5">
+                                                    <ng-container
+                                                        *ngTemplateOutlet="badgetem; context:{ cyclework: item.CycleWork }">
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+
+
+                                            <ng-container *ngTemplateOutlet="status; context:{ status: item.Status }">
+                                            </ng-container>
+                                            <!-- <ng-container *ngFor="let ttem of listTypeFlows">
+                                                <ng-container *ngIf="ttem.MyWorkId === item.MyWorkId">
+                                                    <ng-container
+                                                    *ngTemplateOutlet="typeflow; context:{ typeflow: ttem.TypeFlow }">
+                                                </ng-container>
+                                                </ng-container>
+                                                
+                                                
+                                            </ng-container> -->
+
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--/.row-->
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-md-8 px-0">
+                <app-workflow-detail></app-workflow-detail>
+            </div>
+            <!--/.col-->
+        </div>
+
+        <!--/.row-->
+    </div>
+</div>
+
+<!-- Thêm sửa-->
+<div bsModal #modaldata="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-xl" role="document">
+        <form #CongViecMoi="ngForm" (ngSubmit)="r3_AddQTCongViecMoi()" enctype="multipart/form-data"
+            class="form-horizontal" novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tạo công việc mới</h4>
+                    <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-2">
+                                <div class="form-group">
+                                    <label class="title-text col-form-label float-left" for="name"> Công việc
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text float-left">
+                                        <div class="ng-autocomplete">
+                                            <ng-autocomplete [data]="listWorks" [searchKeyword]="keywordl"
+                                                (selected)='selectLMyWork($event)'
+                                                (inputChanged)='onChangeMyWork($event)' [itemTemplate]="itemTemplate"
+                                                [notFoundTemplate]="notFoundTemplate">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate let-item>
+                                                <a [innerHTML]="item.Name"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate let-notFound>
+                                                <div>
+                                                    Công việc không tồn tại!
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Độ khó
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="dokho" name="dokho" class="form-control padding-select-congty"
+                                            [(ngModel)]="model.PointTask">
+                                            <option *ngFor="let item of _sharedmyWork.listKhos" 
+                                                [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Độ vội
+                                    </label>
+                                    <div class="input-text">
+                                        <select name="dovoi" class="form-control padding-select-congty"
+                                            [(ngModel)]="model.PointTime">
+
+                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id"
+                                                [selected]="item.Id === model.PointTime">{{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-6 px-2 mb-2">
+                                <app-input-date note="(Dự kiến)" require=true label="Ngày bắt đầu"
+                                    (changeDate)="dateSelectbd($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Giờ bắt đầu
+                                    <a class="note-title">(Dự kiến)</a>
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeStart"
+                                        [(ngModel)]="model.TimeStart"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <app-input-date note="(Dự kiến)" require=true label="Ngày kết thúc"
+                                    (changeDate)="dateSelectkt($event)">
+                                </app-input-date>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Giờ kết thúc
+                                    <a class="note-title">(Dự kiến)</a>
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
+                                        [(ngModel)]="model.TimeEnd"></timepicker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Loại công việc
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="select2" name="select2" class="form-control padding-select-congty"
+                                            [(ngModel)]="model.TypeTask">
+                                            <option *ngFor="let item of typeTasks" [ngValue]="item.Id">{{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Trách nhiệm
+                                    </label>
+                                    <div class="input-text">
+                                        <select id="repossibility" name="repossibility"
+                                            class="form-control padding-select-congty"
+                                            [(ngModel)]="model.Repossibility">
+                                            <option *ngFor="let item of typeUserTasks" [ngValue]="item.Id">{{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Mã
+                                        <a class="note-title">(Công việc trước)</a>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="number" class="form-control rounded-0" #Predecessor="ngModel"
+                                            name="Predecessor" [(ngModel)]="model.Predecessor"
+                                            (ngModelChange)="ChangePredecessor($event)" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
+                                <div class="form-group my-0">
+                                    <app-input-radio-checkbox nameRadio="Yêu cầu" nameTrue="Hoàn thành"
+                                        nameFalse="Không" (changeRadio)="radioKichHoat($event)">
+                                    </app-input-radio-checkbox>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
+                                <app-input-date note="(Thời hạn)" label="Ngày T/Q" (changeDate)="dateSelectbb($event)">
+                                </app-input-date>
+                            </div>
+
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
+                                <label class="title-text col-form-label" for="name"> Giờ tiên quyết
+
+                                </label>
+                                <div class="input-text">
+                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="timeTQ"
+                                        [(ngModel)]="timeTQ"></timepicker>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Phối hợp
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người phối hợp -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Ghi chú
+
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea #Note="ngModel" [(ngModel)]="model.Note"
+                                            class="form-control rounded-0" name="Note" rows="3"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/.row-->
+                    </div>
+                    <mat-tab-group>
+                        <mat-tab isActive="true" label="Văn bản đính kèm">
+                            <div class="row m-0 pt-2 pb-2">
+                                <input #filevb type="file" class="inputimgFileWorks avataruser"
+                                    (change)="onSelectFile(filevb.files)" multiple />
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modaldata.hide()">Đóng</button>
+                    <button [disabled]="CongViecMoi.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<ng-template #badgetem let-cyclework="cyclework">
+    <span class="badge status-{{cyclework}}">{{cyclework | vongDoiCongViec}} </span>
+</ng-template>
+<ng-template #status let-status="status">
+    <span class="badge deadline-{{status}}">{{status | hanCongViec}} </span>
+</ng-template>
+<ng-template #typeflow let-typeflow="typeflow">
+    <span class="badge workflow-{{typeflow}}">{{typeflow | trangThaiXuLy: 'giaoviec'}} </span>
+</ng-template>

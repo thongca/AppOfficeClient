@@ -13,7 +13,7 @@ export class ApifileService {
     this._baseUrl = this._baseURLService_.baseUrl;
    }
   // request only file to serve
-  r2_addonlyFile(files, childUrl) {
+  r2_addonlyFileExcel(files, model, childUrl) {
     const tokenHeader = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     });
@@ -21,6 +21,7 @@ export class ApifileService {
     let uploadReq;
     // tslint:disable-next-line:max-line-length
     formData.append(files.name, files);
+    formData.append('model', JSON.stringify(model));
     uploadReq = new HttpRequest('POST', this._baseUrl + childUrl,
     formData, { reportProgress: true, headers: tokenHeader, responseType: 'blob'});
     return this.http.request(uploadReq).pipe();
@@ -38,7 +39,6 @@ export class ApifileService {
           formData.append(file.name, file);
         }
       }
-
       formData.append('model', JSON.stringify(model));
       uploadReq = new HttpRequest('POST', this._baseUrl + childUrl,
       formData, { reportProgress: true, headers: tokenHeader });

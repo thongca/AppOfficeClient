@@ -1,0 +1,30 @@
+/* Handle on hover */
+.over-expan-body::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0 10px 10px !important;
+  }
+  .row.border-bottom-row:after {
+    content: "";
+    background-color: #efefef;
+    width: calc(100% - 30px);
+    /* text-align: center; */
+    margin: 0 auto;
+    height: 1px;
+  }
+  .border-work-current{
+    padding: 10px;
+    border: 1px solid #c3c3c3;
+    position: relative;
+  }
+  .border-work-predec{
+    padding: 10px;
+    border: 1px solid #c3c3c3;
+    position: relative;
+  }
+  .span-title-work{
+    position: absolute;
+    transform: translate(0px, -20px);
+    background-color: white;
+  }

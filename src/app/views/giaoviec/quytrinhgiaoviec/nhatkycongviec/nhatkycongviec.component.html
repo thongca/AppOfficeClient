@@ -10,13 +10,12 @@
                             Excel
                         </a>
                     </button>
-                    <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
-                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
-                                aria-hidden="true"></i></span>
-                        <a class="ml-1">
-                            Refresh
-                        </a>
-                    </button>
+                    <div *appPermitshow="perUser" style="width: 200px;display: inline-block;">
+                        <select id="userId" name="userId" class="form-control padding-select-congty" [(ngModel)]="userId" (ngModelChange)="ChangUser()">
+                            <option [ngValue]="0">----- Chọn người dùng -----</option>
+                            <option *ngFor="let item of listUser" [ngValue]="item.UserId">{{item.FullName}}</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="card-body p-0 max-height-card-body">

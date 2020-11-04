@@ -4,15 +4,12 @@ import { ApiService } from '../../../../shared/api.service';
 import { CommonService } from '../../../../common/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { SignalRealTimeService } from '../../../../shared/signal-real-time.service';
-import { ChuyenXuLyModel } from '../../../../models/vanban/quytrinhvanban/chuyenxuly.model';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { User } from '../../../../models/systems/systemcategory/user.model';
 import { ApifileService } from '../../../../shared/apifile.service';
-import { WorkFlow } from '../../../../models/giaoviec/congviecmoi.model';
+import { CVQTMyWork, WorkFlow } from '../../../../models/giaoviec/congviecmoi.model';
 import { HttpEventType } from '@angular/common/http';
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
-import { map } from 'rxjs/operators';
-import { UserNhanThongBao } from '../../../../models/usernhantb.interface';
+import { WorkdetailService } from '../../../../shared/workdetail.service';
 
 @Component({
   selector: 'app-select-command',
@@ -20,7 +17,9 @@ import { UserNhanThongBao } from '../../../../models/usernhantb.interface';
   styleUrls: ['./select-command.component.css']
 })
 export class SelectCommandComponent implements OnInit, AfterViewInit {
-  timeHour = new Date;
+  timeHour = new Date; // giờ duyệt kết thúc
+  timeStart = new Date; // giờ duyệt bắt đầu
+  modelView: CVQTMyWork = new CVQTMyWork();
   modelTTH: FlowModel = {
     Time: new Date(),
     NguoiGuiId: this._commonService.getUser().Id,
@@ -91,10 +90,18 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private _apiFileService: ApifileService,
     private _apiSharedService: SelectlenhsharedService,
-    private _signalService: SignalRealTimeService
+    private _signalService: SignalRealTimeService,
+    private _workFlowDetail: WorkdetailService,
   ) { }
   ngOnInit(): void {
     this.r1GetDataError();
+    this._workFlowDetail.infoWorkFlow$.subscribe(data => {
+      this.modelView = data;
+      this.modelTTH.DateChange = new Date(data.EndDate);
+      this.modelTTH.DateStartChange = new Date(data.ExpectedDate);
+      this.timeHour = data.EndDate;
+      this.timeStart = data.ExpectedDate;
+    });
   }
   ngAfterViewInit(): void {
     this._apiSharedService.listCommands$.subscribe(data => {
@@ -169,7 +176,9 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   r2_PheThoiHan() {
     this.modelTTH.UserDelivers = this.selectedItems;
     this.modalDuyetThoiHan.hide();
-    this.modelTTH.DateChange = this._commonService.setTimeToDateAndChangeTimeZone(this.modelTTH.DateChange, this.timeHour);
+    this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
+    this.modelTTH.DStart =
+    this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateStartChange, this.timeStart));
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetTH')
       .subscribe(res => {
         if (res.type === HttpEventType.Response) {
@@ -235,7 +244,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     r2_YeuCauChinhSua() {
       this.modelTTH.UserDelivers = this.selectedItems;
       this.modalDuyetThoiHan.hide();
-      this.modelTTH.DateChange = this._commonService.setTimeToDateAndChangeTimeZone(this.modelTTH.DateChange, this.timeHour);
+      this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
       this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowYeuCauChinhSua')
         .subscribe(res => {
           if (res.type === HttpEventType.Response) {
@@ -262,7 +271,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         this.toastr.error('Thời gian gia hạn không được để trống!', 'Thông báo');
         return;
       }
-      this.modelTTH.DateChange = this._commonService.setTimeToDateAndChangeTimeZone(this.modelTTH.DateChange, this.timeHour);
+      this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
       this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowNhacNhoGiaHan')
         .subscribe(res => {
           if (res.type === HttpEventType.Response) {
@@ -306,7 +315,6 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   ShowModal(Code, Id) {
     this.vbattach = null;
     this.r1ListUser(Code);
-    this.modelTTH.DateChange = null;
     this.modelTTH.Note = '';
     this.modelTTH.Require = '';
     this.modelTTH.UserDelivers = [];
@@ -375,6 +383,9 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   dateSelectdc(date) {
     this.modelTTH.DateChange = date;
   }
+datestartdc(date) {
+  this.modelTTH.DateStartChange = date;
+  }
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
   }
@@ -389,7 +400,10 @@ export class FlowModel {
   Note: string;
   Require: string;
   FullNames?: string;
+  DEnd?: number; // date para number end
   DateChange?: Date;
+  DStart?: number; // date para number start
+  DateStartChange?: Date;
   UserManagerId?: number;
   UserNextId?: number;
   UserDelivers?: UserDeliver[];
@@ -408,6 +422,7 @@ export class TypeUserDeli {
 export class Error {
   Id: number;
   Point: string;
+  Amount: string;
   ErrorName: string;
 }
 

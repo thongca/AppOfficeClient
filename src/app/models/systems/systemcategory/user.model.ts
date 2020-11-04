@@ -3,7 +3,7 @@ export class User {
     Code: number;
     FullName: string;
     Password: string;
-    UserName: string;
+    Username: string;
     IsActive: boolean;
     DepartmentId?: number;
     CompanyId: number;

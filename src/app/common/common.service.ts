@@ -7,6 +7,7 @@ import { IUser } from '../models/systems/systemmanagement/iuser.model';
 import { UserLogin } from './option';
 import { BaseUrlService } from './base-url.service';
 import { Menu } from './menu';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class CommonService {
   userlogin: UserLogin = { // các giá trị của user đang đăng nhập
     Id: 0, companyId: 0, groupId: 0, departmentId: 0, nestId: 0, rankrole: 4
   };
+  private nameMenu = new Subject<string>();
+  public nameMenu$ = this.nameMenu.asObservable();
   constructor(
     private router: Router,
     private _baseUrl: BaseUrlService,
@@ -38,6 +41,32 @@ export class CommonService {
       const dateresult = new Date(dates.getTime() - (dates.getTimezoneOffset() * 60000));
        return dateresult;
     }
+    }
+    setTimeToDate(date: Date, time: Date ): Date {
+      debugger
+      const hour = time.getHours();
+      if (date === null || date === undefined) {
+        return null;
+      } else {
+        const dates = new Date(new Date(date.setHours(time.getHours())).setMinutes(time.getMinutes()));
+         return dates;
+      }
+      }
+    FromDateToDouble(date: Date): number {
+      if (date == null) {
+        return null;
+      } else {
+        const dateDouble: number = date.getTime() - new Date(1970, 0, 1).getTime();
+        return dateDouble / 1000;
+      }
+    }
+    FromDoubleToDate(date: number): Date {
+      if (date == null) {
+        return null;
+      } else {
+        const dateTime: Date = new Date(new Date(1970, 0, 1).setSeconds(date));
+        return dateTime;
+      }
     }
   getListQuyen(): Menu[] {
     if (localStorage.getItem('listQuyen') != null) {
@@ -156,4 +185,8 @@ export class CommonService {
       url = url.split('\\').join('/');
       return this._baseUrl.baseUrl + url;
     }
+        // update
+        showNameMenu(Name) {
+          this.nameMenu.next(Name);
+        }
 }

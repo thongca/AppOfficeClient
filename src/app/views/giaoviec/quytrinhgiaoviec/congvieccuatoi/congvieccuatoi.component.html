@@ -19,7 +19,19 @@
                 {{nameBtn}}
             </a>
         </button>
-        <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()"></app-del-my-work>
+        <ng-container *ngIf="MyWorkId !== ''">
+            <button (click)="showModal()" type="button" class="btn btn-outline-primary"
+            title="Làm ngoài giờ">
+            <span class="btntext-middle"><i class="btnicon-font-size fas fa-time" aria-hidden="true"></i></span>
+            <a class="ml-1">
+                Làm ngoài giờ
+            </a>
+        </button>
+        </ng-container>
+        
+
+        <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()">
+        </app-del-my-work>
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">
@@ -84,7 +96,7 @@
 <div bsModal #modaldata="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
     data-keyboard="false">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <form #CongViecMoi="ngForm" (ngSubmit)="r3_AddQTCongViecMoi()" enctype="multipart/form-data"
             class="form-horizontal" novalidate autocomplete="off">
             <div class="modal-content">
@@ -123,7 +135,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+                            <!-- <div class="col-md-6 px-2 mb-2">
                                 <div class="form-group my-0">
                                     <label class="title-text col-form-label" for="name"> Độ khó
                                     </label>
@@ -152,13 +164,15 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-md-6 px-2 mb-2">
-                                <app-input-date require=true label="T/g khởi tạo" (changeDate)="dateSelectbd($event)">
+                                <app-input-date note="(Dự kiến)" require=true label="Ngày bắt đầu"
+                                    (changeDate)="dateSelectbd($event)">
                                 </app-input-date>
                             </div>
                             <div class="col-md-6 px-2 mb-2">
-                                <label class="title-text col-form-label" for="name"> Giờ khởi tạo
+                                <label class="title-text col-form-label" for="name"> Giờ bắt đầu
+                                    <a class="note-title">(Dự kiến)</a>
                                 </label>
                                 <div class="input-text">
                                     <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeStart"
@@ -167,11 +181,13 @@
 
                             </div>
                             <div class="col-md-6 px-2 mb-2">
-                                <app-input-date require=true label="T/g kết thúc" (changeDate)="dateSelectkt($event)">
+                                <app-input-date note="(Dự kiến)" require=true label="Ngày kết thúc"
+                                    (changeDate)="dateSelectkt($event)">
                                 </app-input-date>
                             </div>
                             <div class="col-md-6 px-2 mb-2">
                                 <label class="title-text col-form-label" for="name"> Giờ kết thúc
+                                    <a class="note-title">(Dự kiến)</a>
                                 </label>
                                 <div class="input-text">
                                     <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
@@ -181,7 +197,7 @@
                             </div>
                             <div class="col-md-6 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Loại
+                                    <label class="title-text col-form-label" for="name"> Loại công việc
                                     </label>
                                     <div class="input-text">
                                         <select id="select2" name="select2" class="form-control padding-select-congty"
@@ -194,10 +210,11 @@
                             </div>
                             <div class="col-md-6 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Mức độ
+                                    <label class="title-text col-form-label" for="name"> Trách nhiệm
                                     </label>
                                     <div class="input-text">
-                                        <select id="repossibility" name="repossibility" class="form-control padding-select-congty"
+                                        <select id="repossibility" name="repossibility"
+                                            class="form-control padding-select-congty"
                                             [(ngModel)]="model.Repossibility">
                                             <option *ngFor="let item of typeUserTasks" [ngValue]="item.Id">{{item.Name}}
                                             </option>
@@ -207,8 +224,8 @@
                             </div>
                             <div class="col-md-6 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Tiền nhiệm
-
+                                    <label class="title-text col-form-label" for="name"> Mã
+                                        <a class="note-title">(Công việc trước)</a>
                                     </label>
                                     <div class="input-text">
                                         <input type="number" class="form-control rounded-0" #Predecessor="ngModel"
@@ -217,12 +234,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <app-input-date label="T/g tiên quyết" (changeDate)="dateSelectbb($event)">
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
+                                <div class="form-group my-0">
+                                    <app-input-radio-checkbox nameRadio="Yêu cầu" nameTrue="Hoàn thành"
+                                        nameFalse="Không" (changeRadio)="radioKichHoat($event)">
+                                    </app-input-radio-checkbox>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
+                                <app-input-date note="(Thời hạn)" label="Ngày T/Q" (changeDate)="dateSelectbb($event)">
                                 </app-input-date>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+
+                            <div class="col-md-6 px-2 mb-2" *ngIf="model.Predecessor > 0">
                                 <label class="title-text col-form-label" for="name"> Giờ tiên quyết
+
                                 </label>
                                 <div class="input-text">
                                     <timepicker [showMeridian]="false" [showSpinners]="false" name="timeTQ"
@@ -230,13 +256,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <app-input-radio-checkbox nameRadio="Yêu cầu" nameTrue="Hoàn thành"
-                                        nameFalse="Không" (changeRadio)="radioKichHoat($event)">
-                                    </app-input-radio-checkbox>
-                                </div>
-                            </div>
+
                             <div class="col-md-12 px-2 mb-2">
                                 <div class="form-group my-0">
                                     <label class="title-text col-form-label" for="name"> Phối hợp
@@ -262,13 +282,14 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                         <!--/.row-->
                     </div>
                     <mat-tab-group>
                         <mat-tab isActive="true" label="Văn bản đính kèm">
                             <div class="row m-0 pt-2 pb-2">
-                                <input #filevb type="file" accept='.pdf' class="inputimgFileWorks avataruser"
+                                <input #filevb type="file" class="inputimgFileWorks avataruser"
                                     (change)="onSelectFile(filevb.files)" multiple />
                             </div>
                         </mat-tab>

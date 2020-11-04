@@ -4,6 +4,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { ParseError } from '@angular/compiler';
 import { ExportExcelService } from '../../../../shared/export-excel.service';
 import * as moment from 'moment';
+import { CommonService } from '../../../../common/common.service';
 
 @Component({
   selector: 'app-hieuquacongviec',
@@ -16,15 +17,20 @@ export class HieuquacongviecComponent implements OnInit {
 listError = [];
 listKpis = [];
 TotalPoint = 0;
+perUser: number = this._commonService.getUser().Permission;
 TotalKpi = 0;
+userId: number = 0;
+listUser: [];
   constructor(
     private _apiService: ApiService,
     private _exportService: ExportExcelService,
+    private _commonService: CommonService
   ) { }
 
   ngOnInit(): void {
     this.r1GetDataError();
     this.r1GetReportKpi();
+    this.r1GetDataUser();
   }
   r1GetDataError() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
@@ -40,8 +46,29 @@ TotalKpi = 0;
         this.listError = res['data'];
       });
   }
+  r1GetDataUser() {
+    const op = {
+      'GroupRoleId': Number(this._commonService.getGroupUser()),
+    };
+    this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
+      .subscribe(res => {
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.listUser = res['data'];
+      });
+  }
+  ChangUser() {
+    this.r1GetReportKpi();
+  }
   r1GetReportKpi() {
-    this._apiService.r1_Get_List_Data('api/MyWorkReport/r1EvalueKPIOneUser').pipe(
+    const op = {
+      UserId: this.userId
+    };
+    this._apiService.r1_List_Data_Model_General(op, 'api/MyWorkReport/r1EvalueKPIOneUser').pipe(
       map(preres => {
           this.TotalPoint =  preres['data'].reduce(((accumulator, currentValue) => {// toong diem lam viec cua mot cong viec
             currentValue.ChildrenError = JSON.parse(currentValue.ChildrenError);
@@ -73,7 +100,7 @@ TotalKpi = 0;
       });
   }
   ExportKpiClick() {
-  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm') + '_Kpi', 1);
+  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_Kpi', 1, this.userId);
   }
   RefreshData() {
 

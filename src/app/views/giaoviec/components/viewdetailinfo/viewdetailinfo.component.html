@@ -1,0 +1,96 @@
+
+            <div class="row mx-0">
+                <div class="col-md-12 px-0">
+                    <div class="border-work-current my-2">
+                        <span class="span-title-work px-1">Công việc hiện tại</span>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Mã công việc:
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Code}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người chủ trì:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.UserTaskName}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-bottom-row px-1">
+                           
+                            <div class="col-sm-12">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Người phối hợp:
+                                 
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Suporter}}</span>
+                                </div>
+                              
+                            </div>
+
+                        </div>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">B/Đ thực tế:
+                                  
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.StartDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">K/T thực tế:
+                                    
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name"> T/g làm việc:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.WorkTime * 60 | number:'1.1-2'}} (phút)</span>
+                                </div>
+                             
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">T/g tạm dừng:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.PauseTime * 60 | number:'1.1-2'}} (phút)</span>
+                                </div>
+                             
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Tổng số lỗi:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.TotalPoint}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-12">
+                                <label class="title-text py-1 mb-0 float-left" for="name">Ghi chú:
+                                   
+                                </label>
+                                <div class="input-text float-left p-1">
+                                    <span>{{modelView.Note}}</span>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div> <!--My Work Detail End-->
+                  
+                </div>
+            </div>

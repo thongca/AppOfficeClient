@@ -17,6 +17,13 @@
                             Refresh
                         </a>
                     </button>
+                    <div *appPermitshow="perUser" style="width: 200px;display: inline-block;">
+                        <select id="userId" name="userId" class="form-control padding-select-congty" [(ngModel)]="userId" (ngModelChange)="ChangUser()">
+                            <option [ngValue]="0">----- Chọn người dùng -----</option>
+                            <option *ngFor="let item of listUser" [ngValue]="item.UserId">{{item.FullName}}</option>
+                        </select>
+                    </div>
+                   
                 </div>
 
                 <div class="card-body p-0 max-height-card-body">
