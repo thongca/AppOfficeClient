@@ -22,7 +22,6 @@ departmentId: 0 };
   CheckLength: number;
   thongnguyen: string;
   public loading = false;
-  todos$ = this._s.$search;
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,

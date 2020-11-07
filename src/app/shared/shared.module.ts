@@ -29,13 +29,14 @@ import { UrlFileReplacePipe } from '../pipes/url-file-replace.pipe';
 import { TrangThaiXuLyPipe } from '../pipes/trang-thai-xu-ly.pipe';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { PermitshowDirective } from '../directives/permitshow.directive';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { DoubletoDatePipe } from '../pipes/doubleto-date.pipe';
 @NgModule({
   declarations: [PermitaddDirective, PermitupdateDirective, PermitdelDirective, PermitexportDirective,
     PaginationComponent, ModaldelComponent, ModaladdComponent, InputDateComponent, InputFileImageComponent,
   InputRadioCheckboxComponent, OptionCongtyComponent, CheckAllComponent, OptionGrouproleComponent, ConfigUserHandelComponent,
   SelectLenhComponent, ModalSelectUserComponent, LinhvucVanbanComponent, UrlFileReplacePipe, TrangThaiXuLyPipe, TreeDiagramComponent,
-  PermitshowDirective],
+  PermitshowDirective, DoubletoDatePipe],
   imports: [
     CommonModule,
     FormsModule,
@@ -45,7 +46,8 @@ import { PermitshowDirective } from '../directives/permitshow.directive';
     MatTreeModule,
     CdkTreeModule,
     MatIconModule,
-    NgxGraphModule
+    NgxGraphModule,
+    PaginationModule.forRoot()
   ],
   exports: [
     FormsModule,
@@ -73,6 +75,8 @@ import { PermitshowDirective } from '../directives/permitshow.directive';
     UrlFileReplacePipe,
     TrangThaiXuLyPipe,
     TreeDiagramComponent,
+    PaginationModule,
+    DoubletoDatePipe
   ]
 })
 export class SharedModule { }

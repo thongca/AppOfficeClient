@@ -9,21 +9,14 @@
         <div class="col-md-12">
           <div class="input-group">
             <input type="text" id="input1-group2" name="input1-group2" class="form-control input-searh" [(ngModel)]="s"
-              placeholder="Tìm kiếm..." (keyup.enter)="Search()">
+              placeholder="Tìm kiếm..." (keyup)="Search()">
             <span class="input-group-prepend">
-              <button type="button" class="btn btn-primary btn-search" (click)="Search()">
-                <span><i class="fa fa-search" aria-hidden="true"></i></span>
-
-                Tìm kiếm
-              </button>
             </span>
           </div>
         </div>
       </div>
     </li>
-    <li class="nav-item px-3">
-      Trang hiện tại: {{menuName}}
-    </li>
+  
   </ul>
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item d-md-down-none" dropdown placement="bottom right">

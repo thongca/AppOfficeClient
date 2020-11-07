@@ -16,16 +16,16 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">B/Đ dự kiến:
-                                
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</span>
                                 </div>
-                               
+
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">K/T dự kiến:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.EndDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -35,7 +35,7 @@
                         <div class="row border-bottom-row px-1">
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Người chủ trì:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.UserTaskName}}</span>
@@ -43,16 +43,16 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Người phối hợp:
-                                 
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.Suporter}}</span>
                                 </div>
-                              
+
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Công ty:
-                                 
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>Công ty cổ phần bao bi & in nông nghiệp</span>
@@ -62,7 +62,7 @@
                         <div class="row border-bottom-row px-1">
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">B/Đ thực tế:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.StartDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">K/T thực tế:
-                                    
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -80,25 +80,25 @@
                         <div class="row border-bottom-row px-1">
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name"> T/g làm việc:
-                                   
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.WorkTime * 60 | number:'1.1-2'}} (phút)</span>
                                 </div>
-                             
+
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">T/g tạm dừng:
-                                   
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.PauseTime * 60 | number:'1.1-2'}} (phút)</span>
                                 </div>
-                             
+
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Tổng số lỗi:
-                                   
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.TotalPoint}}</span>
@@ -108,39 +108,45 @@
                         <div class="row border-bottom-row px-1">
                             <div class="col-sm-12">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Ghi chú:
-                                   
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.Note}}</span>
                                 </div>
                             </div>
-    
+
                         </div>
-                    </div> <!--My Work Detail End-->
-                    <div class="border-work-predec mt-3 mb-2" *ngIf="modelView.Predecessor > 0"> <!--Predec work start-->
+                    </div>
+                    <!--My Work Detail End-->
+                    <div class="border-work-predec mt-3 mb-2" *ngIf="modelView.Predecessor > 0">
+                        <!--Predec work start-->
                         <span class="span-title-work px-1">Công việc tiên quyết</span>
-                        <div class="row border-bottom-row px-1" > <!--Row start-->
+                        <div class="row border-bottom-row px-1">
+                            <!--Row start-->
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Mã tiên quyết:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.Code}}</span>
                                 </div>
                             </div>
                             <div class="col-sm-8">
-                                <label class="title-text py-1 mb-0 float-left" title="Thời hạn yêu cầu hoàn thành công việc" for="name">Tên công việc:
-                                  
+                                <label class="title-text py-1 mb-0 float-left"
+                                    title="Thời hạn yêu cầu hoàn thành công việc" for="name">Tên công việc:
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.TaskName}}</span>
                                 </div>
                             </div>
-                        </div><!--Row end-->
-                        <div class="row border-bottom-row px-1"> <!--Row start-->
+                        </div>
+                        <!--Row end-->
+                        <div class="row border-bottom-row px-1">
+                            <!--Row start-->
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Người chủ trì:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.UserTaskName}}</span>
@@ -148,27 +154,29 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Người phối hợp:
-                                 
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.Suporter}}</span>
                                 </div>
-                              
+
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Công ty:
-                                 
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>Công ty cổ phần bao bi & in nông nghiệp</span>
                                 </div>
                             </div>
-                        </div> <!--Row end-->
-                        <div class="row border-bottom-row px-1"> <!--Row start-->
-                          
+                        </div>
+                        <!--Row end-->
+                        <div class="row border-bottom-row px-1">
+                            <!--Row start-->
+
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">B/Đ dự kiến:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.ExpectedDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -176,26 +184,29 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">K/T dự kiến:
-                                    
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.EndDate| date: 'dd/MM/yyyy HH:mm'}}</span>
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <label class="title-text py-1 mb-0 float-left" title="Kết thúc thực tế" for="name">Thời hạn:
-                                  
+                                <label class="title-text py-1 mb-0 float-left" title="Kết thúc thực tế" for="name">Thời
+                                    hạn:
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.PreWorkDeadline | date: 'dd/MM/yyyy HH:mm'}}</span>
                                 </div>
                             </div>
-                        </div><!--Row end-->
-                       
-                        <div class="row border-bottom-row px-1"> <!--Row start-->
+                        </div>
+                        <!--Row end-->
+
+                        <div class="row border-bottom-row px-1">
+                            <!--Row start-->
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">B/Đ thực tế:
-                                  
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.StartDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -203,7 +214,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">K/T thực tế:
-                                    
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelPre.CompleteDate| date: 'dd/MM/yyyy HH:mm'}}</span>
@@ -211,15 +222,17 @@
                             </div>
                             <div class="col-sm-4">
                                 <label class="title-text py-1 mb-0 float-left" for="name">Điều kiện:
-                                   
+
                                 </label>
                                 <div class="input-text float-left p-1">
                                     <span>{{modelView.PreWorkType}}</span>
                                 </div>
                             </div>
-                        </div><!--Row end-->
-                    </div><!--Predec work end-->
-                  
+                        </div>
+                        <!--Row end-->
+                    </div>
+                    <!--Predec work end-->
+
                     <p><strong>KẾ HOẠCH THỰC HIỆN CÔNG VIỆC</strong> </p>
                     <div class="row">
                         <div class="col-md-12">
@@ -228,9 +241,10 @@
                             </app-tree-schedule>
                         </div>
                     </div>
+                    <app-work-overtime></app-work-overtime>
                 </div>
             </div>
-            
+
         </mat-tab>
         <mat-tab label="Dòng chảy công việc">
             <div class="row  mx-0">
@@ -479,31 +493,32 @@
 
 </mat-card>
 
- <!-- Thêm sửa-->
- <div bsModal #modalAddCV="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
- aria-labelledby="myModalLabel" aria-hidden="true" 
- data-keyboard="false">
-     <div class="modal-dialog modal-lg" role="document">
-         <form #CongViecNhanh="ngForm" (ngSubmit)="r2AddScheduleWork()" enctype="multipart/form-data"
-             class="form-horizontal" novalidate autocomplete="off">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h4 class="modal-title">Thêm công việc nhánh</h4>
-                     <button type="button" class="close" (click)="modalAddCV.hide()" aria-label="Close">
-                         <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-                     </button>
-                 </div>
-                 <div class="modal-body px-2">
-                     <div class="animated fadeIn">
-                         <div class="row m-0">
-                                     
+<!-- Thêm sửa-->
+<div bsModal #modalAddCV="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <form #CongViecNhanh="ngForm" (ngSubmit)="r2AddScheduleWork()" enctype="multipart/form-data"
+            class="form-horizontal" novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm công việc nhánh</h4>
+                    <button type="button" class="close" (click)="modalAddCV.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+
                             <div class="col-md-12 px-2 mb-1">
                                 <div class="form-group mb-0">
                                     <label class="title-text col-form-label" for="name"> Công việc
                                         <span>*</span>
                                     </label>
                                     <div class="input-text">
-                                        <input type="text" class="form-control rounded-0" required #TaskName="ngModel" [class.is-invalid]="TaskName.invalid && TaskName.touched"  name="TaskName" [(ngModel)]="modelSchedule.TaskName">
+                                        <input type="text" class="form-control rounded-0" required #TaskName="ngModel"
+                                            [class.is-invalid]="TaskName.invalid && TaskName.touched" name="TaskName"
+                                            [(ngModel)]="modelSchedule.TaskName">
                                     </div>
                                 </div>
                             </div>
@@ -539,24 +554,25 @@
                                     </label>
                                     <div class="input-text">
                                         <select id="userName" name="userName" class="form-control padding-select-congty"
-                                          [(ngModel)]="modelSchedule.UserDeliverId">
-                                          <option [ngValue]="null">----- Người thực hiện -----</option>
-                                          <option *ngFor="let item of listSupporters" [ngValue]="item.UserId" >{{item.FullName}}
-                                        </option>
+                                            [(ngModel)]="modelSchedule.UserDeliverId">
+                                            <option [ngValue]="null">----- Người thực hiện -----</option>
+                                            <option *ngFor="let item of listSupporters" [ngValue]="item.UserId">
+                                                {{item.FullName}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                         </div>
-                         <!--/.row-->
-                     </div>
-                 </div>
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" (click)="modalAddCV.hide()">Đóng</button>
-                     <button [disabled]="CongViecNhanh.form.invalid" type="submit" class="btn btn-primary">Lưu
-                         lại</button>
-                 </div>
-             </div><!-- /.modal-content -->
-         </form>
-     </div><!-- /.modal-dialog -->
- </div><!-- /.modal -->
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalAddCV.hide()">Đóng</button>
+                    <button [disabled]="CongViecNhanh.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

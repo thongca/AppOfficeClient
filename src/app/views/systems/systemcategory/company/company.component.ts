@@ -16,7 +16,6 @@ export class CompanyComponent implements OnInit {
   CheckLength: number;
   thongnguyen: string;
   public loading = false;
-  todos$ = this._s.$search;
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,
@@ -25,7 +24,7 @@ export class CompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.thongnguyen = '12';
-    this.todos$.subscribe(res => {
+    this._s.DataSearch$.subscribe(res => {
       if (res === undefined || res === '') {
         this.options.s = '';
         this.r1GetDataList();

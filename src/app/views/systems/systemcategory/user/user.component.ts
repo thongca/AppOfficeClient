@@ -44,7 +44,6 @@ export class UserComponent implements OnInit, AfterViewInit {
   thongnguyen: string;
   public loading = false;
   private loaddata = false;
-  todos$ = this._s.$search;
   dropdownList = [];
   constructor(
     private toastr: ToastrService,
@@ -61,7 +60,7 @@ export class UserComponent implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-      this.todos$.subscribe(res => {
+      this._s.DataSearch$.subscribe(res => {
         if (res === undefined || res === '') {
           this.options.s = '';
         } else {

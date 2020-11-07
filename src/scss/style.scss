@@ -55,7 +55,7 @@ strong{
 
   // css search
 .input-searh{
-    border-radius: 20px 0 0 20px;
+  border-radius: 6px 6px 6px 6px !important;
 }
 .form-search{
     width: 500px;
@@ -210,4 +210,38 @@ input:focus{
 //giao việc
 .fonts-intalic{
     font-style: italic;
+}
+
+// 
+.page-current-title{
+  float: right;
+  padding: 7px 0;
+  font-size: 12px;
+}
+.card-header {
+  height: 52px;
+}
+.max-height-cardbody{
+  max-height: calc(100vh - 120px) !important;
+  overflow-y: auto;
+}
+/* Track */
+.max-height-cardbody::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+.max-height-cardbody::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+.max-height-cardbody::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+.max-height-cardbody::-webkit-scrollbar {
+  width: 6px;
+}
+.pagination-auto{
+  float: right;
 }

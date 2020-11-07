@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { map } from 'rxjs/operators';
 import { CommonService } from '../../../../common/common.service';
 import { ApiService } from '../../../../shared/api.service';
 import { ExportExcelService } from '../../../../shared/export-excel.service';

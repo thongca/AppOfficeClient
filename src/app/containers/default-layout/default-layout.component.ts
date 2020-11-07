@@ -1,10 +1,8 @@
-import { ToastrService } from 'ngx-toastr';
 import { ApiService } from './../../shared/api.service';
 import { CommonService } from './../../common/common.service';
 import { SignalRealTimeService } from './../../shared/signal-real-time.service';
 import { MenuService } from './../../common/menu.service';
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import { navItems } from '../../_nav';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SearchService } from '../../shared/search.service';
 import { UserNhanThongBao } from '../../models/usernhantb.interface';
@@ -28,7 +26,6 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   cthongbao: string;
   load = false;
   userLoginId: number = this._commonService.getUserId();
-  todos$ = this.search.$search;
   menuName: string;
   constructor(
     private _signalSer: SignalRealTimeService,
@@ -58,7 +55,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       }
     });
     this._defaultService.getNotify();
-    this.todos$.subscribe(res => {
+    this.search.DataSearch$.subscribe(res => {
       let ss = '';
       if (res === undefined || res === '') {
         ss = '';

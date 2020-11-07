@@ -42,7 +42,6 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   public loading = false;
   private loaddata = false;
   private QuyTrinhId = 0;
-  todos$ = this._s.$search;
   dropdownList = [];
   constructor(
     private toastr: ToastrService,
@@ -58,7 +57,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-      this.todos$.subscribe(res => {
+      this._s.DataSearch$.subscribe(res => {
         if (res === undefined || res === '') {
           this.options.s = '';
         } else {

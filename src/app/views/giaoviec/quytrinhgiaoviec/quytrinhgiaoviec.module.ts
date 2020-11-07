@@ -34,6 +34,8 @@ import { DelMyWorkComponent } from '../components/del-my-work/del-my-work.compon
 import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
 import { ViewdetailinfoComponent } from '../components/viewdetailinfo/viewdetailinfo.component';
 import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.component';
+import { WorkOvertimeComponent } from '../components/work-overtime/work-overtime.component';
+import { StateOvertimePipe } from '../../../pipes/myworks/state-overtime.pipe';
 @NgModule({
   declarations: [CongviecmoiComponent, CongvieccuatoiComponent, TreeScheduleComponent, VongDoiCongViecPipe, TypeflowPipe, HanCongViecPipe,
     SelectCommandComponent, WorkflowDetailComponent,
@@ -47,7 +49,9 @@ import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.c
     DelMyWorkComponent,
     TonghopthoigianComponent,
     ViewdetailinfoComponent,
-    CongviecovertimeComponent
+    CongviecovertimeComponent,
+    WorkOvertimeComponent,
+    StateOvertimePipe
   ],
   imports: [
     CommonModule,

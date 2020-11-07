@@ -39,7 +39,6 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
   CheckLength: number;
   public loading = false;
   private load = false;
-  todos$ = this._s.$search;
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,
@@ -53,7 +52,7 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
     this.options.companyId = Number(this._commonService.getCompanyUser());
   }
   ngAfterViewInit(): void {
-    this.todos$.subscribe(res => {
+    this._s.DataSearch$.subscribe(res => {
       if (res === undefined || res === '') {
         this.options.s = '';
       } else {

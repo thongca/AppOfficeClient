@@ -43,7 +43,6 @@ export class CommonService {
     }
     }
     setTimeToDate(date: Date, time: Date ): Date {
-      debugger
       const hour = time.getHours();
       if (date === null || date === undefined) {
         return null;

@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { CVQTMyWork, CVQTFlowWork } from '../../../../models/giaoviec/congviecmoi.model';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TreeDiagramComponent } from '../../../../components/tree-diagram/tree-diagram.component';
-import { SelectLenhComponent } from '../../../../components/select-lenh/select-lenh.component';
 import { TreeScheduleComponent } from '../../components/tree-schedule/tree-schedule.component';
 import { UserLogin } from '../../../../common/option';
 import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
@@ -15,7 +14,8 @@ import { SelectCommandComponent } from '../../components/select-command/select-c
 import { WorkdetailService } from '../../../../shared/workdetail.service';
 import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service';
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
-import { Perenum } from '../../../../common/perenum.enum';
+import { SearchService } from '../../../../shared/search.service';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 
 @Component({
   selector: 'app-congvieccuatoi',
@@ -28,7 +28,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   @ViewChild('selectLenh', { static: false }) public selectLenh: SelectCommandComponent;
   @ViewChild('treeSchedule', { static: false }) public treeSchedule: TreeScheduleComponent;
   userlogin: UserLogin = this._commonService.getValueUserLogin();
-  optionsCV: OptionsCV = { Id: '', MyWorkId: '', p: 0, pz: 100 };
+  optionsCV: OptionsCV = { Id: '', MyWorkId: '', p: 1, pz: 100, totalItem: 100, startPage: 0, endPage: 100 };
   step = 0;
   pdfSrc: string;
   customSelected: any;
@@ -60,6 +60,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
+  listTotals: CVQTFlowWork[];
   listCongViecs: CVQTFlowWork[];
   listTypeFlows = [];
   filesView: [];
@@ -101,6 +102,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     private _workFlowDetail: WorkdetailService,
     public _sharedmyWork: SharedmyworksService,
     public _apiSharedService: SelectlenhsharedService,
+    private _searchService: SearchService
   ) {
     this.model.TypeTask = 1;
   }
@@ -116,6 +118,9 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
         this.r1GetListMyWorks();
       }
     });
+    this._searchService.DataSearch$.subscribe(res => {
+      this.searchData(res);
+    });
   }
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorks')
@@ -123,8 +128,12 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
         if (res === undefined) {
           return;
         }
-        this.listCongViecs = res['data'];
-        this.listTypeFlows = res['TypeFlows'];
+        if (res['data'] !== undefined) {
+          this.listTotals = res['data'];
+          this.listCongViecs = res['data'].slice(this.optionsCV.startPage, this.optionsCV.endPage);
+          this.listTypeFlows = res['TypeFlows'];
+          this.optionsCV.totalItem = res['total'];
+        }
         // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
@@ -143,7 +152,7 @@ console.log(value);
     this.selectaRow();
     this.optionsCV.MyWorkId = item.MyWorkId;
     this.Predecessor = item.Predecessor; // mã code của công việc tiên quyết
-    this.changeCycleWork(item.CycleWork, item.TypeComplete);
+    this.changeCycleWork(item.CycleWork, item.TypeComplete); // thay đổi trạng thái nút bắt đầu, tiếp tuc, ...
   }
   selectaRow() {
     const workFlow = {
@@ -201,9 +210,15 @@ console.log(value);
           this.toastr.error(res['ms'], 'Thông báo');
           return;
         }
-        this.toastr.success(res['ms'], 'Thông báo');
         this.r1GetListMyWorks();
-        this.changeCycleWork(this.nextCycleWorks, 0);
+        if (res['error'] === 2) {
+          this.toastr.error(res['ms'], 'Thông báo');
+          this.changeCycleWork(2, 0);
+          return;
+        } else {
+          this.toastr.success(res['ms'], 'Thông báo');
+          this.changeCycleWork(this.nextCycleWorks, 0);
+        }
         return;
       }
     });
@@ -324,15 +339,15 @@ console.log(value);
   onChangeMyWork(value) {
     this.model.TaskName = value;
   }
-  setStep(index: number) {
-    this.step = index;
+  searchData(data: string) {
+    this.listCongViecs = this.listTotals.filter(x => x.TaskName.toUpperCase().includes(data.toUpperCase())
+    || x.Code.toString().includes(data)
+    );
   }
-  nextStep() {
-    this.step++;
-  }
-
-  prevStep() {
-    this.step--;
+  pageChanged(event: PageChangedEvent) {
+    this.optionsCV.startPage = (event.page - 1) * event.itemsPerPage;
+    this.optionsCV.endPage = event.page * event.itemsPerPage;
+    this.listCongViecs = this.listTotals.slice(this.optionsCV.startPage, this.optionsCV.endPage);
   }
   showModal() {
     this.modaldata.show();

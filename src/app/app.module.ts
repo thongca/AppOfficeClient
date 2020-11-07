@@ -2,7 +2,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy, PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -94,7 +94,7 @@ import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
     P404Component,
     P500Component,
     LoginComponent,
-    TinhPointerrorPipe,
+    TinhPointerrorPipe
   ],
   providers: [SearchService, {
     provide: LocationStrategy,

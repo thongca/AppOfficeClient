@@ -63,6 +63,7 @@
     height: 50px;
     position: fixed;
     bottom: 20px;
+    z-index: 1;
     border-radius: 25px;
     background-color: #7f26f5;
     transform: translateX(20px);

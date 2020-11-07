@@ -19,25 +19,15 @@
                 {{nameBtn}}
             </a>
         </button>
-        <ng-container *ngIf="MyWorkId !== ''">
-            <button (click)="showModal()" type="button" class="btn btn-outline-primary"
-            title="Làm ngoài giờ">
-            <span class="btntext-middle"><i class="btnicon-font-size fas fa-time" aria-hidden="true"></i></span>
-            <a class="ml-1">
-                Làm ngoài giờ
-            </a>
-        </button>
-        </ng-container>
-        
-
         <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()">
         </app-del-my-work>
+        <strong  class="page-current-title">Công việc của tôi</strong>  
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">
             <div class="col-md-4 pl-1">
                 <div class="card mt-1 border-0">
-                    <div class="card-body p-0">
+                    <div class="card-body max-height-cardbody p-0">
                         <table class="table mb-0">
                             <tbody>
                                 <tr *ngFor="let item of listCongViecs" class="hover-cusor"
@@ -77,6 +67,17 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div *ngIf="optionsCV.totalItem > 100" class="pagination-auto mt-2">
+                            <pagination 
+                            [totalItems]="optionsCV.totalItem"
+                            [itemsPerPage]="optionsCV.pz"
+                            [boundaryLinks]="true"
+                            [directionLinks]="false"
+                            firstText="Đầu tiên"
+                            lastText="Cuối cùng"
+                             (pageChanged)="pageChanged($event)"></pagination>
+                        </div>
+                       
                         <!--/.row-->
                     </div>
                 </div>

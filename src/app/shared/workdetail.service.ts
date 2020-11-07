@@ -25,6 +25,8 @@ export class WorkdetailService {
   public errorForMyWorks$ = this.errorForMyWorks.asObservable();
   private listsupporter = new Subject<any>();
   public listsupporter$ = this.listsupporter.asObservable();
+  private workovertime = new Subject<any>();
+  public workovertime$ = this.workovertime.asObservable();
 
   private listSchedule = new Subject<any>();
   public listSchedule$ = this.listSchedule.asObservable();
@@ -47,6 +49,7 @@ export class WorkdetailService {
           this.fileWorkFlow.next(res[0]['files']);
           this.errorForMyWorks.next(res[0]['errors']);
           this.listsupporter.next(res[0]['supports']);
+          this.workovertime.next(res[0]['workOvertime']);
           this.listSchedule.next(res[1]['listRecursives']);
         },
       );

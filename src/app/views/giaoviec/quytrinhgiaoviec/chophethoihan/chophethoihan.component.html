@@ -3,10 +3,8 @@
        
         <app-select-command #selectLenh MenuId="GV0103" (refreshPaList)="refreshList()">
         </app-select-command>
-        <ng-container *appPermitdel='true'>
-            <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
-                (xacNhan)="r4DelData($event)"></app-modaldel>
-        </ng-container>
+
+        <strong  class="page-current-title">Công việc chờ phê duyệt thời hạn</strong>        
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">

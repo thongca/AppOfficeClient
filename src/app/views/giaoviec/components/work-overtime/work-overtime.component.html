@@ -1,0 +1,60 @@
+<ng-container *ngIf="listDateOverTime.length > 0">
+
+    <p><strong style="color: red;">THỜI GIAN LÀM NGOÀI GIỜ</strong> </p>
+    <div class="row">
+        <div class="col-md-12">
+            <table  class="table table-sm table-bordered " style="min-width: 1200px;">
+                <thead>
+                    <tr>
+                        <th class="text-center" width=50>
+                            STT
+                        </th>
+                        <th>
+                            Ngày làm ngoài giờ
+                        </th>
+                        <th width=150 class="text-center">
+                            Tổng thời gian
+                        </th>
+                        <th width=150 class="text-center">
+                            Trạng thái duyệt
+                        </th>
+                        <th width=250 class="text-center" *appPermitshow="perUser">
+                            Chức năng
+                        </th>
+            
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listDateOverTime; let i = index">
+                        <td class="text-center align-middle">{{i + 1}}</td>
+                        <td class="align-middle">{{item.DateOverTime|doubletoDate}}</td>
+                        <td class="text-center align-middle">{{item.WorkTime * 60 | number: '1.2-2'}} (phút)</td>
+                        <td class="text-center align-middle">
+                            <span style="font-size: 14px;" class="badge state-overtime-{{item.State}}">
+                                {{item.State | stateOvertime}}</span>
+                           </td>
+                        <td class="text-center align-middle" *appPermitshow="perUser">
+                            <ng-container *ngIf="item.State === 0">
+                                <button type="button" (click)="r2_DuyetOverTime(item)" class="btn btn-outline-primary mr-1"
+                                title="Duyệt thời gian làm ngoài giờ">
+                                <span class="btntext-middle"><i class="btnicon-font-size fas fa-check" aria-hidden="true"></i></span>
+                                <a class="ml-1">
+                                   Duyệt
+                                </a>
+                            </button>
+                            <button type="button" (click)="r2_KhongDuyetOverTime(item)" class="btn btn-outline-danger ml-1"
+                                title="Không đồng ý thời gian làm ngoài giờ">
+                                <span class="btntext-middle"><i class="btnicon-font-size fas fa-ban" aria-hidden="true"></i></span>
+                                <a class="ml-1">
+                                   Không duyệt
+                                </a>
+                            </button>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-container>
+
