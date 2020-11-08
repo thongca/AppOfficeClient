@@ -1,12 +1,11 @@
 import { HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver';
-import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-import { BaseUrlService } from '../common/base-url.service';
+import { ApiService } from './api.service';
 import { ApifileService } from './apifile.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +15,7 @@ export class ExportExcelService {
   file: File;
   constructor(
     private apiFile: ApifileService,
+    private _apiService: ApiService,
     private toarts: ToastrService,
   ) { }
   public exportExcel(jsonData: any, fileName: string, type: number, UserId: number): void {
@@ -25,7 +25,7 @@ export class ExportExcelService {
     const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     if (type === 1) {
       this.saveExcelFileKPI(excelBuffer, fileName, UserId);
-    } else {
+    } else if (type === 2) {
       this.saveExcelFileNKCV(excelBuffer, fileName, UserId);
     }
   }
@@ -35,8 +35,14 @@ export class ExportExcelService {
     b.name = fileName;
     return <File>theBlob;
   }
+  public saveExcelFileTotalTime(model, fileName): void {
+    this._apiService.r1_File_Data_Model_General(model, 'api/MyWorkReport/ExportSumTimeExcel').subscribe(res => {
+        saveAs(res, fileName + this.fileExtension);
+    });
+  }
+
   private saveExcelFileKPI(buffer: any, fileName: string, UserId: number): void {
-    const data: Blob = new Blob([buffer], {type: this.fileType});
+    const data: Blob = new Blob([buffer], { type: this.fileType });
     const myFile = this.blobToFile(data, 'myfile.xlsx');
     const model = {
       UserId: UserId
@@ -52,7 +58,7 @@ export class ExportExcelService {
     });
   }
   private saveExcelFileNKCV(buffer: any, fileName: string, UserId: number): void {
-    const data: Blob = new Blob([buffer], {type: this.fileType});
+    const data: Blob = new Blob([buffer], { type: this.fileType });
     const myFile = this.blobToFile(data, 'myfile.xlsx');
     const model = {
       UserId: UserId

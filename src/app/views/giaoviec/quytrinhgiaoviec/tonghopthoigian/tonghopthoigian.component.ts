@@ -1,23 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import * as moment from 'moment';
 import { map } from 'rxjs/internal/operators/map';
+import { CommonService } from '../../../../common/common.service';
+import { ReportDate } from '../../../../models/giaoviec/reportdate.model';
 import { ApiService } from '../../../../shared/api.service';
-
+import { ExportExcelService } from '../../../../shared/export-excel.service';
 @Component({
   selector: 'app-tonghopthoigian',
   templateUrl: './tonghopthoigian.component.html',
   styleUrls: ['./tonghopthoigian.component.css']
 })
 export class TonghopthoigianComponent implements OnInit {
+  @ViewChild('tablereport', { static: false }) tablereport: ElementRef;
   totalErrorhead = 0;
   listError = [];
   listKpis = [];
   TotalPoint = 0;
   listTotalTime: [];
-  TotalKpi = 0;
+  userId: number = 0;
+  report: ReportDate = new ReportDate();
     constructor(
+      private _exportService: ExportExcelService,
       private _apiService: ApiService,
+      private _commonService: CommonService
     ) { }
     ngOnInit(): void {
+      this.report.TotalHourLk = 0;
+      this.report.TotalHour = 0;
       this.r1GetDataError();
       this.r1GetReportKpi();
     }
@@ -36,12 +45,20 @@ export class TonghopthoigianComponent implements OnInit {
         });
     }
     r1GetReportKpi() {
-      const date = new Date();
-      const model = {
-        dates: new Date(date.setDate(1)),
-        datee: new Date()
-      };
-      this._apiService.r1_List_Data_Model_General(model, 'api/MyWorkReport/r1EvalueReportTotalTime').subscribe(res => {
+      this.report.TotalHourLk = 0;
+      this.report.TotalHour = 0;
+      this._apiService.r1_List_Data_Model_General(this.report, 'api/MyWorkReport/r1EvalueReportTotalTime')
+      .pipe(
+        map(pre => {
+         pre['data'].reduce((acc, cur) => {
+          this.report.TotalHourLk += cur.TongLk;
+          this.report.TotalHour += cur.Tong;
+          return acc;
+          });
+          return pre;
+        })
+      )
+      .subscribe(res => {
           if (res === undefined) {
             return;
           }
@@ -51,7 +68,23 @@ export class TonghopthoigianComponent implements OnInit {
           this.listTotalTime = res['data'];
         });
     }
+    fromDateClick(date: Date) {
+      this.report.dates = this._commonService.FromDateToDouble(date);
+    }
+    toDateClick(date) {
+      this.report.datee = this._commonService.FromDateToDouble(date);
+    }
     RefreshData() {
 
     }
+    ExportTotalClick() {
+      const date = new Date();
+      const model = {
+        dates: new Date(date.setDate(1)),
+        datee: new Date()
+      };
+      this._exportService.saveExcelFileTotalTime(this.report,
+        moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_SumTime');
+    }
 }
+

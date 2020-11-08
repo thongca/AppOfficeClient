@@ -14,6 +14,7 @@ export class InputDateComponent implements OnInit {
   @Input() label: string;
   @Input() note: string;
   @Input() require: string;
+  @Input() mindate: boolean;
   placeholder = 'DD/MM/YYYY';
   @Input() set dateInit(date: Date) {
     if (date === undefined || date === null) {
@@ -41,6 +42,9 @@ export class InputDateComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    if (this.mindate !== undefined) {
+      this.datePickerConfig.minDate = new Date(2020, 0, 1);
+    }
     if (this.require !== undefined) {
       this.requireLocal = JSON.parse(this.require);
     }

@@ -3,26 +3,34 @@
         <div class="col-lg-12">
             <div class="card m-0">
                 <div class="card-header">
-                    <button *appPermitadd='true' (click)="showModal()" type="button" class="btn btn-outline-primary" title="Thêm mới">
-                        <span class="btntext-middle"><i class="btnicon-font-size fas fa-plus"
+                    <button (click)="ExportTotalClick()" type="button" class="btn btn-outline-primary" title="Xuất excel">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-file-excel-o"
                                 aria-hidden="true"></i></span>
                         <a class="ml-1">
-                            Thêm mới
+                            Excel
                         </a>
                     </button>
-                    <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
-                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
+                    <div class="d-inline-block">
+                        <app-input-date [mindate]="true" label="Từ ngày" (changeDate)="fromDateClick($event)">
+                    </app-input-date>
+                    </div>
+                    <div class="d-inline-block">
+                    <app-input-date [mindate]="true" label="Đến ngày" (changeDate)="toDateClick($event)">
+                    </app-input-date>
+                    </div>
+                    <button (click)="r1GetReportKpi()" type="button" class="btn btn-outline-primary" title="Xuất excel">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-filter"
                                 aria-hidden="true"></i></span>
                         <a class="ml-1">
-                            Refresh
+                           Thực hiện
                         </a>
                     </button>
                     <strong  class="page-current-title">Báo cáo tổng hợp thời gian</strong>  
                 </div>
-
                 <div class="card-body p-0 max-height-card-body">
-                    <table class="table table-sm table-bordered">
+                    <table #tablereport class="table table-sm table-bordered">
                         <thead class="thead-light">
+                       
                             <tr>
                                 <th width=40 rowspan= "3" class="text-middle">STT</th>
                                 <th rowspan= "3" class="text-middle">Tên công việc</th>
@@ -57,22 +65,15 @@
                                 <td>{{item.TaskCode}}</td>
                                 <td>{{item.Tong | number: '1.2-2'}}</td>
                                 <td>{{item.WorkNgay| number: '1.2-2' }}</td>
-                                <td>{{item.WorkNgay| number: '1.2-2' }}</td>
+                                <td>{{(item.Tong *100) / report.TotalHour| number: '1.2-2' }} %</td>
                                 <td>{{item.ChuTri| number: '1.2-2' }}</td>
                                 <td>{{item.PhoiHop| number: '1.2-2' }}</td>
                                 <td>{{item.TongLk| number: '1.2-2' }}</td>
                                 <td>{{item.NgayLk | number: '1.2-2'}}</td>
-                                <td>{{item.NgayLk | number: '1.2-2'}}</td>
+                                <td>{{item.TongLk*100 / report.TotalHourLk | number: '1.2-2'}}  %</td>
                                 <td class="text-center">{{item.ChuTriLk | number: '1.2-2'}}</td>
                                 <td class="text-center">{{item.PhoiHopLk | number: '1.2-2'}}</td>
-                                <td class="text-center">
-                                   
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="8">
-                                    Hiệu quả công việc: {{TotalKpi | number: '1.2-2'}} %
-                                </td>
+                               
                             </tr>
                         </tbody>
                     </table>

@@ -168,6 +168,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
           this.toastr.success(res['body']['ms'], 'Thông báo');
           this._signalService.GetNguoiNhanThongBao('');
           this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
           return;
         }
       });
@@ -193,6 +194,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
           this.toastr.success(res['body']['ms'], 'Thông báo');
           this._signalService.GetNguoiNhanThongBao('');
           this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
           return;
         }
       });
@@ -215,6 +217,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
             this.toastr.success(res['body']['ms'], 'Thông báo');
             this._signalService.GetNguoiNhanThongBao('');
             this._apiSharedService.reloadMyWorkByChangeData();
+            this._apiSharedService.r1_getListLenhs(this.options);
             return;
           }
         });
@@ -237,6 +240,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
             this.toastr.success(res['body']['ms'], 'Thông báo');
             this._signalService.GetNguoiNhanThongBao('');
             this._apiSharedService.reloadMyWorkByChangeData();
+            this._apiSharedService.r1_getListLenhs(this.options);
             return;
           }
         });
@@ -260,6 +264,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
             this.toastr.success(res['body']['ms'], 'Thông báo');
             this._signalService.GetNguoiNhanThongBao('');
             this._apiSharedService.reloadMyWorkByChangeData();
+            this._apiSharedService.r1_getListLenhs(this.options);
             return;
           }
         });
@@ -287,6 +292,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
             this.toastr.success(res['body']['ms'], 'Thông báo');
             this._signalService.GetNguoiNhanThongBao('');
             this._apiSharedService.reloadMyWorkByChangeData();
+            this._apiSharedService.r1_getListLenhs(this.options);
             return;
           }
         });

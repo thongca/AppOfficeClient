@@ -14,8 +14,8 @@ export class ApiService {
   ) {
     this._baseUrl = this.base.baseUrl;
   }
-   // GET: lấy thông tin danh sách dữ liệu
-   r1_Get_List_Data(url: string) {
+  // GET: lấy thông tin danh sách dữ liệu
+  r1_Get_List_Data(url: string) {
     const options_: any = {
       ContentType: 'application/json; charset=utf-8',
       headers: new HttpHeaders({
@@ -24,8 +24,8 @@ export class ApiService {
     };
     return this.http.get(this._baseUrl + url, options_);
   }
-   // POST: lấy thông tin danh sách dữ liệu
-   r1_Post_List_Data(options: OptionHeader, url: string) {
+  // POST: lấy thông tin danh sách dữ liệu
+  r1_Post_List_Data(options: OptionHeader, url: string) {
     const options_: any = {
       ContentType: 'application/json; charset=utf-8',
       headers: new HttpHeaders({
@@ -46,18 +46,31 @@ export class ApiService {
     };
     return this.http.get(url_, options_);
   }
-    // POST: add dữ liệu
-    r1_List_Data_Model_General(model_: object, url) {
-      let url_ = this._baseUrl + url;
-      url_ = url_.replace(/[?&]$/, '');
-      const options_: any = {
-        ContentType: 'application/json',
-        headers: new HttpHeaders({
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
-        })
-      };
-      return this.http.post(url_, model_, options_);
-    }
+  // POST: add dữ liệu
+  r1_List_Data_Model_General(model_: object, url) {
+    let url_ = this._baseUrl + url;
+    url_ = url_.replace(/[?&]$/, '');
+    const options_: any = {
+      ContentType: 'application/json',
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    return this.http.post(url_, model_, options_);
+  }
+  // POST: get dữ liệu file
+  r1_File_Data_Model_General(model_: object, url) {
+    let url_ = this._baseUrl + url;
+    url_ = url_.replace(/[?&]$/, '');
+    const options_: any = {
+      ContentType: 'application/json',
+      responseType: 'blob',
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      })
+    };
+    return this.http.post(url_, model_, options_);
+  }
   // POST: add dữ liệu
   r2_Add_Data_Model(model_: object, url) {
     let url_ = this._baseUrl + url;

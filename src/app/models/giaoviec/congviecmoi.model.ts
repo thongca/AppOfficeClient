@@ -1,4 +1,5 @@
 export class CVQTMyWork {
+
 Id: string;
 Code: number;
 TaskId: string;

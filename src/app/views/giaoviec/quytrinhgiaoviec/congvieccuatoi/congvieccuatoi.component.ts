@@ -149,21 +149,13 @@ console.log(value);
     // ma cong viec khi chon 1 cong viec
     this.MyWorkId = item.MyWorkId;
     this.WorkFlowId = item.Id;
-    this.selectaRow();
     this.optionsCV.MyWorkId = item.MyWorkId;
     this.Predecessor = item.Predecessor; // mã code của công việc tiên quyết
     this.changeCycleWork(item.CycleWork, item.TypeComplete); // thay đổi trạng thái nút bắt đầu, tiếp tuc, ...
-  }
-  selectaRow() {
-    const workFlow = {
-      MyWorkId: this.MyWorkId,
-      Id: this.WorkFlowId
-    };
     this.selectLenh.showBtn(true, workFlow);
   }
   changeCycleWork(CycleCurrent, TypeComplete) {
     if (TypeComplete === 0 || TypeComplete === 2) { // bắt đầu công việc hoặc công việc bị trả lại
-      this.selectaRow();
       switch (CycleCurrent) {
         case 0:
           this.url = 'api/MyWork/r2StartMyWork';
