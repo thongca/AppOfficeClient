@@ -87,6 +87,9 @@ export class CauhinhnguoinhanComponent implements OnInit {
       case 6:
         value.IsNguoiLap = !value.IsNguoiLap;
         break;
+      case 8:
+        value.IsManagement = !value.IsManagement;
+        break;
       default:
         value.IsNguoiGui = !value.IsNguoiGui;
     }

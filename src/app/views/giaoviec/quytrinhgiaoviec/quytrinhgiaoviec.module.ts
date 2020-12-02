@@ -26,32 +26,30 @@ import { WorkflowDetailComponent } from '../components/workflow-detail/workflow-
 import { DangthuchienComponent } from './dangthuchien/dangthuchien.component';
 import { ChophehoanthanhcongviecComponent } from './chophehoanthanhcongviec/chophehoanthanhcongviec.component';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
-import { HieuquacongviecComponent } from './hieuquacongviec/hieuquacongviec.component';
-import { NhatkycongviecComponent } from './nhatkycongviec/nhatkycongviec.component';
 import { TrangthaiSchedulePipe } from '../../../pipes/myworks/trangthai-schedule.pipe';
 import { CongviectoiphoihopComponent } from './congviectoiphoihop/congviectoiphoihop.component';
 import { DelMyWorkComponent } from '../components/del-my-work/del-my-work.component';
-import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
 import { ViewdetailinfoComponent } from '../components/viewdetailinfo/viewdetailinfo.component';
 import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.component';
 import { WorkOvertimeComponent } from '../components/work-overtime/work-overtime.component';
 import { StateOvertimePipe } from '../../../pipes/myworks/state-overtime.pipe';
+import { CvkhoitaosauComponent } from './cvkhoitaosau/cvkhoitaosau.component';
+import { DuyetkhoitaosauComponent } from './duyetkhoitaosau/duyetkhoitaosau.component';
 @NgModule({
   declarations: [CongviecmoiComponent, CongvieccuatoiComponent, TreeScheduleComponent, VongDoiCongViecPipe, TypeflowPipe, HanCongViecPipe,
     SelectCommandComponent, WorkflowDetailComponent,
     ChophethoihanComponent,
     DangthuchienComponent,
     ChophehoanthanhcongviecComponent,
-    HieuquacongviecComponent,
-    NhatkycongviecComponent,
     TrangthaiSchedulePipe,
     CongviectoiphoihopComponent,
     DelMyWorkComponent,
-    TonghopthoigianComponent,
     ViewdetailinfoComponent,
     CongviecovertimeComponent,
     WorkOvertimeComponent,
-    StateOvertimePipe
+    StateOvertimePipe,
+    CvkhoitaosauComponent,
+    DuyetkhoitaosauComponent
   ],
   imports: [
     CommonModule,

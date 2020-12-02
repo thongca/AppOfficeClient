@@ -1,21 +1,21 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { CommonService } from '../../../../common/common.service';
+import { UserLogin } from '../../../../common/option';
+import { CVQTFlowWork, CVQTMyWork } from '../../../../models/giaoviec/congviecmoi.model';
+import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
+import { ApiService } from '../../../../shared/api.service';
+import { WorkdetailService } from '../../../../shared/workdetail.service';
 import { SelectCommandComponent } from '../../components/select-command/select-command.component';
 import { TreeScheduleComponent } from '../../components/tree-schedule/tree-schedule.component';
-import { UserLogin } from '../../../../common/option';
-import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
-import { CVQTMyWork, CVQTFlowWork } from '../../../../models/giaoviec/congviecmoi.model';
-import { ToastrService } from 'ngx-toastr';
-import { ApiService } from '../../../../shared/api.service';
-import { CommonService } from '../../../../common/common.service';
-import { WorkdetailService } from '../../../../shared/workdetail.service';
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
 
 @Component({
-  selector: 'app-chophehoanthanhcongviec',
-  templateUrl: './chophehoanthanhcongviec.component.html',
-  styleUrls: ['./chophehoanthanhcongviec.component.css']
+  selector: 'app-duyetkhoitaosau',
+  templateUrl: './duyetkhoitaosau.component.html',
+  styleUrls: ['./duyetkhoitaosau.component.css']
 })
-export class ChophehoanthanhcongviecComponent implements OnInit, AfterViewInit {
+export class DuyetkhoitaosauComponent implements OnInit, AfterViewInit {
   @ViewChild('selectLenh', { static: false }) public selectLenh: SelectCommandComponent;
   @ViewChild('treeSchedule', { static: false }) public treeSchedule: TreeScheduleComponent;
   userlogin: UserLogin = this._commonService.getValueUserLogin();
@@ -71,7 +71,7 @@ export class ChophehoanthanhcongviecComponent implements OnInit, AfterViewInit {
     });
   }
   r1GetListMyWorks() {
-    this._apiService.r1_Get_List_Data('api/MyWorkFlow/r1GetListAwaitingComplete')
+    this._apiService.r1_Get_List_Data('api/MyWorkFlow/r1GetListAwaitingCompleteKts')
       .subscribe(res => {
         if (res === undefined) {
           return;

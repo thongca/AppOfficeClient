@@ -7,7 +7,7 @@
                 Thêm mới
             </a>
         </button>
-        <app-select-command #selectLenh MenuId="GV0101" (refreshPaList)="refreshList()">
+        <app-select-command #selectLenh MenuId="GV0111" (refreshPaList)="refreshList()">
         </app-select-command>
         <ng-container *appPermitdel='true'>
             <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
@@ -21,7 +21,7 @@
         </button>
         <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()">
         </app-del-my-work>
-        <strong  class="page-current-title">Công việc của tôi</strong>  
+        <strong  class="page-current-title">Công việc khởi tạo sau</strong>  
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">
@@ -41,27 +41,10 @@
                                             {{item.ExpectedDate | date: 'dd/MM/yyyy HH:mm'}} | Kết thúc:
                                             {{item.EndDate | date: 'dd/MM/yyyy HH:mm'}}</p>
                                         <p class="mb-0">
-                                            <ng-container *ngIf="item.Status != 4">
-                                                <ng-container *ngIf="item.Status != 5">
-                                                    <ng-container
-                                                        *ngTemplateOutlet="badgetem; context:{ cyclework: item.CycleWork }">
-                                                    </ng-container>
-                                                </ng-container>
-                                            </ng-container>
-
-
-                                            <ng-container *ngTemplateOutlet="status; context:{ status: item.Status }">
-                                            </ng-container>
-                                            <!-- <ng-container *ngFor="let ttem of listTypeFlows">
-                                                <ng-container *ngIf="ttem.MyWorkId === item.MyWorkId">
-                                                    <ng-container
-                                                    *ngTemplateOutlet="typeflow; context:{ typeflow: ttem.TypeFlow }">
-                                                </ng-container>
-                                                </ng-container>
-                                                
-                                                
-                                            </ng-container> -->
-
+                                            <ng-container *ngTemplateOutlet="status; context:{ status: item.Status }"></ng-container>
+                                            <span class="badge workflow-{{item.TypeFlow}}">
+                                                {{item.TypeFlow |trangThaiXuLy: 'giaoviec'}}
+                                            </span>
                                         </p>
                                     </td>
                                 </tr>
@@ -102,7 +85,7 @@
             class="form-horizontal" novalidate autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tạo công việc mới</h4>
+                    <h4 class="modal-title">Thêm mới công việc khởi tạo sau</h4>
                     <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
                         <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </button>
@@ -136,65 +119,47 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6 px-2 mb-2">
+                            <div class="col-md-12 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Độ khó
+                                    <label class="title-text col-form-label" for="name"> Công việc
+                                        <a class="note-title">(tạm dừng trước)</a>
                                     </label>
                                     <div class="input-text">
-                                        <select id="dokho" name="dokho" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTask">
-                                            <option *ngFor="let item of _sharedmyWork.listKhos" 
-                                                [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
-                                                {{item.Name}}
+                                        <select id="select2" name="select2" class="form-control padding-select-congty"
+                                            [(ngModel)]="modelOldWork" (ngModelChange)="ChangeOldWork($event)">
+                                            <option *ngFor="let item of listWorkOld" [ngValue]="item">Từ {{item.SpaceStart| date: 'HH:mm dd/MM'}} Đến {{item.SpaceEnd| date: 'HH:mm dd/MM'}} {{item.Name}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Độ vội
-                                    </label>
-                                    <div class="input-text">
-                                        <select name="dovoi" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTime">
-
-                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id"
-                                                [selected]="item.Id === model.PointTime">{{item.Name}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div class="col-md-6 px-2 mb-2">
-                                <app-input-date note="(Dự kiến)" require=true label="Ngày bắt đầu"
-                                    (changeDate)="dateSelectbd($event)">
-                                </app-input-date>
-                            </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <label class="title-text col-form-label" for="name"> Giờ bắt đầu
-                                    <a class="note-title">(Dự kiến)</a>
+                            <div class="col-md-4 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Thời gian từ
                                 </label>
                                 <div class="input-text">
-                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeStart"
-                                        [(ngModel)]="model.TimeStart"></timepicker>
+                                    <h5 class="my-2">
+                                        {{model.ExpectedDate | date: 'dd/MM/yyyy HH:mm'}}
+                                    </h5>
+                                    
                                 </div>
-
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <app-input-date note="(Dự kiến)" require=true label="Ngày kết thúc"
-                                    (changeDate)="dateSelectkt($event)">
-                                </app-input-date>
-                            </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <label class="title-text col-form-label" for="name"> Giờ kết thúc
-                                    <a class="note-title">(Dự kiến)</a>
+                            <div class="col-md-4 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> 
+                                    Thời gian đến
                                 </label>
-                                <div class="input-text">
-                                    <timepicker [showMeridian]="false" [showSpinners]="false" name="TimeEnd"
-                                        [(ngModel)]="model.TimeEnd"></timepicker>
-                                </div>
-
+                                <h5  class="my-2">
+                                    {{model.EndDate | date: 'dd/MM/yyyy HH:mm'}}
+                                </h5>
+                              
+                            </div>
+                            <div class="col-md-4 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> 
+                                    Số phút
+                                </label>
+                                <h5  class="my-2">
+                                    {{model.WorkTime | number: '1.2-2'}}
+                                </h5>
+                              
                             </div>
                             <div class="col-md-6 px-2 mb-2">
                                 <div class="form-group my-0">
@@ -260,26 +225,13 @@
 
                             <div class="col-md-12 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Người PH
-                                        <a class="note-title">(Phối hợp)</a>
+                                    <label class="title-text col-form-label" for="name"> Phối hợp
+                                        <span>*</span>
                                     </label>
                                     <div class="input-text">
                                         <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
                                             [placeholder]="'----- Người phối hợp -----'" [data]="dropdownList"
                                             [settings]="dropdownSettings" [(ngModel)]="selectedItems">
-                                        </ng-multiselect-dropdown>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Phòng ban
-                                        <a class="note-title">(Phối hợp)</a>
-                                    </label>
-                                    <div class="input-text">
-                                        <ng-multiselect-dropdown name="selectedItemPHs" class="multiple-select"
-                                            [placeholder]="'----- Phòng ban phối hợp -----'" [data]="listDepartments"
-                                            [settings]="dropdownSettingPHs" [(ngModel)]="selectedItemPHs">
                                         </ng-multiselect-dropdown>
                                     </div>
                                 </div>

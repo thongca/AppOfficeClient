@@ -3,51 +3,54 @@
         <div class="col-lg-12">
             <div class="card m-0">
                 <div class="card-header">
-                    <button (click)="ExportTotalClick()" type="button" class="btn btn-outline-primary" title="Xuất excel">
-                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-file-excel-o"
-                                aria-hidden="true"></i></span>
-                        <a class="ml-1">
-                            Excel
-                        </a>
-                    </button>
+                   
                     <div class="d-inline-block">
                         <app-input-date [mindate]="true" label="Từ ngày" (changeDate)="fromDateClick($event)">
-                    </app-input-date>
+                        </app-input-date>
                     </div>
                     <div class="d-inline-block">
-                    <app-input-date [mindate]="true" label="Đến ngày" (changeDate)="toDateClick($event)">
-                    </app-input-date>
+                        <app-input-date [mindate]="true" label="Đến ngày" (changeDate)="toDateClick($event)">
+                        </app-input-date>
                     </div>
                     <button (click)="r1GetReportKpi()" type="button" class="btn btn-outline-primary" title="Xuất excel">
                         <span class="btntext-middle"><i class="btnicon-font-size fa fa-filter"
                                 aria-hidden="true"></i></span>
                         <a class="ml-1">
-                           Thực hiện
+                            Thực hiện
                         </a>
                     </button>
-                    <strong  class="page-current-title">Báo cáo tổng hợp thời gian</strong>  
+                    <button (click)="ExportTotalClick()" type="button" class="btn btn-outline-primary"
+                    title="Xuất excel">
+                    <span class="btntext-middle"><i class="btnicon-font-size fa fa-file-excel-o"
+                            aria-hidden="true"></i></span>
+                    <a class="ml-1">
+                        Excel
+                    </a>
+                </button>
+                    <strong class="page-current-title">Báo cáo tổng hợp thời gian</strong>
                 </div>
                 <div class="card-body p-0 max-height-card-body">
                     <table #tablereport class="table table-sm table-bordered">
                         <thead class="thead-light">
-                       
+
                             <tr>
-                                <th width=40 rowspan= "3" class="text-middle">STT</th>
-                                <th rowspan= "3" class="text-middle">Tên công việc</th>
-                                <th width=80 rowspan= "3" class="text-center text-middle">Mã công việc</th>
-                                <th width=100 [attr.colspan]="5" class="text-center text-middle">Từ ngày...đến ngày...</th>
-                                <th width=100 colspan= "5" class="text-center text-middle">Lũy kế</th>
-                            
+                                <th width=40 rowspan="3" class="text-middle">STT</th>
+                                <th rowspan="3" class="text-middle">Tên công việc</th>
+                                <th width=80 rowspan="3" class="text-center text-middle">Mã công việc</th>
+                                <th width=100 [attr.colspan]="5" class="text-center text-middle">Từ ngày...đến ngày...
+                                </th>
+                                <th width=100 colspan="5" class="text-center text-middle">Lũy kế</th>
+
                             </tr>
                             <tr class="text-center">
-                                <th width=80 rowspan= "3" class="text-middle">Số giờ công thực</th>
-                                <th width=80 rowspan= "3" class="text-middle">Số ngày công thực</th>
-                                <th width=80 rowspan= "3" class="text-center text-middle">% thời gian cho từng mã</th>
-                                <th width=70 colspan= "2" class="text-center text-middle">Tỷ lệ tham gia%</th>
-                                <th width=80 rowspan= "3" class="text-middle">Số giờ công thực</th>
-                                <th width=80 rowspan= "3" class="text-middle">Số ngày công thực</th>
-                                <th width=80 rowspan= "3" class="text-center text-middle">% thời gian cho từng mã</th>
-                                <th width=70 colspan= "2" class="text-center text-middle">Tỷ lệ tham gia%</th>
+                                <th width=80 rowspan="3" class="text-middle">Số giờ công thực</th>
+                                <th width=80 rowspan="3" class="text-middle">Số ngày công thực</th>
+                                <th width=80 rowspan="3" class="text-center text-middle">% thời gian cho từng mã</th>
+                                <th width=70 colspan="2" class="text-center text-middle">Tỷ lệ tham gia%</th>
+                                <th width=80 rowspan="3" class="text-middle">Số giờ công thực</th>
+                                <th width=80 rowspan="3" class="text-middle">Số ngày công thực</th>
+                                <th width=80 rowspan="3" class="text-center text-middle">% thời gian cho từng mã</th>
+                                <th width=70 colspan="2" class="text-center text-middle">Tỷ lệ tham gia%</th>
                             </tr>
                             <tr class="text-center">
                                 <th width=80 class="text-middle">Người chủ trì</th>
@@ -59,7 +62,7 @@
                         <tbody>
                             <tr *ngFor="let item of listTotalTime; let i = index">
                                 <td class="text-center">
-                                 {{i + 1}}
+                                    {{i + 1}}
                                 </td>
                                 <td>{{item.TaskName}}</td>
                                 <td>{{item.TaskCode}}</td>
@@ -70,10 +73,10 @@
                                 <td>{{item.PhoiHop| number: '1.2-2' }}</td>
                                 <td>{{item.TongLk| number: '1.2-2' }}</td>
                                 <td>{{item.NgayLk | number: '1.2-2'}}</td>
-                                <td>{{item.TongLk*100 / report.TotalHourLk | number: '1.2-2'}}  %</td>
+                                <td>{{item.TongLk*100 / report.TotalHourLk | number: '1.2-2'}} %</td>
                                 <td class="text-center">{{item.ChuTriLk | number: '1.2-2'}}</td>
                                 <td class="text-center">{{item.PhoiHopLk | number: '1.2-2'}}</td>
-                               
+
                             </tr>
                         </tbody>
                     </table>
@@ -84,4 +87,3 @@
     </div>
     <!--/.row-->
 </div>
-  

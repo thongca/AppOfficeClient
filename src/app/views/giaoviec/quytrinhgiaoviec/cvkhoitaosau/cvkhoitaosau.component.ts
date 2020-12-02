@@ -1,28 +1,30 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { HttpEventType } from '@angular/common/http';
-import { ApifileService } from '../../../../shared/apifile.service';
-import { CommonService } from '../../../../common/common.service';
-import { ApiService } from '../../../../shared/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { CVQTMyWork, CVQTFlowWork } from '../../../../models/giaoviec/congviecmoi.model';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { TreeDiagramComponent } from '../../../../components/tree-diagram/tree-diagram.component';
-import { TreeScheduleComponent } from '../../components/tree-schedule/tree-schedule.component';
-import { UserLogin } from '../../../../common/option';
-import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
-import { SelectCommandComponent } from '../../components/select-command/select-command.component';
-import { WorkdetailService } from '../../../../shared/workdetail.service';
-import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service';
-import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
-import { SearchService } from '../../../../shared/search.service';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { ToastrService } from 'ngx-toastr';
+import { map } from 'rxjs/operators';
+import { CommonService } from '../../../../common/common.service';
+import { UserLogin } from '../../../../common/option';
+import { TreeDiagramComponent } from '../../../../components/tree-diagram/tree-diagram.component';
+import { CVQTFlowWork, CVQTMyWork } from '../../../../models/giaoviec/congviecmoi.model';
+import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
+import { ApiService } from '../../../../shared/api.service';
+import { ApifileService } from '../../../../shared/apifile.service';
+import { SearchService } from '../../../../shared/search.service';
+import { WorkdetailService } from '../../../../shared/workdetail.service';
+import { SelectCommandComponent } from '../../components/select-command/select-command.component';
+import { TreeScheduleComponent } from '../../components/tree-schedule/tree-schedule.component';
+import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
+import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service';
+import { CvKhoiTaoSau } from './cvkhoitaosau';
 
 @Component({
-  selector: 'app-congvieccuatoi',
-  templateUrl: './congvieccuatoi.component.html',
-  styleUrls: ['./congvieccuatoi.component.css']
+  selector: 'app-cvkhoitaosau',
+  templateUrl: './cvkhoitaosau.component.html',
+  styleUrls: ['./cvkhoitaosau.component.css']
 })
-export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
+export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   @ViewChild('treediagram', { static: false }) public treediagram: TreeDiagramComponent;
   @ViewChild('selectLenh', { static: false }) public selectLenh: SelectCommandComponent;
@@ -55,18 +57,20 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     PointTime: 0,
     DepartmentId: this.userlogin.departmentId,
     ExpectedDate: new Date,
-    Repossibility: 1
+    Repossibility: 1,
+    SpaceTimeId: null
   };
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
+  modelOldWork: CvKhoiTaoSau = new CvKhoiTaoSau();
   listTotals: CVQTFlowWork[];
   listCongViecs: CVQTFlowWork[];
   listTypeFlows = [];
-  listDepartments = [];
   filesView: [];
   listWorks = [];
   listHistory: [];
+  listWorkOld: CvKhoiTaoSau[] = [];
   listWorkFlows: [];
   vbattach: File = null;
   dcfile: File = null;
@@ -93,27 +97,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     }
   ];
   selectedItems = [];
-  selectedItemPHs = [];
   dropdownList = [];
-  dropdownSettings = {
-    singleSelection: false,
-    idField: 'UserId',
-    textField: 'FullName',
-    selectAllText: 'Chọn tất cả',
-    unSelectAllText: 'Bỏ chọn tất cả',
-    itemsShowLimit: 3,
-    allowSearchFilter: true
-  };
-  /** Phòng ban select setting */
-  dropdownSettingPHs = {
-    singleSelection: false,
-    idField: 'DepartmentId',
-    textField: 'DepartmentName',
-    selectAllText: 'Chọn tất cả',
-    unSelectAllText: 'Bỏ chọn tất cả',
-    itemsShowLimit: 3,
-    allowSearchFilter: true
-  };
+  dropdownSettings = {};
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,
@@ -131,7 +116,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     this.r1GetListLinhVuc();
     this.r1ListUser();
     this.r1GetListMyWorks();
-    this.r1GetDepartment();
+    this.r1TinhThoiGianTrong();
   }
   ngAfterViewInit(): void {
     this._apiSharedService.reloadListMyWorks$.subscribe(res => {
@@ -143,8 +128,17 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
       this.searchData(res);
     });
   }
+  r1TinhThoiGianTrong() {
+    this._apiService.r1_Get_List_Data('api/MyWorkReport/r1SpaceTimeOnDay')
+      .subscribe(res => {
+        if (res === undefined) {
+          return;
+        }
+        // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
+      });
+  }
   r1GetListMyWorks() {
-    this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorks')
+    this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorksOld')
       .subscribe(res => {
         if (res === undefined) {
           return;
@@ -158,19 +152,21 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
         // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
-  r1GetDepartment() {
-    this._apiService.r1_Get_List_Data('api/Common/r1GetListDataDepforUser')
+  r1GetListOldWorks() {
+    this._apiService.r1_Get_List_Data('api/MyWork/r1GetMyWorkSpaceTime')
       .subscribe(res => {
         if (res === undefined) {
           return;
         }
         if (res['data'] !== undefined) {
-          this.listDepartments = res['data'];
+          this.listWorkOld = res['data'];
         }
+        // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
-ChangeDV(value) {
-}
+  ChangeDV(value) {
+    console.log(value);
+  }
   SelectIDEditModel(item: CVQTFlowWork) {
     const workFlow = {
       Id: item.Id,
@@ -258,14 +254,17 @@ ChangeDV(value) {
     const models = {
       CV_QT_MyWork: this.model,
       CV_QT_MySupportWorks: this.selectedItems,
-      CV_QT_DepartmentSupporter: this.selectedItemPHs, /** Có thể xóa */
+      SpaceTimeId: this.model.SpaceTimeId
     };
-    this.model.ExpectedDate = this._commonService.setTimeToDateAndChangeTimeZone(this.model.ExpectedDate, this.model.TimeStart);
-    this.model.EndDate = this._commonService.setTimeToDateAndChangeTimeZone(this.model.EndDate, this.model.TimeEnd);
-    this.model.PreWorkDeadline = this._commonService.setTimeToDateAndChangeTimeZone(this.model.PreWorkDeadline, this.timeTQ);
+    this.model.ExpectedDate =
+    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.ExpectedDate), new Date(this.model.TimeStart));
+    this.model.EndDate =
+    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.EndDate), new Date(this.model.TimeEnd));
+    this.model.PreWorkDeadline =
+    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.PreWorkDeadline), new Date(this.timeTQ));
     if (this.model.Id === null) {
 
-      this._apiFileService.r2_addFileModel(this.vbattach, models, 'api/MyWork/r2AddDataMywork')
+      this._apiFileService.r2_addFileModel(this.vbattach, models, 'api/MyWork/r2AddDataMyworkOldTime')
         .subscribe(next => {
           if (next.type === HttpEventType.Response) {
             if (next === undefined) {
@@ -310,6 +309,15 @@ ChangeDV(value) {
         this.dropdownList = res['data'];
         this.selectedItems = [
         ];
+        this.dropdownSettings = {
+          singleSelection: false,
+          idField: 'UserId',
+          textField: 'FullName',
+          selectAllText: 'Chọn tất cả',
+          unSelectAllText: 'Bỏ chọn tất cả',
+          itemsShowLimit: 3,
+          allowSearchFilter: true
+        };
       });
   }
   r1GetListLinhVuc() {
@@ -321,7 +329,14 @@ ChangeDV(value) {
         this.listWorks = res['data'];
       });
   }
-
+  ChangeOldWork(data: CvKhoiTaoSau) {
+    this.model.ExpectedDate = data.SpaceStart;
+    this.model.TimeStart = data.SpaceStart;
+    this.model.TimeEnd = data.SpaceEnd;
+    this.model.EndDate = data.SpaceEnd;
+    this.model.WorkTime = data.Time;
+    this.model.SpaceTimeId =  data.Id;
+  }
   refreshList() {
     this.r1GetListMyWorks();
   }
@@ -356,7 +371,7 @@ ChangeDV(value) {
   }
   searchData(data: string) {
     this.listCongViecs = this.listTotals.filter(x => x.TaskName.toUpperCase().includes(data.toUpperCase())
-    || x.Code.toString().includes(data)
+      || x.Code.toString().includes(data)
     );
   }
   pageChanged(event: PageChangedEvent) {
@@ -366,10 +381,10 @@ ChangeDV(value) {
   }
   showModal() {
     this.modaldata.show();
-    this.selectedItemPHs = [];
-    this.selectedItems = [];
+    this.r1GetListOldWorks();
   }
   RefreshData() {
 
   }
 }
+

@@ -1,0 +1,101 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card m-0">
+                <div class="card-header">
+                    <div *appPermitshow="perUser" style="width: 200px;display: inline-block;">
+                        <select id="userId" name="userId" class="form-control padding-select-congty"
+                            [(ngModel)]="report.UserId">
+                            <option [ngValue]="0">----- Chọn người dùng -----</option>
+                            <option *ngFor="let item of listUser" [ngValue]="item.UserId">{{item.FullName}}</option>
+                        </select>
+                    </div>
+                    <div class="d-inline-block">
+                        <app-input-date [mindate]="true" label="Từ ngày" (changeDate)="fromDateClick($event)">
+                        </app-input-date>
+                    </div>
+                    <div class="d-inline-block">
+                        <app-input-date [mindate]="true" label="Đến ngày" (changeDate)="toDateClick($event)">
+                        </app-input-date>
+                    </div>
+                    <button (click)="r1GetReportKpi()" type="button" class="btn btn-outline-primary" title="Xuất excel">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-filter"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Thực hiện
+                        </a>
+                    </button>
+                    <button (click)="ExportKpiClick()" type="button" class="btn btn-outline-primary" title="Xuất excel">
+                        <span class="btntext-middle"><i class="btnicon-font-size fa fa-file-excel-o"
+                                aria-hidden="true"></i></span>
+                        <a class="ml-1">
+                            Excel
+                        </a>
+                    </button>
+                    <strong class="page-current-title">Báo cáo hiệu quả công việc</strong>
+                </div>
+
+                <div class="card-body p-0 max-height-card-body">
+                    <table class="table table-sm table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th width=40 rowspan="2" class="text-middle">STT</th>
+                                <th rowspan="2" class="text-middle">Tên công việc</th>
+                                <th width=80 rowspan="2" class="text-center text-middle">Mã công việc</th>
+                                <th width=70 rowspan="2" class="text-center text-middle">Số phút thực hiện thực tế</th>
+                                <th width=50 rowspan="2" class="text-center text-middle">Hệ số độ khó</th>
+                                <th width=50 rowspan="2" class="text-center text-middle">Hệ số độ vội</th>
+                                <th width=70 rowspan="2" class="text-center text-middle">Quy đổi ra điểm</th>
+                                <th width=70 rowspan="2" class="text-center text-middle">Quy đổi tỷ lệ tiền lương</th>
+                                <th width=100 [attr.colspan]="totalErrorhead + 1" class="text-center text-middle">Kết
+                                    quả thực hiện xuất từ phần mềm</th>
+                                <th width=70 rowspan="2" class="text-center text-middle">Tỷ lệ trừ</th>
+                                <th width=70 rowspan="2" class="text-center text-middle">KPI</th>
+                                <th width=100 rowspan="2" class="text-center text-middle">Ghi chú</th>
+
+                            </tr>
+                            <tr>
+                                <ng-container *ngFor="let item of listError">
+                                    <th width=80 class="text-center text-middle">{{item.ErrorName}}</th>
+                                </ng-container>
+                                <th width=80 class="text-center text-middle">Tổng lỗi</th>
+                            </tr>
+
+                        </thead>
+                        <tbody #TableBody>
+                            <tr *ngFor="let item of listKpis; let i = index">
+                                <td class="text-center">
+                                    {{i + 1}}
+                                </td>
+                                <td>{{item.TaskName}}</td>
+                                <td>{{item.TaskCode}}</td>
+                                <td>{{item.WorkTime | number: '1.2-2'}}</td>
+                                <td>{{item.PointTask }}</td>
+                                <td>{{item.PointTime }}</td>
+                                <td>{{item.Point | number: '1.2-2'}}</td>
+                                <td class="text-center" *ngIf="TotalPoint > 0">{{item.PercentPoint | number: '1.2-2'}}
+                                </td>
+                                <ng-container *ngFor="let etem of item.ChildrenError">
+                                    <td class="text-center">{{etem.Point}}</td>
+                                </ng-container>
+                                <td class="text-center"></td>
+                                <td class="text-center">{{item.TotalPointE | number: '1.2-2'}}</td>
+                                <td class="text-center">{{item.KpiPoint | number: '1.2-2'}}</td>
+                                <td class="text-center">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    Hiệu quả công việc: {{TotalKpi | number: '1.2-2'}} %
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>

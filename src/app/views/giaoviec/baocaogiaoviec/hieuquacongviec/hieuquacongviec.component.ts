@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../shared/api.service';
 import { map } from 'rxjs/internal/operators/map';
-import { ParseError } from '@angular/compiler';
 import { ExportExcelService } from '../../../../shared/export-excel.service';
 import * as moment from 'moment';
 import { CommonService } from '../../../../common/common.service';
+import { ApiService } from '../../../../shared/api.service';
+import { ReportDate } from '../../../../models/giaoviec/reportdate.model';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 @Component({
   selector: 'app-hieuquacongviec',
@@ -21,6 +22,7 @@ perUser: number = this._commonService.getUser().Permission;
 TotalKpi = 0;
 userId: number = 0;
 listUser: [];
+report: ReportDate = new ReportDate();
   constructor(
     private _apiService: ApiService,
     private _exportService: ExportExcelService,
@@ -61,15 +63,10 @@ listUser: [];
         this.listUser = res['data'];
       });
   }
-  ChangUser() {
-    this.r1GetReportKpi();
-  }
   r1GetReportKpi() {
-    const op = {
-      UserId: this.userId
-    };
-    this._apiService.r1_List_Data_Model_General(op, 'api/MyWorkReport/r1EvalueKPIOneUser').pipe(
+    this._apiService.r1_List_Data_Model_General(this.report, 'api/MyWorkReport/r1EvalueKPIOneUser').pipe(
       map(preres => {
+        this.TotalPoint = 1;
           this.TotalPoint =  preres['data'].reduce(((accumulator, currentValue) => {// toong diem lam viec cua mot cong viec
             currentValue.ChildrenError = JSON.parse(currentValue.ChildrenError);
             currentValue.TotalPointE = currentValue.ChildrenError.reduce(((acc, curr) => {// toong diem loi cua mot cong viec
@@ -82,6 +79,7 @@ listUser: [];
             currentValue.KpiPoint = currentValue.TotalPointE * 0.5;
             return accumulator;
         }), 0);
+        this.TotalKpi = 0;
         preres['data'].forEach(element => {
           element.PercentPoint = (element.Point * 100) / this.TotalPoint; // tính phần trăm lương
           element.KpiPoint = ((element.Point * 100) / this.TotalPoint) - element.TotalPointE; // tính phần trăm lương sau khi đã bị trừ lỗi
@@ -99,8 +97,15 @@ listUser: [];
         this.listKpis = res['data'];
       });
   }
+  fromDateClick(date: Date) {
+    this.report.dates = this._commonService.FromDateToDouble(date);
+  }
+  toDateClick(date) {
+    this.report.datee = this._commonService.FromDateToDouble(date);
+  }
   ExportKpiClick() {
-  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_Kpi', 1, this.userId);
+  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_Kpi', 1,
+  this.report.UserId, this.report);
   }
   RefreshData() {
 

@@ -6,11 +6,10 @@ import { AuthGuard } from '../../../guards/auth.guard';
 import { ChophethoihanComponent } from './chophethoihan/chophethoihan.component';
 import { DangthuchienComponent } from './dangthuchien/dangthuchien.component';
 import { ChophehoanthanhcongviecComponent } from './chophehoanthanhcongviec/chophehoanthanhcongviec.component';
-import { HieuquacongviecComponent } from './hieuquacongviec/hieuquacongviec.component';
-import { NhatkycongviecComponent } from './nhatkycongviec/nhatkycongviec.component';
 import { CongviectoiphoihopComponent } from './congviectoiphoihop/congviectoiphoihop.component';
-import { TonghopthoigianComponent } from './tonghopthoigian/tonghopthoigian.component';
 import { CongviecovertimeComponent } from './congviecovertime/congviecovertime.component';
+import { CvkhoitaosauComponent } from './cvkhoitaosau/cvkhoitaosau.component';
+import { DuyetkhoitaosauComponent } from './duyetkhoitaosau/duyetkhoitaosau.component';
 
 
 const routes: Routes = [
@@ -41,28 +40,23 @@ const routes: Routes = [
   },
   {
     canActivateChild: [AuthGuard],
-    path: 'hieuquacongviec',
-    component: HieuquacongviecComponent
-  },
-  {
-    canActivateChild: [AuthGuard],
-    path: 'nhatkycongviec',
-    component: NhatkycongviecComponent
-  },
-  {
-    canActivateChild: [AuthGuard],
     path: 'congviectoiphoihop',
     component: CongviectoiphoihopComponent
   },
   {
     canActivateChild: [AuthGuard],
-    path: 'tonghopthoigian',
-    component: TonghopthoigianComponent
+    path: 'duyetlamthemgio',
+    component: CongviecovertimeComponent
   },
   {
     canActivateChild: [AuthGuard],
-    path: 'duyetlamthemgio',
-    component: CongviecovertimeComponent
+    path: 'congvieckhoitaosau',
+    component: CvkhoitaosauComponent
+  },
+  {
+    canActivateChild: [AuthGuard],
+    path: 'duyetkhoitaosau',
+    component: DuyetkhoitaosauComponent
   },
 ];
 

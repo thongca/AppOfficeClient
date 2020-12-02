@@ -1,0 +1,58 @@
+<div class="animated fadeIn">
+    <div class="card-header py-2">
+
+        <app-select-command #selectLenh MenuId="GV0112" (refreshPaList)="refreshList()">
+        </app-select-command>
+        <strong  class="page-current-title">Duyệt công việc khởi tạo sau</strong>  
+    </div>
+    <div class="card-body p-0 border-0 scroll-card-body">
+        <div class="row mx-0">
+            <div class="col-md-4 pl-1">
+                <div class="card mt-1 border-0">
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr *ngFor="let item of listCongViecs" class="hover-cusor"
+                                    [style.background-color]="WorkFlowId===item.Id ? '#fff9cc' : 'white'">
+                                    <td class="py-1" (click)="SelectIDEditModel(item)">
+                                        <p class="mb-1"><strong class="font-vb">{{item.TaskName}}</strong>
+
+                                        </p>
+
+                                        <p class="mb-0 font-color">Mã công việc: {{item.Code}} | Bắt đầu:
+                                            {{item.ExpectedDate | date: 'dd/MM/yyyy'}} | Kết thúc:
+                                            {{item.EndDate | date: 'dd/MM/yyyy'}}</p>
+                                        <p class="mb-0">
+                                            <span class="badge workflow-{{item.TypeFlow}}">
+                                                {{item.TypeFlow |trangThaiXuLy: 'giaoviec'}}
+                                            </span>
+                                        </p>
+                                    </td>
+                                  
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--/.row-->
+                    </div>
+                </div>
+            </div>
+            <!--/.col-->
+            <div class="col-md-8 px-0">
+                <app-workflow-detail></app-workflow-detail>
+            </div>
+            <!--/.col-->
+        </div>
+
+        <!--/.row-->
+    </div>
+</div>
+
+<ng-template #badgetem let-cyclework="cyclework">
+    <span class="badge status-{{cyclework}}">{{cyclework | vongDoiCongViec}} </span>
+</ng-template>
+<ng-template #status let-status="status">
+    <span class="badge deadline-{{status}}">{{status | hanCongViec}} </span>
+</ng-template>
+<ng-template #typeflow let-typeflow="typeflow">
+    <span class="badge workflow-{{typeflow}}">{{typeflow | trangThaiXuLy: 'giaoviec'}} </span>
+</ng-template>

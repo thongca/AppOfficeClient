@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { element } from 'protractor';
 import { CommonService } from '../../../../common/common.service';
 import { ApiService } from '../../../../shared/api.service';
 import { WorkdetailService } from '../../../../shared/workdetail.service';
@@ -10,7 +11,7 @@ import { WorkdetailService } from '../../../../shared/workdetail.service';
   styleUrls: ['./work-overtime.component.css']
 })
 export class WorkOvertimeComponent implements OnInit {
-  listDateOverTime: [] = [];
+  listDateOverTime: WorkOverTime[] = [];
   perUser: number = this._commonService.getUser().Permission;
   constructor(
     private _workFlowDetail: WorkdetailService,
@@ -30,6 +31,9 @@ export class WorkOvertimeComponent implements OnInit {
         return;
       }
       if (res['error'] === 0) {
+        this.listDateOverTime.forEach(ele => {
+          ele.State = 1;
+        });
         this.toastr.success('Duyệt thời hạn làm ngoài giờ thành công!', 'Thông báo');
         return;
       }
@@ -41,9 +45,21 @@ export class WorkOvertimeComponent implements OnInit {
         return;
       }
       if (res['error'] === 0) {
+        this.listDateOverTime.forEach(ele => {
+          ele.State = 2;
+        });
         this.toastr.success('Duyệt thời hạn làm ngoài giờ thành công!', 'Thông báo');
         return;
       }
     });
   }
+}
+
+export class WorkOverTime {
+  DateOverTime: number;
+  Handle?: boolean;
+  MyWorkId: string;
+  State: number;
+  WorkTime: number;
+  check?: boolean;
 }

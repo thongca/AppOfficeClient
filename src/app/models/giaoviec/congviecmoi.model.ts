@@ -1,5 +1,4 @@
 export class CVQTMyWork {
-
 Id: string;
 Code: number;
 TaskId: string;
@@ -30,7 +29,9 @@ CreatedDate?: Date;
 ExpectedDate?: Date;
 Repossibility?: number;
 Suporter?: any;
+DepSuporter?: any;
 TotalPoint?: any;
+SpaceTimeId?: number;
 }
 export class CVQTFlowWork {
     Id: string;

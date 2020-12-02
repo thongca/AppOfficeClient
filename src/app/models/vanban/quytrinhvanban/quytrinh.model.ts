@@ -45,6 +45,7 @@ export class VBQTBuocLenhGroupRole {
     IsAllComCha: boolean;
     IsNguoiLap: boolean;
     IsNguoiGui: boolean;
+    IsManagement: boolean;
 }
 
 export class OptionLenhSelect {

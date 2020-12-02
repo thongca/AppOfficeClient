@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { CommonService } from '../../../../common/common.service';
+import { ReportDate } from '../../../../models/giaoviec/reportdate.model';
 import { ApiService } from '../../../../shared/api.service';
 import { ExportExcelService } from '../../../../shared/export-excel.service';
 
@@ -18,6 +19,7 @@ export class NhatkycongviecComponent implements OnInit {
   perUser: number = this._commonService.getUser().Permission;
   userId: number = 0;
   listUser: [];
+  report: ReportDate = new ReportDate();
   constructor(
     private _apiService: ApiService,
     private _exportService: ExportExcelService,
@@ -29,7 +31,6 @@ export class NhatkycongviecComponent implements OnInit {
     this.r1GetDataUser();
   }
   r1GetDataError() {
-    // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorCTG')
       .subscribe(res => {
         if (res === undefined) {
@@ -57,14 +58,11 @@ export class NhatkycongviecComponent implements OnInit {
         this.listUser = res['data'];
       });
   }
-  ChangUser() {
-    this.r1GetReportKpi();
-  }
+  // ChangUser() {
+  //   this.r1GetReportKpi();
+  // }
   r1GetReportKpi() {
-    const op = {
-      UserId: this.userId
-    };
-    this._apiService.r1_List_Data_Model_General(op, 'api/MyWorkReport/r1ReportNoteWorks').subscribe(res => {
+    this._apiService.r1_List_Data_Model_General(this.report, 'api/MyWorkReport/r1ReportNoteWorks').subscribe(res => {
       if (res === undefined) {
         return;
       }
@@ -74,9 +72,15 @@ export class NhatkycongviecComponent implements OnInit {
       this.listKpis = res['data'];
     });
   }
+  fromDateClick(date: Date) {
+    this.report.dates = this._commonService.FromDateToDouble(date);
+  }
+  toDateClick(date) {
+    this.report.datee = this._commonService.FromDateToDouble(date);
+  }
   ExportKpiClick() {
     this._exportService.exportExcel(this.TableBody.nativeElement,
-      moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_NKCV', 2, this.userId);
+      moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_NKCV', 2, this.report.UserId, this.report);
   }
   RefreshData() {
 

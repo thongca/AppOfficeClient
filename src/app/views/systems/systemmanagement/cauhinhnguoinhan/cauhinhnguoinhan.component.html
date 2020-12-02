@@ -74,6 +74,7 @@
                                                     <th class="text-center" width="120">Trong tổ</th>
                                                     <th class="text-center" width="120">Người lập</th>
                                                     <th class="text-center" width="120">Người gửi</th>
+                                                    <th class="text-center" width="120">TĐV</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -120,6 +121,12 @@
                                                                 [checked]="item.IsNguoiGui"
                                                                 [(ngModel)]="item.IsNguoiGui" name="IsNguoiGui"
                                                                 (click)="r2_AddData(item, item.IsNguoiGui, 7)"></td>
+                                                        <td class="text-center"><input class="table-checkbox "
+                                                                type="checkbox" id="checkallist" value="checkitem"
+                                                                [checked]="item.IsManagement"
+                                                                [(ngModel)]="item.IsManagement" name="IsManagement"
+                                                                (click)="r2_AddData(item, item.IsManagement, 8)"></td>
+
 
                                                     </tr>
                                                 </ng-container>

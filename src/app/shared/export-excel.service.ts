@@ -1,9 +1,9 @@
 import { HttpEventType } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
+import { ReportDate } from '../models/giaoviec/reportdate.model';
 import { ApiService } from './api.service';
 import { ApifileService } from './apifile.service';
 @Injectable({
@@ -18,15 +18,15 @@ export class ExportExcelService {
     private _apiService: ApiService,
     private toarts: ToastrService,
   ) { }
-  public exportExcel(jsonData: any, fileName: string, type: number, UserId: number): void {
+  public exportExcel(jsonData: any, fileName: string, type: number, UserId: number, report: ReportDate): void {
 
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(jsonData);
     const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     if (type === 1) {
-      this.saveExcelFileKPI(excelBuffer, fileName, UserId);
+      this.saveExcelFileKPI(excelBuffer, fileName, UserId, report);
     } else if (type === 2) {
-      this.saveExcelFileNKCV(excelBuffer, fileName, UserId);
+      this.saveExcelFileNKCV(excelBuffer, fileName, UserId, report);
     }
   }
   private blobToFile = (theBlob: Blob, fileName: string): File => {
@@ -41,11 +41,12 @@ export class ExportExcelService {
     });
   }
 
-  private saveExcelFileKPI(buffer: any, fileName: string, UserId: number): void {
+  private saveExcelFileKPI(buffer: any, fileName: string, UserId: number, report: ReportDate): void {
     const data: Blob = new Blob([buffer], { type: this.fileType });
     const myFile = this.blobToFile(data, 'myfile.xlsx');
     const model = {
-      UserId: UserId
+      UserId: UserId,
+      ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/r1ExcelKpi').subscribe(res => {
       if (res.type === HttpEventType.Response) {
@@ -57,11 +58,12 @@ export class ExportExcelService {
       }
     });
   }
-  private saveExcelFileNKCV(buffer: any, fileName: string, UserId: number): void {
+  private saveExcelFileNKCV(buffer: any, fileName: string, UserId: number, report: ReportDate): void {
     const data: Blob = new Blob([buffer], { type: this.fileType });
     const myFile = this.blobToFile(data, 'myfile.xlsx');
     const model = {
-      UserId: UserId
+      UserId: UserId,
+      ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/ExportNkCvExcel').subscribe(res => {
       if (res.type === HttpEventType.Response) {

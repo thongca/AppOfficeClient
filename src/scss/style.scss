@@ -186,24 +186,24 @@ input:focus{
   background-color: #007bff;
   color: white;
  }
- .workflow-0{
+ .workflow-0, .workflow-13 {
   background-color: #17a2b8;
   color: white;
  }
- .workflow-1, .workflow-4, .workflow-7,.workflow-11, .workflow-12  {
+ .workflow-1, .workflow-4, .workflow-7,.workflow-11, .workflow-12,.workflow-14   {
   background-color: #007bff;
   color: white;
  }
 
- .workflow-2, .workflow-5, .workflow-9{
+ .workflow-2, .workflow-5, .workflow-9, .workflow-17{
   background-color: #ff8d00;
   color: white;
  }
- .workflow-3,.workflow-6 {
+ .workflow-3,.workflow-6, .workflow-16 {
   background-color: #28a745;
   color: white;
  }
- .workflow-8, .workflow-10 {
+ .workflow-8, .workflow-10,.workflow-15 {
   background-color: #dc3545;
   color: white;
  }
@@ -220,6 +220,7 @@ input:focus{
 }
 .card-header {
   height: 52px;
+  padding: 0.5rem 1.25rem;
 }
 .max-height-cardbody{
   max-height: calc(100vh - 120px) !important;

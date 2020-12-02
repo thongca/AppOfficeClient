@@ -1,4 +1,3 @@
-import { GiaoviecModule } from './giaoviec.module';
 import { GiaoviecComponent } from './giaoviec.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -24,6 +23,11 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         path: 'quytrinhgiaoviec',
         loadChildren: () => import('./quytrinhgiaoviec/quytrinhgiaoviec.module').then(m => m.QuytrinhgiaoviecModule)
+      },
+      {
+        canActivateChild: [AuthGuard],
+        path: 'baocao',
+        loadChildren: () => import('./baocaogiaoviec/baocaogiaoviec.module').then(m => m.BaocaogiaoviecModule)
       },
       {
         path: '**',

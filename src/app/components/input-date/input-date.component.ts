@@ -35,7 +35,7 @@ export class InputDateComponent implements OnInit {
         containerClass: 'theme-dark-blue',
         showWeekNumbers: false,
         dateInputFormat: 'DD/MM/YYYY',
-        minDate: new Date(),
+        minDate: new Date()
       }
       );
     this.datelageService.use('vi');

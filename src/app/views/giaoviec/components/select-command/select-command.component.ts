@@ -74,10 +74,13 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   @ViewChild('modalDuyetHT', { static: false }) public modalDuyetHT: ModalDirective;
   @ViewChild('modalRejectHT', { static: false }) public modalRejectHT: ModalDirective;
   @ViewChild('modalNNGH', { static: false }) public modalNNGH: ModalDirective;
+  @ViewChild('modalTrinhKTS', { static: false }) public modalTrinhKTS: ModalDirective;
+  @ViewChild('modalDuyetKts', { static: false }) public modalDuyetKts: ModalDirective;
+  @ViewChild('modalTrinhPhoiHop', { static: false }) public modalTrinhPhoiHop: ModalDirective;
   ModalTitle = 'Trình';
   isShowBtn = false;
   listLenh: BuocLenhGroupSelect[] = [];
-  listErrors:  [];
+  listErrors: [];
   options: OptionLenhSelect = {
     MenuId: '',
     GroupRoleId: 0,
@@ -129,14 +132,29 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         ];
         this.droperrorSettings = {
           singleSelection: false,
+          enableCheckAll: false,
           idField: 'Id',
           textField: 'ErrorName',
           selectAllText: 'Chọn tất cả',
           unSelectAllText: 'Bỏ chọn tất cả',
-          itemsShowLimit: 2,
+          itemsShowLimit: 4,
           allowSearchFilter: true
         };
       });
+  }
+  OnChangeError(data) {
+    this.selectedErrors.forEach(item => {
+      item.Point = this.dropdownErrorList.find(x => x.Id === item.Id).Point;
+      item.Amount = 1;
+      item.PointLocal = item.Point;
+    });
+  }
+  DeChangeError(data) {
+    this.selectedErrors.forEach(item => {
+      item.Point = this.dropdownErrorList.find(x => x.Id === item.Id).Point;
+      item.PointLocal = item.Point;
+      item.Amount = 1;
+    });
   }
   showBtn(value: boolean, workFlow: WorkFlow) {
     this.modelTTH.MyWorkId = workFlow.MyWorkId;
@@ -173,13 +191,36 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         }
       });
   }
+    // add quy trình chuyển xử lý
+    r2_TrinhGiaiQuyetPhoiHop() {
+      this.modelTTH.UserDelivers = this.selectedItems;
+      this.modalTrinhThoiHan.hide();
+      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowPHCT')
+        .subscribe(res => {
+          if (res.type === HttpEventType.Response) {
+            if (res === undefined) {
+              this.toastr.error(res['body']['ms'], 'Thông báo');
+              return;
+            }
+            if (res['body']['error'] === 1) {
+              this.toastr.error(res['body']['ms'], 'Thông báo');
+              return;
+            }
+            this.toastr.success(res['body']['ms'], 'Thông báo');
+            this._signalService.GetNguoiNhanThongBao('');
+            this._apiSharedService.reloadMyWorkByChangeData();
+            this._apiSharedService.r1_getListLenhs(this.options);
+            return;
+          }
+        });
+    }
   // add quy trình duyệt thời hạn
   r2_PheThoiHan() {
     this.modelTTH.UserDelivers = this.selectedItems;
     this.modalDuyetThoiHan.hide();
     this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
     this.modelTTH.DStart =
-    this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateStartChange, this.timeStart));
+      this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateStartChange, this.timeStart));
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetTH')
       .subscribe(res => {
         if (res.type === HttpEventType.Response) {
@@ -199,125 +240,177 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         }
       });
   }
-    // add quy trình duyệt thời hạn
-    r2_TrinhHoanThanh() {
-      this.modelTTH.UserDelivers = this.selectedItems;
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowHTCV')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            this.modalTrinhHT.hide();
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
-            this._signalService.GetNguoiNhanThongBao('');
-            this._apiSharedService.reloadMyWorkByChangeData();
-            this._apiSharedService.r1_getListLenhs(this.options);
+  // add quy trình duyệt thời hạn
+  r2_TrinhHoanThanh() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowHTCV')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalTrinhHT.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
             return;
           }
-        });
-    }
-    r2_PheHoanThanh() {
-      this.modelTTH.UserDelivers = this.selectedItems;
-      this.modalDuyetThoiHan.hide();
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetHTCV')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            this.modalDuyetHT.hide();
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
-            this._signalService.GetNguoiNhanThongBao('');
-            this._apiSharedService.reloadMyWorkByChangeData();
-            this._apiSharedService.r1_getListLenhs(this.options);
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
             return;
           }
-        });
-    }
-    r2_YeuCauChinhSua() {
-      this.modelTTH.UserDelivers = this.selectedItems;
-      this.modalDuyetThoiHan.hide();
-      this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowYeuCauChinhSua')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            this.modalRejectHT.hide();
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi yêu cầu chỉnh sửa công việc!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
-            this._signalService.GetNguoiNhanThongBao('');
-            this._apiSharedService.reloadMyWorkByChangeData();
-            this._apiSharedService.r1_getListLenhs(this.options);
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  // add quy trình duyệt khởi tạo sau
+  r2_TrinhHoanThanhKTS() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowHTCVKTS')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalTrinhKTS.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
             return;
           }
-        });
-    }
-    r2_NhacNhoGiaHan() {
-      this.modelTTH.UserDelivers = this.selectedItems;
-      this.modalDuyetThoiHan.hide();
-      if (this.modelTTH.DateChange === null) {
-        this.toastr.error('Thời gian gia hạn không được để trống!', 'Thông báo');
-        return;
-      }
-      this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowNhacNhoGiaHan')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            this.modalRejectHT.hide();
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi nhắc nhở và gia hạn công việc!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
-            this._signalService.GetNguoiNhanThongBao('');
-            this._apiSharedService.reloadMyWorkByChangeData();
-            this._apiSharedService.r1_getListLenhs(this.options);
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
             return;
           }
-        });
-    }
-    // đánhg giá chất lượng
-    r2_DanhGiaChatLuong() {
-      this.modelTTH.Errors = this.selectedErrors;
-      this.modelTTH.TypeUserDelis = this.selectedUsers;
-      this.modalDanhGiaCL.hide();
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDGCL')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi đánh giá chất lượng công việc không thành công!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  r2_PheHoanThanh() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this.modalDuyetThoiHan.hide();
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetHTCV')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalDuyetHT.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
             return;
           }
-        });
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  r2_DuyetKhoiTaoSau(type: number) {
+    let url = 'api/MyWorkFlow/r2AddWorkFlowDongyKTS';
+    if (type === 1) {
+      url = 'api/MyWorkFlow/r2AddWorkFlowDongyKTS';
+    } else {
+      url = 'api/MyWorkFlow/r2AddWorkFlowNotDongyKTS';
     }
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this.modalDuyetKts.hide();
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, url)
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalDuyetHT.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi trình phê duyệt hoàn thành công việc!', 'Thông báo');
+            return;
+          }
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  r2_YeuCauChinhSua() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this.modalDuyetThoiHan.hide();
+    this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowYeuCauChinhSua')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalRejectHT.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi yêu cầu chỉnh sửa công việc!', 'Thông báo');
+            return;
+          }
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  r2_NhacNhoGiaHan() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this.modalDuyetThoiHan.hide();
+    if (this.modelTTH.DateChange === null) {
+      this.toastr.error('Thời gian gia hạn không được để trống!', 'Thông báo');
+      return;
+    }
+    this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowNhacNhoGiaHan')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          this.modalRejectHT.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi nhắc nhở và gia hạn công việc!', 'Thông báo');
+            return;
+          }
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
+  // đánhg giá chất lượng
+  r2_DanhGiaChatLuong() {
+    this.modelTTH.Errors = this.selectedErrors;
+    this.modelTTH.TypeUserDelis = this.selectedUsers;
+    this.modalDanhGiaCL.hide();
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDGCL')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi đánh giá chất lượng công việc không thành công!', 'Thông báo');
+            return;
+          }
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          return;
+        }
+      });
+  }
   ShowModal(Code, Id) {
     this.vbattach = null;
     this.r1ListUser(Code);
@@ -351,8 +444,20 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         this.ModalTitle = 'Yêu cầu chỉnh sửa';
         break;
       case 'CV_NHACNHOGIAHAN':
-          this.modalNNGH.show(); // nhắc nhở gia hạn
-          this.ModalTitle = 'Nhắc nhở và gia hạn';
+        this.modalNNGH.show(); // nhắc nhở gia hạn
+        this.ModalTitle = 'Nhắc nhở và gia hạn';
+        break;
+      case 'CV_KHOITAOSAU':
+        this.modalTrinhKTS.show();
+        this.ModalTitle = 'Trình phê duyệt khởi tạo sau';
+        break;
+      case 'CV_DUYETKHOITAOSAU':
+        this.modalDuyetKts.show();
+        this.ModalTitle = 'Duyệt công việc khởi tạo sau';
+        break;
+      case 'CV_TRINHXULYPHOIHOP':
+        this.modalTrinhPhoiHop.show();
+        this.ModalTitle = 'Trình giải quyết phối hợp công tác';
         break;
       default:
         break;
@@ -389,8 +494,8 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   dateSelectdc(date) {
     this.modelTTH.DateChange = date;
   }
-datestartdc(date) {
-  this.modelTTH.DateStartChange = date;
+  datestartdc(date) {
+    this.modelTTH.DateStartChange = date;
   }
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
@@ -427,8 +532,9 @@ export class TypeUserDeli {
 }
 export class Error {
   Id: number;
-  Point: string;
-  Amount: string;
+  Point: number;
+  PointLocal: number;
+  Amount: number;
   ErrorName: string;
 }
 

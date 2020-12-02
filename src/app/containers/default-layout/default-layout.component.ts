@@ -2,13 +2,15 @@ import { ApiService } from './../../shared/api.service';
 import { CommonService } from './../../common/common.service';
 import { SignalRealTimeService } from './../../shared/signal-real-time.service';
 import { MenuService } from './../../common/menu.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SearchService } from '../../shared/search.service';
 import { UserNhanThongBao } from '../../models/usernhantb.interface';
 import { DefaultServiceService } from './default-service.service';
 import { NotificationModel } from '../../models/systems/notifi/Notifi.model';
 import { map } from 'rxjs/internal/operators/map';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,10 +18,12 @@ import { map } from 'rxjs/internal/operators/map';
   styleUrls: ['./default-layout.component.css'],
 })
 export class DefaultLayoutComponent implements OnInit, AfterViewInit {
+  @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   public sidebarMinimized = false;
   public navItems = [];
   public listThongbaos: NotificationModel[] = [];
   userNhanTbs: UserNhanThongBao[] = [];
+  changPass: ChangePass = new ChangePass();
   s: string;
   total = 0;
   fullName = '';
@@ -30,6 +34,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   constructor(
     private _signalSer: SignalRealTimeService,
     private _commonService: CommonService,
+    private _toastr: ToastrService,
     private _apiService: ApiService,
     private _menuService: MenuService,
     public search: SearchService,
@@ -90,6 +95,20 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       this._defaultService.getNotify();
     });
   }
+  ShowModalDoiMatKhau() {
+    this.modaldata.show();
+  }
+  DoiMatKhau() {
+    this._apiService.r2_Add_Data_Model(this.changPass, 'api/login/ChangePassword').subscribe(res => {
+      this.modaldata.hide();
+      if (res['error'] === 1) {
+        this._toastr.error('Đổi mật khẩu không thành công!', 'Thông báo');
+        return;
+      }
+      this._toastr.success('Đổi mật khẩu thành công!', 'Thông báo');
+      return;
+    });
+  }
   LogOut(): void {
     localStorage.clear();
     sessionStorage.clear();
@@ -102,4 +121,14 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   toggleMinimize(e) {
     this.sidebarMinimized = e;
   }
+}
+export class ChangePass {
+  constructor() {
+    this.PassConfirm = null;
+    this.PassOld = null;
+    this.PassNew = null;
+  }
+PassOld: string;
+PassNew: string;
+PassConfirm: string;
 }
