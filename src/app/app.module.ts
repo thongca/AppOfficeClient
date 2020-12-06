@@ -50,6 +50,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { SearchService } from './shared/search.service';
 import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
+import { PushNotificationService } from 'ngx-push-notifications';
 @NgModule({
   imports: [
     BrowserModule,
@@ -96,7 +97,7 @@ import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
     LoginComponent,
     TinhPointerrorPipe
   ],
-  providers: [SearchService, {
+  providers: [SearchService, PushNotificationService, {
     provide: LocationStrategy,
     useClass: PathLocationStrategy,
     useValue: { baseUrl: 'http://localhost:63893/' }

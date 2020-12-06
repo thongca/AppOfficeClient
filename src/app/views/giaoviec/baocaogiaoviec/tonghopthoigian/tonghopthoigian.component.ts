@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/internal/operators/map';
 import { CommonService } from '../../../../common/common.service';
 import { ReportDate } from '../../../../models/giaoviec/reportdate.model';
@@ -22,7 +23,8 @@ export class TonghopthoigianComponent implements OnInit {
     constructor(
       private _exportService: ExportExcelService,
       private _apiService: ApiService,
-      private _commonService: CommonService
+      private _commonService: CommonService,
+      private toarts: ToastrService
     ) { }
     ngOnInit(): void {
       this.report.TotalHourLk = 0;
@@ -65,6 +67,7 @@ export class TonghopthoigianComponent implements OnInit {
           if (res['error'] === 1) {
             return;
           }
+          this.toarts.success('Tải báo cáo thành công!', 'Thông báo');
           this.listTotalTime = res['data'];
         });
     }
@@ -83,8 +86,8 @@ export class TonghopthoigianComponent implements OnInit {
         dates: new Date(date.setDate(1)),
         datee: new Date()
       };
-      this._exportService.saveExcelFileTotalTime(this.report,
-        moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_SumTime');
+      this._exportService.exportExcel(this.tablereport.nativeElement,
+        moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_SumTime', 3, this.report.UserId, this.report);
     }
 }
 

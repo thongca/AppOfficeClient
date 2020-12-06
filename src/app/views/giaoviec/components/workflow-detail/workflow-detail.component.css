@@ -115,3 +115,12 @@ background-color: #eeeeefd4;
   transform: translate(0px, -20px);
   background-color: white;
 }
+.title-text-cus {
+  width: 150px;
+    font-weight: 600;
+    float: left;
+    color: #333;
+}
+.input-text-cus {
+width: calc(100% - 150px) !important;
+}

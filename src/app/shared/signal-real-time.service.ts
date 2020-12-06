@@ -1,43 +1,54 @@
-import { async } from '@angular/core/testing';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { Subject } from 'rxjs';
-import { UserInfo, SignalInfo } from '../models/shared/signalrealtime/userinfo.interface';
-import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
+import { UserInfo } from '../models/shared/signalrealtime/userinfo.interface';
+import {  HubConnection } from '@aspnet/signalr';
 import { UserNhanThongBao } from '../models/usernhantb.interface';
+import { CommonService } from '../common/common.service';
+import { BaseUrlService } from '../common/base-url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRealTimeService {
+  userlgId = this._common.getUserId();
   messageReceived = new EventEmitter<string>();
   connectionEstablished = new EventEmitter<Boolean>();
   private hubConnection: HubConnection;
-
+  connectionId: string;
   private newPeer = new Subject<UserInfo>();
   public newPeer$ = this.newPeer.asObservable();
-
   private helloAnswer = new Subject<UserInfo>();
   public helloAnswer$ = this.helloAnswer.asObservable();
   usergetTb: UserNhanThongBao[] = [];
   private disconnectedPeer = new Subject<UserInfo>();
   public disconnectedPeer$ = this.disconnectedPeer.asObservable();
   private connectionIsEstablished = false;
-  private signal = new Subject<string>();
+  private signal = new Subject<NotifyContent>();
   public signal$ = this.signal.asObservable();
+  private typeflow = new Subject<number[]>();
+  public typeflow$ = this.typeflow.asObservable();
   constructor(
+    private _common: CommonService,
+    private _baseUrl: BaseUrlService
   ) {
     this.createConnection();
   }
   private async createConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:63893/signalrtc')
+      .withUrl(this._baseUrl.baseUrl + 'signalrtc')
       .build();
 
-      await this.hubConnection.start();
-      this.hubConnection.on('SendSignal', (data: any) => {
-            this.signal.next(data);
-          });
+    await this.hubConnection
+      .start()
+      .then(() => this.getConnectionId())
+      .catch(err => console.log('Error while starting connection: ' + err));
+    this.hubConnection.on('SendSignal', (data: NotifyContent) => {
+      this.signal.next(data);
+    });
+    this.hubConnection.on('SenNotifySign', (data: number[]) => {
+      this.typeflow.next(data);
+    });
   }
   // public async startConnection(): Promise<void> {
 
@@ -64,8 +75,16 @@ export class SignalRealTimeService {
   //     this.messageReceived.emit(data);
   //   });
   // }
+  public getConnectionId = () => {
+    this.hubConnection.invoke('getconnectionid', this.userlgId.toString()).then(
+      (data) => {
+        console.log(data);
+        this.connectionId = data;
+      }
+    );
+  }
   sendDataSignal(value: string) {
-    this.hubConnection.invoke('SendData', value);
+    this.hubConnection.invoke('SendData', value, this.connectionId);
   }
   GetNguoiNhanThongBao(users) {
     if (users !== undefined) {
@@ -76,4 +95,10 @@ export class SignalRealTimeService {
       }
     }
   }
+}
+export class NotifyContent {
+  tenNguoiGui: string;
+  noiDung: string;
+  trangThai: string;
+  ngay: Date;
 }

@@ -33,6 +33,20 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     UserManagerId: null,
     UserNextId: null
   };
+  // không sử dụng ở đâu ngoài dùng cho lưu thời gian của từng công việc hiện tại
+  modelLocal: FlowModel = {
+    Time: new Date(),
+    NguoiGuiId: this._commonService.getUser().Id,
+    NameNguoiGui: this._commonService.getUser().FullName,
+    Id: '',
+    MyWorkId: '',
+    Note: '',
+    Require: '',
+    FullNames: '',
+    UserDelivers: [],
+    UserManagerId: null,
+    UserNextId: null
+  };
   selectedItems = [];
   dropdownList = [];
   dropdownSettings = {};
@@ -99,6 +113,10 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.r1GetDataError();
     this._workFlowDetail.infoWorkFlow$.subscribe(data => {
+      // sử dụng luu trên client
+      this.modelLocal.DateChange = new Date(data.EndDate);
+      this.modelLocal.DateStartChange = new Date(data.ExpectedDate);
+      // sủ dụng với api
       this.modelView = data;
       this.modelTTH.DateChange = new Date(data.EndDate);
       this.modelTTH.DateStartChange = new Date(data.ExpectedDate);
@@ -424,6 +442,8 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         this.ModalTitle = 'Trình phê duyệt thời hạn';
         break;
       case 'CV_DUYETTHOIHAN':
+        this.modelTTH.DateChange = this.modelLocal.DateChange;
+        this.modelTTH.DateStartChange = this.modelLocal.DateStartChange;
         this.modalDuyetThoiHan.show();
         this.ModalTitle = 'Phê duyệt thời hạn';
         break;
@@ -494,7 +514,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   dateSelectdc(date) {
     this.modelTTH.DateChange = date;
   }
-  datestartdc(date) {
+  datestartdc(date: Date) {
     this.modelTTH.DateStartChange = date;
   }
   onSelectFile(fileInput: any) {

@@ -8,6 +8,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ApiService } from '../../../../shared/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserLogin } from '../../../../common/option';
+import { SignalRealTimeService } from '../../../../shared/signal-real-time.service';
 
 @Component({
   selector: 'app-workflow-detail',
@@ -39,6 +40,7 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
   listWorkFlows: [];
   listWorkFlowPres = [];
   listErrors: [];
+  typeFlowDuyets: number[] = [];
   pdfSrc: string = '';
   step = 0;
   stepschedule = 0;
@@ -47,6 +49,7 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     private _commonService: CommonService,
     private _apiService: ApiService,
     private toastr: ToastrService,
+    private _signalSer: SignalRealTimeService,
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +84,14 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     });
     this._workFlowDetail.errorForMyWorks$.subscribe(data => {
       this.listErrors = data;
+    });
+    this._workFlowDetail.typeFlowDuyets$.subscribe(data => {
+      this.typeFlowDuyets = data;
+    });
+    this._signalSer.typeflow$.subscribe(res => {
+      res.forEach(element => {
+        this.typeFlowDuyets.push(element);
+      });
     });
   }
   r2AddScheduleWork() {

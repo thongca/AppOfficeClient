@@ -69,25 +69,25 @@
                                 </td>
                                 <td>{{item.TaskName}}</td>
                                 <td>{{item.TaskCode}}</td>
-                                <td>{{item.WorkTime | number: '1.2-2'}}</td>
+                                <td>{{item.WorkTime | number: '1.1-1'}}</td>
                                 <td>{{item.PointTask }}</td>
                                 <td>{{item.PointTime }}</td>
-                                <td>{{item.Point | number: '1.2-2'}}</td>
-                                <td class="text-center" *ngIf="TotalPoint > 0">{{item.PercentPoint | number: '1.2-2'}}
+                                <td>{{item.Point | number: '1.1-1'}}</td>
+                                <td class="text-center" *ngIf="TotalPoint > 0">{{item.PercentPoint | number: '1.1-1'}}
                                 </td>
                                 <ng-container *ngFor="let etem of item.ChildrenError">
-                                    <td class="text-center">{{etem.Point}}</td>
+                                    <td class="text-center">{{etem.Point | number: '1.1-1'}}</td>
                                 </ng-container>
-                                <td class="text-center"></td>
-                                <td class="text-center">{{item.TotalPointE | number: '1.2-2'}}</td>
-                                <td class="text-center">{{item.KpiPoint | number: '1.2-2'}}</td>
+                                <td class="text-center">{{item.TotalPointE/0.5 | number: '1.1-1'}}</td>
+                                <td class="text-center">{{item.TotalPointE | number: '1.1-1'}}</td>
+                                <td class="text-center">{{item.KpiPoint | number: '1.1-1'}}</td>
                                 <td class="text-center">
 
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="8">
-                                    Hiệu quả công việc: {{TotalKpi | number: '1.2-2'}} %
+                                    Hiệu quả công việc: {{TotalKpi | number: '1.1-1'}} %
                                 </td>
                             </tr>
                         </tbody>

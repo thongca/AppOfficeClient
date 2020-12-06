@@ -27,6 +27,8 @@ export class ExportExcelService {
       this.saveExcelFileKPI(excelBuffer, fileName, UserId, report);
     } else if (type === 2) {
       this.saveExcelFileNKCV(excelBuffer, fileName, UserId, report);
+    } else {
+      this.saveExcelFileTotalWork(excelBuffer, fileName, UserId, report);
     }
   }
   private blobToFile = (theBlob: Blob, fileName: string): File => {
@@ -66,6 +68,23 @@ export class ExportExcelService {
       ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/ExportNkCvExcel').subscribe(res => {
+      if (res.type === HttpEventType.Response) {
+        if (res.status === 204) {
+          this.toarts.error('Xuất File không thành công!');
+          return;
+        }
+        saveAs(res['body'], fileName + this.fileExtension);
+      }
+    });
+  }
+  private saveExcelFileTotalWork(buffer: any, fileName: string, UserId: number, report: ReportDate): void {
+    const data: Blob = new Blob([buffer], { type: this.fileType });
+    const myFile = this.blobToFile(data, 'myfile.xlsx');
+    const model = {
+      UserId: UserId,
+      ReportDate: report
+    };
+    this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/ExportTotalWorkExcel').subscribe(res => {
       if (res.type === HttpEventType.Response) {
         if (res.status === 204) {
           this.toarts.error('Xuất File không thành công!');

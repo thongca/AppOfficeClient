@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BaseUrlService {
-  public baseUrl: string = 'http://172.16.10.2:4646/';
+  public baseUrl: string = 'http://192.168.24.103:4646/';
 }
 // ip backend deploy
 // public baseUrl: string = 'http://172.16.10.2:4646/';

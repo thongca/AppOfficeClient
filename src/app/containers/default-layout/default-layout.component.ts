@@ -44,21 +44,6 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   }
   ngOnInit(): void {
     this.fullName = this._commonService.getUserFullName();
-    this._signalSer.signal$.pipe(
-      map(res => {
-        const listUserNhans = JSON.parse(res) as UserNhanThongBao[];
-        const isValue = listUserNhans.filter(x => x.NguoiNhanId === this.userLoginId);
-        if (isValue && isValue.length > 0) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    ).subscribe(data => {
-      if (data === true) {
-        this._defaultService.getNotify();
-      }
-    });
     this._defaultService.getNotify();
     this.search.DataSearch$.subscribe(res => {
       let ss = '';
@@ -69,8 +54,13 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       }
       this.s = ss;
     });
+    this._defaultService.requirePushNotify();
   }
   ngAfterViewInit() {
+    this._signalSer.signal$.subscribe(data => {
+      this._defaultService.getNotify();
+      this._defaultService.PushNotifyToWindows(data);
+    });
     this._defaultService.listnotifis$.subscribe(res => {
       this.listThongbaos = res;
     });
@@ -89,10 +79,21 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       if (res === undefined) {
         return;
       }
+      this.total = this.total - 1 > 0 ? this.total - 1 : 0;
       if (res['error'] === 1) {
         return;
       }
-      this._defaultService.getNotify();
+    });
+  }
+  updateAllDaXem() {
+    this._apiService.r1_Get_List_Data('api/Common/r1GetUpdateAllThongBao').subscribe(res => {
+      if (res === undefined) {
+        return;
+      }
+      this.total = 0;
+      if (res['error'] === 1) {
+        return;
+      }
     });
   }
   ShowModalDoiMatKhau() {

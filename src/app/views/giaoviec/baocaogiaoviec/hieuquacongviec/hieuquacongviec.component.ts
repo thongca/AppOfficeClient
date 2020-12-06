@@ -6,6 +6,7 @@ import { CommonService } from '../../../../common/common.service';
 import { ApiService } from '../../../../shared/api.service';
 import { ReportDate } from '../../../../models/giaoviec/reportdate.model';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-hieuquacongviec',
@@ -26,7 +27,8 @@ report: ReportDate = new ReportDate();
   constructor(
     private _apiService: ApiService,
     private _exportService: ExportExcelService,
-    private _commonService: CommonService
+    private _commonService: CommonService,
+    private toarts: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +38,7 @@ report: ReportDate = new ReportDate();
   }
   r1GetDataError() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
-    this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorCTG')
+    this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorhqcv')
       .subscribe(res => {
         if (res === undefined) {
           return;
@@ -94,6 +96,7 @@ report: ReportDate = new ReportDate();
         if (res['error'] === 1) {
           return;
         }
+        this.toarts.success('Tải báo cáo thành công!', 'Thông báo');
         this.listKpis = res['data'];
       });
   }

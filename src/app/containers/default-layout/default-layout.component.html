@@ -20,43 +20,40 @@
   </ul>
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item d-md-down-none" dropdown placement="bottom right">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
-        dropdownToggle (click)="false">
+      <a class="nav-link" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"
+        dropdownToggle (click)="updateAllDaXem()">
         <i class="icon-bell" style="font-size: 24px;" matTooltip="Thông báo"></i>
         <span class="badge badge-pill badge-danger badge-overide" *ngIf="total > 0">{{total}}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right widthdropdown overscroll-he" *dropdownMenu
         aria-labelledby="simple-dropdown">
         <div class="p-1 text-center"><strong style="font-size: 24px;">Thông báo</strong></div>
-        <ng-container *ngFor="let item of listThongbaos">
-          <a [routerLink]="[item.RouterLink]" (click)="updateDaXemThongBao(item.Id)">
-            <div class="message" class="dropdown-item">
-              <!-- <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                  <img src="assets/img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                  <span class="avatar-status badge-success"></span>
+          <ng-container *ngFor="let item of listThongbaos">
+            <a [routerLink]="[item.RouterLink]" (click)="updateDaXemThongBao(item.Id)">
+              <div class="message" class="dropdown-item">
+                <!-- <div class="py-3 pb-5 mr-3 float-left">
+                  <div class="avatar">
+                    <img src="assets/img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+                    <span class="avatar-status badge-success"></span>
+                  </div>
+                </div> -->
+                <div>
+                  <small class="font-weight-bold" style="font-size: 14px;">{{item.TenNguoiGui}} </small><span>đã gửi đến</span>
+                  <small class="float-right mt-1">{{item.NgayGui|date:'dd/MM HH:mm'}}</small>
                 </div>
-              </div> -->
-              <div>
-                <small class="font-weight-bold" style="font-size: 14px;">{{item.TenNguoiGui}} </small><span>đã gửi đến</span>
-                <small class="float-right mt-1">{{item.NgayGui|date:'dd/MM HH:mm'}}</small>
+                <div class="mt-1">
+                  <small class="font-weight-bold workflow-{{item.TrangThaiXuLy}}"
+                    style="color: white;border-radius: 5px;padding: 2px;font-size: 12px;">{{item.TrangThai}}</small>
+                  <small class="float-right mt-1" style="font-style: italic; color: red;">{{item.DaXem}}</small>
+                </div>
+                <div class="mt-1">
+                  <small style="font-size: 12px;">{{item.NoiDung| slice:0:40}}</small>
+                  <small class="float-right mt-1"></small>
+                </div>
+  
               </div>
-              <div class="mt-1">
-                <small class="font-weight-bold workflow-{{item.TrangThaiXuLy}}"
-                  style="color: white;border-radius: 5px;padding: 2px;font-size: 12px;">{{item.TrangThai}}</small>
-                <small class="float-right mt-1" style="font-style: italic; color: red;">{{item.DaXem}}</small>
-              </div>
-              <div class="mt-1">
-                <small style="font-size: 12px;">{{item.NoiDung| slice:0:40}}</small>
-                <small class="float-right mt-1"></small>
-              </div>
-
-            </div>
-          </a>
-
-
-        </ng-container>
-
+            </a>
+          </ng-container>
       </div>
     </li>
 

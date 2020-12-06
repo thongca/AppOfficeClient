@@ -91,7 +91,7 @@ export class CommonService {
       return '';
     }
   }
-  getUserId() {
+  getUserId(): number {
     if (localStorage.getItem('user') != null) {
       const user = JSON.parse(this._hashCode.decrypt(localStorage.getItem('user')));
       return user.Id;

@@ -20,6 +20,7 @@ export class InputDateComponent implements OnInit {
     if (date === undefined || date === null) {
       this.placeholder = 'DD/MM/YYYY';
     } else {
+      this.dateSelect = date;
       this.placeholder = moment(date).format('DD/MM/YYYY');
     }
   }

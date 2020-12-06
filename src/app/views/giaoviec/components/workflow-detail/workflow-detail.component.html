@@ -114,7 +114,20 @@
                                     <span>{{modelView.Note}}</span>
                                 </div>
                             </div>
+                            
+                        </div>
+                        <div class="row border-bottom-row px-1">
+                            <div class="col-sm-12">
+                                <label class="title-text-cus py-1 mb-0 float-left" for="name">Trạng thái duyệt:
 
+                                </label>
+                                <div class="input-text input-text-cus float-left p-1">
+                                    <ng-container *ngFor="let typef of typeFlowDuyets">
+                                        <span class="badge workflow-{{typef}}">{{typef |trangThaiXuLy: 'giaoviec'}}</span>
+                                    </ng-container>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--My Work Detail End-->

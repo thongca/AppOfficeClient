@@ -4,6 +4,7 @@ import { forkJoin, Subject } from 'rxjs';
 import { ApiService } from './api.service';
 import { HistoryWorkFlow } from '../models/giaoviec/congvieccuatoi.model';
 import { CVQTMyWork } from '../models/giaoviec/congviecmoi.model';
+import { WorkOverTime } from '../views/giaoviec/components/work-overtime/work-overtime.component';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,14 @@ export class WorkdetailService {
   public errorForMyWorks$ = this.errorForMyWorks.asObservable();
   private listsupporter = new Subject<any>();
   public listsupporter$ = this.listsupporter.asObservable();
-  private workovertime = new Subject<any>();
+  private workovertime = new Subject<WorkOverTime[]>();
   public workovertime$ = this.workovertime.asObservable();
 
   private listSchedule = new Subject<any>();
   public listSchedule$ = this.listSchedule.asObservable();
+
+  private typeFlowDuyets = new Subject<any>();
+  public typeFlowDuyets$ = this.typeFlowDuyets.asObservable();
   constructor(
     private _apiService: ApiService,
   ) {
@@ -38,7 +42,8 @@ export class WorkdetailService {
      r1_GetDetailMyWork(workFlow) {
      const myWorkDetail = this._apiService.r1_List_Data_Model_General(workFlow, 'api/MyWork/r1GetMyWorkById');
      const scheduleList = this._apiService.r1_List_Data_Model_General(workFlow, 'api/MyWork/r1PostMyScheduleWork');
-     forkJoin([myWorkDetail, scheduleList])
+     const typeFlows = this._apiService.r1_List_Data_Model_General(workFlow, 'api/MyWork/r1GetStateSignOfMyWork');
+     forkJoin([myWorkDetail, scheduleList, typeFlows])
       .subscribe(
         res => {
           this.historyWorkFlow.next(res[0]['history']);
@@ -51,6 +56,7 @@ export class WorkdetailService {
           this.listsupporter.next(res[0]['supports']);
           this.workovertime.next(res[0]['workOvertime']);
           this.listSchedule.next(res[1]['listRecursives']);
+          this.typeFlowDuyets.next(res[2]['data']);
         },
       );
      }
