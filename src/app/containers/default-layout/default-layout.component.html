@@ -123,26 +123,14 @@
       <tab>
         <ng-template tabHeading><i class="icon-speech"></i></ng-template>
         <div class="p-3">
-          <ng-container *ngFor="let item of listThongbaos">
-
-            <div class="message">
-              <!-- <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                  <img src="assets/img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                  <span class="avatar-status badge-success"></span>
-                </div>
-              </div> -->
-              <div>
-                <small class="text-muted">{{item.TenNguoiGui}}</small>
-                <small class="text-muted float-right mt-1">{{item.NgayGui|date:'dd/MM/yyyy HH:mm'}}</small>
-              </div>
-              <div class="text-truncate font-weight-bold badge workflow-{{item.TrangThaiXuLy}}">{{item.TrangThai}}
-              </div>
-              <small class="text-muted">{{item.NoiDung}}</small>
+          <ng-container>
+            <div class="widthselect">
+                <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="modelgl.CompanyId" (ngModelChange)="onChange_Company($event)">
+                    <option [ngValue]="0">----- Chọn công ty -----</option>
+                    <option *ngFor="let item of ctcompanies" [ngValue]="item.Id">{{item.Name}}</option>
+                </select>
             </div>
-
-          </ng-container>
-
+        </ng-container>
         </div>
       </tab>
     </tabset>

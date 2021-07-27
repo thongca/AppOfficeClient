@@ -82,9 +82,9 @@
         </div>
         <div class="modal-body">
             <div class="animated fadeIn">
-              <div class="row m-0">
+              <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label class="title-text col-form-label" for="name"> Tên
                                 <span>*</span>
                             </label>
@@ -95,7 +95,7 @@
                        
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row  ml-0">
+                        <div class="form-group  ml-0">
                             <label class="title-text col-form-label" for="name"> Mã
                             </label>
                             <div class="input-text">
@@ -106,7 +106,7 @@
                     </div>
                    
                     <div class="col-md-6">
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label class="title-text col-form-label" for="name"> Tên đăng nhập
                                 <span>*</span>
                             </label>
@@ -117,7 +117,7 @@
                        
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row ml-0">
+                        <div class="form-group ml-0">
                             <label class="title-text col-form-label" for="name"> Mật khẩu
                                 <span>*</span>
                             </label>
@@ -127,14 +127,32 @@
                         </div>
                        
                     </div>
-                    
-
-                    <div class="col-md-6" >
-                        <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
-                        (changeRadio)="radioKichHoat($event)"></app-input-radio-checkbox>
+                    <div class="col-md-6">
+                        <div class="form-group ml-0">
+                            <label class="title-text col-form-label" for="DepartmentId"> Phòng ban
+                            </label>
+                            <div class="input-text">
+                                <select id="DepartmentId" name="DepartmentId" class="form-control padding-select-congty" [(ngModel)]="model.Role">
+                                    <option *ngFor="let item of ctdepartments" [ngValue]="item.Id">{{item.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row ml-0">
+                        <div class="form-group ml-0">
+                            <label class="title-text col-form-label" for="NestId"> Tổ
+                            </label>
+                            <div class="input-text">
+                                <select id="NestId" name="NestId" class="form-control padding-select-congty" [(ngModel)]="model.Role">
+                                    <option *ngFor="let item of ctnests" [ngValue]="item.Id">{{item.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                    <div class="col-md-6">
+                        <div class="form-group ml-0">
                             <label class="title-text col-form-label" for="name"> Chức vụ
                             </label>
                             <div class="input-text">
@@ -144,10 +162,20 @@
                                 </select>
                             </div>
                         </div>
-                       
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group row">
+                        <div class="form-group ml-0">
+                            <label class="title-text col-form-label" for="Role"> Quyền
+                            </label>
+                            <div class="input-text">
+                                <select id="Role" name="Role" class="form-control padding-select-congty" [(ngModel)]="model.Role">
+                                    <option *ngFor="let item of ctroles" [ngValue]="item.Id">{{item.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label class="title-text col-form-label" for="name"> Nhóm quyền
                             </label>
                             <div class="input-text">
@@ -156,9 +184,11 @@
                              </ng-multiselect-dropdown>
                             </div>
                         </div>
-                       
                     </div>
-                   
+                    <div class="col-md-6" >
+                        <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
+                        (changeRadio)="radioKichHoat($event)"></app-input-radio-checkbox>
+                    </div>
                  
               </div>
               <!--/.row-->

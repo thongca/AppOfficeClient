@@ -99,8 +99,7 @@ import { PushNotificationService } from 'ngx-push-notifications';
   ],
   providers: [SearchService, PushNotificationService, {
     provide: LocationStrategy,
-    useClass: PathLocationStrategy,
-    useValue: { baseUrl: 'http://localhost:63893/' }
+    useClass: PathLocationStrategy
   }, AuthGuard],
   bootstrap: [ AppComponent ]
 })

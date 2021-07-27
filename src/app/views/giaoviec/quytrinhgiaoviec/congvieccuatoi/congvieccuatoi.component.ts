@@ -101,7 +101,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     textField: 'FullName',
     selectAllText: 'Chọn tất cả',
     unSelectAllText: 'Bỏ chọn tất cả',
-    itemsShowLimit: 3,
+    itemsShowLimit: 2,
     allowSearchFilter: true
   };
   /** Phòng ban select setting */
@@ -111,7 +111,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     textField: 'DepartmentName',
     selectAllText: 'Chọn tất cả',
     unSelectAllText: 'Bỏ chọn tất cả',
-    itemsShowLimit: 3,
+    itemsShowLimit: 2,
     allowSearchFilter: true
   };
   constructor(

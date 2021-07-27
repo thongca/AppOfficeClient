@@ -462,8 +462,7 @@
     aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
     data-keyboard="false">
     <div class="modal-dialog modal-lg" role="document">
-        <form #duyetKts="ngForm" enctype="multipart/form-data" class="form-horizontal"
-            novalidate autocomplete="off">
+        <form #duyetKts="ngForm" enctype="multipart/form-data" class="form-horizontal" novalidate autocomplete="off">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{ModalTitle}}</h4>
@@ -515,9 +514,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="duyetKts.form.invalid" type="submit" class="btn btn-primary" (click)="r2_DuyetKhoiTaoSau(1)"> Đồng ý
+                    <button [disabled]="duyetKts.form.invalid" type="submit" class="btn btn-primary"
+                        (click)="r2_DuyetKhoiTaoSau(1)"> Đồng ý
                     </button>
-                    <button [disabled]="duyetKts.form.invalid" type="submit" class="btn btn-danger" (click)="r2_DuyetKhoiTaoSau(2)"> Không đồng ý
+                    <button [disabled]="duyetKts.form.invalid" type="submit" class="btn btn-danger"
+                        (click)="r2_DuyetKhoiTaoSau(2)"> Không đồng ý
                     </button>
                 </div>
             </div><!-- /.modal-content -->
@@ -767,12 +768,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 px-2 mb-1">
-                                <app-input-date [dateInit]="modelTTH.DateStartChange" require=false label="Ngày bắt đầu"
-                                    (changeDate)="datestartdc($event)">
-                                </app-input-date>
+                            <div class="col-md-8 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Duyệt ngày bắt đầu
+                                </label>
+                                <div class="input-text">
+                                    <app-input-date [dateInit]="modelTTH.DateStartChange" require=false
+                                        (changeDate)="datestartdc($event)">
+                                    </app-input-date>
+                                </div>
                             </div>
-                            <div class="col-md-12 px-2 mb-1">
+                            <div class="col-md-4 px-2 mb-1">
                                 <label class="title-text col-form-label" for="name"> Giờ bắt đầu
                                 </label>
                                 <div class="input-text">
@@ -781,12 +786,16 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12 px-2 mb-1">
-                                <app-input-date [dateInit]="modelTTH.DateChange" require=false label="Ngày kết thúc"
-                                    (changeDate)="dateSelectdc($event)">
-                                </app-input-date>
+                            <div class="col-md-8 px-2 mb-1">
+                                <label class="title-text col-form-label" for="name"> Duyệt ngày kết thúc
+                                </label>
+                                <div class="input-text">
+                                    <app-input-date [dateInit]="modelTTH.DateChange" require=false label="Ngày kết thúc"
+                                        (changeDate)="dateSelectdc($event)">
+                                    </app-input-date>
+                                </div>
                             </div>
-                            <div class="col-md-12 px-2 mb-1">
+                            <div class="col-md-4 px-2 mb-1">
                                 <label class="title-text col-form-label" for="name"> Giờ kết thúc
                                 </label>
                                 <div class="input-text">
@@ -878,8 +887,8 @@
                                 </label>
                                 <div class="input-text">
                                     <ng-multiselect-dropdown name="selectedErrors" class="multiple-select"
-                                        [placeholder]="'----- Chọn lỗi -----'" [data]="dropdownErrorList" (onSelect)="OnChangeError($event)"
-                                        (onDeSelect)="DeChangeError($event)"
+                                        [placeholder]="'----- Chọn lỗi -----'" [data]="dropdownErrorList"
+                                        (onSelect)="OnChangeError($event)" (onDeSelect)="DeChangeError($event)"
                                         [settings]="droperrorSettings" [(ngModel)]="selectedErrors">
                                     </ng-multiselect-dropdown>
                                 </div>
@@ -912,7 +921,7 @@
 
                                     </label>
                                     <div class="input-text">
-                                        <ng-multiselect-dropdown name="selectedUsers" class="multiple-select" 
+                                        <ng-multiselect-dropdown name="selectedUsers" class="multiple-select"
                                             [placeholder]="'----- Chọn người nhận -----'" [data]="dropdownUserList"
                                             [settings]="dropuserSettings" [(ngModel)]="selectedUsers">
                                         </ng-multiselect-dropdown>
@@ -932,7 +941,7 @@
                                                     Số lỗi
                                                 </th>
                                                 <th width=100 class="text-center">
-                                                   Số điểm
+                                                    Số điểm
                                                 </th>
                                             </tr>
                                         </thead>
@@ -943,12 +952,13 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <input type="number" class="form-control rounded-0 "
-                                                        name="Amount{{i}}" [(ngModel)]="item.Amount" (input)="item.Point = item.Amount * item.PointLocal" min=0>
+                                                        name="Amount{{i}}" [(ngModel)]="item.Amount"
+                                                        (input)="item.Point = item.Amount * item.PointLocal" min=0>
                                                 </td>
                                                 <td class="text-center">
                                                     <input readonly type="text" class="form-control rounded-0 border-0"
-                                                    name="Point{{i}}" [(ngModel)]="item.Point">
-                                                    
+                                                        name="Point{{i}}" [(ngModel)]="item.Point">
+
                                                 </td>
                                             </tr>
                                         </tbody>

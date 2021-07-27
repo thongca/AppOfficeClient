@@ -8,7 +8,6 @@ import { SearchService } from '../../shared/search.service';
 import { UserNhanThongBao } from '../../models/usernhantb.interface';
 import { DefaultServiceService } from './default-service.service';
 import { NotificationModel } from '../../models/systems/notifi/Notifi.model';
-import { map } from 'rxjs/internal/operators/map';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
@@ -31,6 +30,8 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   load = false;
   userLoginId: number = this._commonService.getUserId();
   menuName: string;
+  ctcompanies = [];
+  modelgl: GlobalData = new GlobalData();
   constructor(
     private _signalSer: SignalRealTimeService,
     private _commonService: CommonService,
@@ -55,6 +56,11 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       this.s = ss;
     });
     this._defaultService.requirePushNotify();
+    this.getCongtys();
+  }
+  getCongtys() {
+    this.ctcompanies = this._commonService.getCongtys();
+    this.modelgl.CompanyId = this._commonService.readDataTokenCompanyId();
   }
   ngAfterViewInit() {
     this._signalSer.signal$.subscribe(data => {
@@ -122,6 +128,24 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   toggleMinimize(e) {
     this.sidebarMinimized = e;
   }
+  onChange_Company(companyId: string): void {
+    // goi vao server de lau token
+    this.r1_onChange_Token();
+  }
+  r1_onChange_Token() {
+    this._apiService.r2_Add_Data_Model(this.modelgl, 'api/Login/ChangeTokenAdmin').subscribe(res => {
+      if (res === undefined) {
+        return;
+      }
+      this.total = 0;
+      if (res['error'] === 1) {
+        return;
+      }
+      localStorage.setItem('token', res['data']);
+      location.reload();
+      return;
+    });
+  }
 }
 export class ChangePass {
   constructor() {
@@ -132,4 +156,9 @@ export class ChangePass {
 PassOld: string;
 PassNew: string;
 PassConfirm: string;
+}
+
+class GlobalData {
+  CompanyId: number;
+  DepartmentId: number;
 }

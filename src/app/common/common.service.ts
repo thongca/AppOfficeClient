@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
 import { HashCodeService } from './hashCode.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { UserLogin } from './option';
 import { BaseUrlService } from './base-url.service';
 import { Menu } from './menu';
 import { Subject } from 'rxjs';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
+const jwtHelper = new JwtHelperService();
 @Injectable({
   providedIn: 'root'
 })
@@ -166,6 +167,23 @@ export class CommonService {
       return companyId;
     }
   }
+    /** Đọc dữ liệu token */
+    readDataTokenCompanyId(): number {
+      const token = localStorage.getItem('token');
+      // Check whether the token is expired and return
+      // true or false
+      const data = jwtHelper.decodeToken(token);
+      if (data) {
+        const user = JSON.parse(data.User);
+        if (user) {
+          return Number(user.CompanyId);
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    }
   getMenuId(url) {
     if (localStorage.getItem('listQuyen') != null) {
       const listMenu = JSON.parse(this._hashCode.decrypt(localStorage.getItem('listQuyen')));

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ModaladdCvComponent } from './modaladd-cv.component';
 
@@ -6,7 +6,7 @@ describe('ModaladdCvComponent', () => {
   let component: ModaladdCvComponent;
   let fixture: ComponentFixture<ModaladdCvComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ModaladdCvComponent ]
     })

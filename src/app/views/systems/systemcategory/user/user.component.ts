@@ -7,7 +7,6 @@ import { SearchService } from '../../../../shared/search.service';
 import { CommonService } from '../../../../common/common.service';
 import { User } from '../../../../models/systems/systemcategory/user.model';
 import { IGrouprole } from '../../../../models/systems/systemcategory/grouprole.model';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -35,9 +34,10 @@ export class UserComponent implements OnInit, AfterViewInit {
     check: false,
     Username: '',
     Password: '',
-    CompanyId: this.options.companyId,
     DepartmentId: this.options.departmentId,
-    PositionId: 0
+    NestId: null,
+    PositionId: 0,
+    Role: 5
   };
   groupRoles: any;
   CheckLength: number;
@@ -45,6 +45,29 @@ export class UserComponent implements OnInit, AfterViewInit {
   public loading = false;
   private loaddata = false;
   dropdownList = [];
+  ctdepartments = [];
+  ctnests = [];
+  ctroles = [{
+    Id: 1,
+    Name: 'Quản trị công ty'
+  },
+  {
+    Id: 2,
+    Name: 'Quản trị chi nhánh'
+  },
+  {
+    Id: 3,
+    Name: 'Quản trị phòng ban'
+  },
+  {
+    Id: 4,
+    Name: 'Quản trị tổ'
+  },
+  {
+    Id: 5,
+    Name: 'Quyền thường'
+  }
+  ];
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,
@@ -57,18 +80,46 @@ export class UserComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.options.companyId = Number(this._commonService.getCompanyUser());
     this.r1GetListDataPosition();
+    this.r1GetDepartment();
 
   }
   ngAfterViewInit(): void {
-      this._s.DataSearch$.subscribe(res => {
-        if (res === undefined || res === '') {
-          this.options.s = '';
-        } else {
-          this.options.s = res;
-        }
-        if (this.loaddata === true) {
+    this._s.DataSearch$.subscribe(res => {
+      if (res === undefined || res === '') {
+        this.options.s = '';
+      } else {
+        this.options.s = res;
+      }
+      if (this.loaddata === true) {
         this.r1GetDataList();
       }
+    });
+  }
+  r1GetDepartment() {
+    // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
+    this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataCommonDep')
+      .subscribe(res => {
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.ctdepartments = res['data'];
+        this.r1GetDataNest();
+      });
+  }
+  r1GetDataNest() {
+    // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
+    this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataNest')
+      .subscribe(res => {
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.ctnests = res['data'];
       });
   }
   r1GetDataList() {
@@ -153,27 +204,27 @@ export class UserComponent implements OnInit, AfterViewInit {
       'sys_Dm_User': this.model
     };
     if (this.model.Id === 0 || this.model.Id === null) {
-    this._apiService.r2_Add_Data_Model(models, 'api/User/r1AddDataSysDmUser')
-      .subscribe(res => {
-        if (res === undefined) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+      this._apiService.r2_Add_Data_Model(models, 'api/User/r1AddDataSysDmUser')
+        .subscribe(res => {
+          if (res === undefined) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          if (res['error'] === 1) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          if (res['error'] === 2) {
+            this.toastr.error(res['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+          this.modaldata.hide();
+          this.r1GetDataList();
           return;
-        }
-        if (res['error'] === 1) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-          return;
-        }
-        if (res['error'] === 2) {
-          this.toastr.error(res['ms'], 'Thông báo');
-          return;
-        }
-        this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-        this.modaldata.hide();
-        this.r1GetDataList();
-        return;
-      });
+        });
     } else {
-     this._apiService.r3_Put_Data(models, 'api/User').subscribe(res => {
+      this._apiService.r2_Add_Data_Model(models, 'api/User/r3UpdateDataModel').subscribe(res => {
         if (res === undefined) {
           if (res['error'] === 1) {
             this.toastr.error('Cập nhật dữ liệu không thành công!!', 'Thông báo');
@@ -189,7 +240,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
   SelectIDEditModel(Id) {
     this.modeltitle = 'Sửa thông tin người dùng';
-   this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
+    this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
       if (res !== undefined) {
         if (res['error'] === 1) {
           return;
@@ -200,8 +251,8 @@ export class UserComponent implements OnInit, AfterViewInit {
     });
     this.modaldata.show();
   }
-   // checked
-   CheckAll(obj) {
+  // checked
+  CheckAll(obj) {
     this.CheckLength = obj.CheckLength;
     this.listData = obj.listData;
 
@@ -219,7 +270,6 @@ export class UserComponent implements OnInit, AfterViewInit {
     }
   }
   selectCompany(companyId) {
-    this.model.CompanyId = Number(companyId);
     this.options.companyId = Number(companyId);
     this.r1GetListDataPosition();
 
@@ -228,11 +278,9 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.options.departmentId = value;
     this.model.DepartmentId = Number(value);
   }
-  selectNest(value) {
-    this.options.nestId = Number(value);
-    if (Number(value) > 0) {
-      this.model.DepartmentId = Number(value);
-    }
+  selectNest(value: number) {
+    this.options.nestId = value;
+    this.model.NestId = value;
     this.r1GetDataList();
     this.r1GetDataGroupRole();
   }
@@ -247,9 +295,10 @@ export class UserComponent implements OnInit, AfterViewInit {
       check: false,
       Username: '',
       Password: '',
-      CompanyId: this.options.companyId,
+      NestId: this.options.nestId,
       DepartmentId: this.model.DepartmentId,
-      PositionId: 0
+      PositionId: 0,
+      Role: 5
     };
   }
   radioKichHoat(value) {

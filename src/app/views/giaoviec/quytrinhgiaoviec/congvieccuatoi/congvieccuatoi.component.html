@@ -21,7 +21,7 @@
         </button>
         <app-del-my-work *ngIf="MyWorkId !== ''" [setMyWorkId]="MyWorkId" (xacNhanXoa)="r1GetListMyWorks()">
         </app-del-my-work>
-        <strong  class="page-current-title">Công việc của tôi</strong>  
+        <strong class="page-current-title">Công việc của tôi</strong>
     </div>
     <div class="card-body p-0 border-0 scroll-card-body">
         <div class="row mx-0">
@@ -68,16 +68,11 @@
                             </tbody>
                         </table>
                         <div *ngIf="optionsCV.totalItem > 100" class="pagination-auto mt-2">
-                            <pagination 
-                            [totalItems]="optionsCV.totalItem"
-                            [itemsPerPage]="optionsCV.pz"
-                            [boundaryLinks]="true"
-                            [directionLinks]="false"
-                            firstText="Đầu tiên"
-                            lastText="Cuối cùng"
-                             (pageChanged)="pageChanged($event)"></pagination>
+                            <pagination [totalItems]="optionsCV.totalItem" [itemsPerPage]="optionsCV.pz"
+                                [boundaryLinks]="true" [directionLinks]="false" firstText="Đầu tiên"
+                                lastText="Cuối cùng" (pageChanged)="pageChanged($event)"></pagination>
                         </div>
-                       
+
                         <!--/.row-->
                     </div>
                 </div>
@@ -112,10 +107,10 @@
                         <div class="row m-0">
                             <div class="col-md-12 px-2 mb-2">
                                 <div class="form-group">
-                                    <label class="title-text col-form-label float-left" for="name"> Công việc
+                                    <label class="title-text col-form-label" for="name"> Công việc
                                         <span>*</span>
                                     </label>
-                                    <div class="input-text float-left">
+                                    <div class="input-text w-100">
                                         <div class="ng-autocomplete">
                                             <ng-autocomplete [data]="listWorks" [searchKeyword]="keywordl"
                                                 (selected)='selectLMyWork($event)'
@@ -166,12 +161,17 @@
                                     </div>
                                 </div>
                             </div> -->
-                            <div class="col-md-6 px-2 mb-2">
-                                <app-input-date note="(Dự kiến)" require=true label="Ngày bắt đầu"
-                                    (changeDate)="dateSelectbd($event)">
-                                </app-input-date>
+                            <div class="col-md-4 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Ngày bắt đầu dự kiến
+                                    <span>*</span>
+                                </label>
+                                <div class="input-text">
+                                    <app-input-date require=true (changeDate)="dateSelectbd($event)">
+                                    </app-input-date>
+                                </div>
+
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+                            <div class="col-md-2 px-2 mb-2">
                                 <label class="title-text col-form-label" for="name"> Giờ bắt đầu
                                     <a class="note-title">(Dự kiến)</a>
                                 </label>
@@ -181,12 +181,18 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <app-input-date note="(Dự kiến)" require=true label="Ngày kết thúc"
+                            <div class="col-md-4 px-2 mb-2">
+                                <label class="title-text col-form-label" for="name"> Ngày kết thúc dự kiến
+                                    <span>*</span>
+                                </label>
+                                <div class="input-text">
+                                    <app-input-date require=true 
                                     (changeDate)="dateSelectkt($event)">
                                 </app-input-date>
+                                </div>
+                               
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+                            <div class="col-md-2 px-2 mb-2">
                                 <label class="title-text col-form-label" for="name"> Giờ kết thúc
                                     <a class="note-title">(Dự kiến)</a>
                                 </label>
@@ -223,15 +229,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+                            <div class="col-md-2 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Mã
-                                        <a class="note-title">(Công việc trước)</a>
+                                    <label class="title-text col-form-label" for="name"> Mã công việc liên kết
                                     </label>
                                     <div class="input-text">
                                         <input type="number" class="form-control rounded-0" #Predecessor="ngModel"
                                             name="Predecessor" [(ngModel)]="model.Predecessor"
                                             (ngModelChange)="ChangePredecessor($event)" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Người phối hợp
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người phối hợp -----'" [data]="dropdownList"
+                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Phòng ban phối hợp
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItemPHs" class="multiple-select"
+                                            [placeholder]="'----- Phòng ban phối hợp -----'" [data]="listDepartments"
+                                            [settings]="dropdownSettingPHs" [(ngModel)]="selectedItemPHs">
+                                        </ng-multiselect-dropdown>
                                     </div>
                                 </div>
                             </div>
@@ -258,32 +287,7 @@
 
                             </div>
 
-                            <div class="col-md-12 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Người PH
-                                        <a class="note-title">(Phối hợp)</a>
-                                    </label>
-                                    <div class="input-text">
-                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
-                                            [placeholder]="'----- Người phối hợp -----'" [data]="dropdownList"
-                                            [settings]="dropdownSettings" [(ngModel)]="selectedItems">
-                                        </ng-multiselect-dropdown>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Phòng ban
-                                        <a class="note-title">(Phối hợp)</a>
-                                    </label>
-                                    <div class="input-text">
-                                        <ng-multiselect-dropdown name="selectedItemPHs" class="multiple-select"
-                                            [placeholder]="'----- Phòng ban phối hợp -----'" [data]="listDepartments"
-                                            [settings]="dropdownSettingPHs" [(ngModel)]="selectedItemPHs">
-                                        </ng-multiselect-dropdown>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-12 px-2 mb-2">
                                 <div class="form-group my-0">
                                     <label class="title-text col-form-label" for="name"> Ghi chú

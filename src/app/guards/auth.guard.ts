@@ -1,4 +1,4 @@
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { CommonService } from './../common/common.service';
 import { Menu } from './../common/menu';
 import { Injectable, OnInit } from '@angular/core';

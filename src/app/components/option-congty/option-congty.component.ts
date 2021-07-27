@@ -34,16 +34,7 @@ export class OptionCongtyComponent implements OnInit {
 
   ngOnInit(): void {
     this.permission = this._commonService.getPermissionUser();
-    if (this.permission === 0) {
-      this.listCompanys = this._commonService.getCongtys();
-      if (this.listCompanys.length > 0) {
-        this.options.companyId = this._commonService.getDefaultCompanyId();
-        this.changeCongtys.emit(this.listCompanys[0].Id);
-      }
-    } else {
-      this.listCompanys = [];
-      this.options.companyId = Number(this._commonService.getCompanyUser());
-    }
+    this.options.companyId = this._commonService.readDataTokenCompanyId();
     this.r1GetDepartment();
   }
   r1GetDepartment() {
