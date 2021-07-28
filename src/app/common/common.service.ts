@@ -26,13 +26,12 @@ export class CommonService {
     private _hashCode: HashCodeService,
   ) {
   }
-  getTimeCheckLogOut(): Date {
-    if (localStorage.getItem('timecheck') != null) {
-      const timeCheckLogOut = new Date(this._hashCode.decrypt(localStorage.getItem('timecheck')));
-      return timeCheckLogOut;
-    } else {
-      return new Date();
-    }
+
+  getTimeCheckLogOut(): boolean {
+    const token = localStorage.getItem('token');
+    // Check whether the token is expired and return
+    // true or false
+    return !jwtHelper.isTokenExpired(token);
   }
   setTimeToDateAndChangeTimeZone(date: Date, time: Date ): Date {
     if (date === null || date === undefined) {
@@ -85,20 +84,36 @@ export class CommonService {
     }
   }
   getUserFullName(): string {
-    if (localStorage.getItem('user') != null) {
-      const user = JSON.parse(this._hashCode.decrypt(localStorage.getItem('user')));
-      return user.FullName;
+    const token = localStorage.getItem('token');
+    // Check whether the token is expired and return
+    // true or false
+    const data = jwtHelper.decodeToken(token);
+    if (data) {
+      const user = JSON.parse(data.User);
+      if (user) {
+        return user.FullName;
+      } else {
+        return '';
+      }
     } else {
       return '';
     }
   }
   getUserId(): number {
-    if (localStorage.getItem('user') != null) {
-      const user = JSON.parse(this._hashCode.decrypt(localStorage.getItem('user')));
-      return user.Id;
-    } else {
-      return -1;
-    }
+    const token = localStorage.getItem('token');
+        // Check whether the token is expired and return
+        // true or false
+        const data = jwtHelper.decodeToken(token);
+        if (data) {
+          const user = JSON.parse(data.User);
+          if (user) {
+            return user.UserID;
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
   }
   getPermissionUser() {
     if (localStorage.getItem('user') != null) {
@@ -106,18 +121,6 @@ export class CommonService {
       return user.Permission;
     } else {
       return 4;
-    }
-  }
-  getCompanyUser() {
-    if (localStorage.getItem('user') != null) {
-      const user = JSON.parse(this._hashCode.decrypt(localStorage.getItem('user'))) as IUser;
-      return user.CompanyIdDefault;
-    } else {
-      localStorage.clear();
-      sessionStorage.clear();
-      this.router.navigateByUrl('/login');
-      this.toastr.error('Gặp lỗi khi tải thông tin công ty của bạn, Vui lòng đăng nhập lại!');
-      return -1;
     }
   }
   getCongtys() {

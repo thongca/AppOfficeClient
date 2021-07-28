@@ -40,8 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      const dt = new Date();
-      if (this._commonService.getTimeCheckLogOut() <= dt) {
+      if (this._commonService.getTimeCheckLogOut() === false) {
         localStorage.clear();
         sessionStorage.clear();
         this.router.navigateByUrl('/login');
@@ -58,7 +57,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     this.listMenu =  this._commonService.getListQuyen();
     const dt = new Date();
-    if (this._commonService.getTimeCheckLogOut() <= dt) {
+    if (this._commonService.getTimeCheckLogOut() === false) {
       localStorage.clear();
       sessionStorage.clear();
       this.router.navigateByUrl('/login');

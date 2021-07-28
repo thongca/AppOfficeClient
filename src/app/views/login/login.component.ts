@@ -45,9 +45,6 @@ export class LoginComponent implements OnInit {
     }
     this.login.CheckLogin(this.User).subscribe(
       (res: any) => {
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
         if (res !== undefined) {
 
           if (res['error'] === 1) {
@@ -63,14 +60,10 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('listQuyen', this._hashCode.encrypt(JSON.stringify(res._listQuyen)));
             localStorage.setItem('listNhomQuyen', this._hashCode.encrypt(JSON.stringify(res._listNhomQuyen)));
             localStorage.setItem('user', this._hashCode.encrypt(JSON.stringify(res.u)));
-            localStorage.setItem('groupUserId', res.u.GroupRoleDeFault);
             localStorage.setItem('congty', this._hashCode.encrypt(JSON.stringify(res.congTys)));
-            localStorage.setItem('companyIdDefault', this._hashCode.encrypt(JSON.stringify(res.u.CompanyIdDefault)));
             localStorage.setItem('token', res.token);
             localStorage.setItem('listMenu', JSON.stringify(res.data));
             localStorage.setItem('keyc', this._hashCode.encrypt(JSON.stringify(res.congTys)));
-            dt.setHours(dt.getHours() + 8).toString();
-            localStorage.setItem('timecheck', this._hashCode.encrypt(dt.toString()));
             this.toastr.success('Đăng nhập thành công', 'Thông báo');
             this.router.navigateByUrl('/trangchu');
           }
@@ -80,9 +73,6 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
         if (err.status === 500) {
           this.toastr.error('Mất kết nối máy chủ, vui lòng kiểm tra lại đường dẫn!', 'Thông báo');
           return false;
