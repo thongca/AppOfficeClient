@@ -16,7 +16,7 @@ export class ModulecompanyComponent implements OnInit {
   treeControl = new NestedTreeControl<IMenuCom>(node => node.children);
   dataSource = new MatTreeNestedDataSource<IMenuCom>();
   modeltitle = '';
-  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 3, groupId: 0,
+  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
 departmentId: 0 };
   listData: IMenuCom[];
   CheckLength: number;
@@ -28,10 +28,10 @@ departmentId: 0 };
     private _s: SearchService,
     private _commonService: CommonService,
   ) {
-    this.options.companyId = this._commonService.getDefaultCompanyId();
   }
 
   ngOnInit(): void {
+    this.r1GetDataList();
   }
   r1GetDataList() {
     this._apiService.r1_Post_List_Data(this.options, 'api/ModuleCongty/r1GetListData')
@@ -72,7 +72,6 @@ departmentId: 0 };
       });
   }
   r2_AddData(value: IMenuComPara) {
-    value.CompanyId = this.options.companyId;
     value.IsActive = !value.IsActive;
     this._apiService.r2_Add_Data_Model(value, 'api/ModuleCongty/r2AddDataModel')
     .subscribe(res => {
@@ -94,10 +93,7 @@ departmentId: 0 };
   radiobtnSelect(value) {
     console.log(value);
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
-    this.r1GetDataList();
-  }
+
   dateSelect(date) {
     console.log(date);
   }

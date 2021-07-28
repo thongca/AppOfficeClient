@@ -11,7 +11,7 @@ import { SysDmCompany } from '../../../../models/systems/systemcategory/congty.m
   styleUrls: ['./company.component.css']
 })
 export class CompanyComponent implements OnInit {
-  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0 };
+  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0 };
   listData: SysDmCompany[];
   CheckLength: number;
   thongnguyen: string;
@@ -24,15 +24,7 @@ export class CompanyComponent implements OnInit {
 
   ngOnInit(): void {
     this.thongnguyen = '12';
-    this._s.DataSearch$.subscribe(res => {
-      if (res === undefined || res === '') {
-        this.options.s = '';
-        this.r1GetDataList();
-      } else {
-        this.options.s = res;
-          this.r1GetDataList();
-      }
-    });
+    this.r1GetDataList();
   }
   r1GetDataList() {
         this._apiService.r1_Post_List_Data(this.options, 'api/Company/r1GetListData')

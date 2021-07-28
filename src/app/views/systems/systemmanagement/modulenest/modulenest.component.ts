@@ -16,7 +16,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 export class ModulenestComponent implements OnInit {
   treeControl = new NestedTreeControl<IMenuCom>(node => node.children);
   dataSource = new MatTreeNestedDataSource<IMenuCom>();
-  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 3, groupId: 0,
+  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
 departmentId: 0 };
   listData: IMenuCom[];
   CheckLength: number;
@@ -28,7 +28,6 @@ departmentId: 0 };
     private _s: SearchService,
     private _commonService: CommonService,
   ) {
-    this.options.companyId = this._commonService.getDefaultCompanyId();
   }
 
   ngOnInit(): void {
@@ -76,7 +75,6 @@ departmentId: 0 };
       this.toastr.warning('Bạn phải chọn phòng ban trước khi thực hiện phân quyền', 'Thông báo');
       return;
     }
-    value.CompanyId = this.options.companyId;
     value.DepartmentId = this.options.departmentId;
     value.NestId = this.options.nestId;
     value.IsActive = !value.IsActive;
@@ -100,10 +98,7 @@ departmentId: 0 };
   radiobtnSelect(value) {
     console.log(value);
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
 
-  }
   selectDepartment(value) {
     this.options.departmentId = value;
   }

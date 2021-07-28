@@ -21,7 +21,7 @@
                         <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-option-congty isShowDepartment="1" isShowNest="1" (changeCongtys)="selectCompany($event)"
+                    <app-option-congty isShowDepartment="1" isShowNest="1"
                         (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
                     </app-option-congty>
                 </div>
@@ -130,9 +130,11 @@
                     <div class="col-md-6">
                         <div class="form-group ml-0">
                             <label class="title-text col-form-label" for="DepartmentId"> Phòng ban
+                                <span>*</span>
                             </label>
                             <div class="input-text">
-                                <select id="DepartmentId" name="DepartmentId" class="form-control padding-select-congty" [(ngModel)]="model.Role">
+                                <select id="DepartmentId" name="DepartmentId" class="form-control padding-select-congty" [(ngModel)]="model.DepartmentId" (ngModelChange)="onChange_Department($event)">
+                                    <option [ngValue]="0">----- Chọn phòng -----</option>
                                     <option *ngFor="let item of ctdepartments" [ngValue]="item.Id">{{item.Name}}</option>
                                 </select>
                             </div>
@@ -143,7 +145,8 @@
                             <label class="title-text col-form-label" for="NestId"> Tổ
                             </label>
                             <div class="input-text">
-                                <select id="NestId" name="NestId" class="form-control padding-select-congty" [(ngModel)]="model.Role">
+                                <select id="NestId" name="NestId" class="form-control padding-select-congty" [(ngModel)]="model.NestId">
+                                    <option [ngValue]="0">----- Chọn tổ -----</option>
                                     <option *ngFor="let item of ctnests" [ngValue]="item.Id">{{item.Name}}</option>
                                 </select>
                             </div>
@@ -176,12 +179,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="title-text col-form-label" for="name"> Nhóm quyền
+                            <label class="title-text col-form-label" for="GroupRoleId"> Nhóm quyền
+                                <span>*</span>
                             </label>
                             <div class="input-text">
-                                <ng-multiselect-dropdown name="selectedItems" class="multiple-select" [placeholder]="'----- Chọn nhóm quyền -----'" [data]="dropdownList"
+                                <select id="GroupRoleId" name="GroupRoleId" class="form-control padding-select-congty" [(ngModel)]="model.GroupRoleId">
+                                    <option *ngFor="let item of dropdownList" [ngValue]="item.Id">{{item.Name}}</option>
+                                </select>
+                                <!-- <ng-multiselect-dropdown name="selectedItems" class="multiple-select" [placeholder]="'----- Chọn nhóm quyền -----'" [data]="dropdownList"
                                 [settings]="dropdownSettings" [(ngModel)]="selectedItems">
-                             </ng-multiselect-dropdown>
+                             </ng-multiselect-dropdown> -->
                             </div>
                         </div>
                     </div>

@@ -12,7 +12,7 @@ import { DanhgiadmServiceService } from './danhgiadm-service.service';
 export class LoidanhgiaComponent implements OnInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
     departmentId: 0, nestId: 0
   };
   modeltitle = '';
@@ -53,9 +53,7 @@ export class LoidanhgiaComponent implements OnInit {
       this.dmdgservice.CheckLength = 0;
     }
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
-  }
+
   selectDepartment(value) {
     this.dmdgservice.model.DepartmentId = value;
     this.options.departmentId = value;

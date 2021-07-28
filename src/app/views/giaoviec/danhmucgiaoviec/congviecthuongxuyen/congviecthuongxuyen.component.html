@@ -21,7 +21,7 @@
                         <app-modaldel *ngIf="cvtxservice.CheckLength > 0" [list]=cvtxservice.listData titleModal="Xác nhận xóa công việc"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-option-congty isShowDepartment="1" isShowNest="1" (changeCongtys)="selectCompany($event)"
+                    <app-option-congty isShowDepartment="1" isShowNest="1"
                         (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
                     </app-option-congty>
                 </div>

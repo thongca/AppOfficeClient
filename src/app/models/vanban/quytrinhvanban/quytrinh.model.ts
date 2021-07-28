@@ -28,7 +28,6 @@ export class OptionQuyTrinh {
     BuocId: number;
     QuyTrinhId: number;
     LenhTuongTacId: number;
-    CompanyId: number;
     BuocLenhTuongTacId?: number;
 }
 export class VBQTBuocLenhGroupRole {

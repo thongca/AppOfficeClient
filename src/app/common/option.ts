@@ -7,7 +7,6 @@ export class OptionHeader {
     paxpz: number;
     mathP: number;
     userName: string;
-    companyId: number;
     groupId: number;
     departmentId?: number;
     rankrole?: number;
@@ -15,7 +14,6 @@ export class OptionHeader {
 }
 export class UserLogin {
     Id: number;
-    companyId: number;
     groupId: number;
     departmentId?: number;
     nestId?: number;
@@ -23,7 +21,6 @@ export class UserLogin {
     fullName?: string;
 }
 export class OptionUser {
-    companyId: number;
     departmentId?: number;
     nestId?: number;
     s: string;

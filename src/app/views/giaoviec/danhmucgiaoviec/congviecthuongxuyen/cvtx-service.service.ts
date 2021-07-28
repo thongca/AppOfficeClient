@@ -11,7 +11,7 @@ import { CongViecThuongXuyen } from '../models/congviecthuongxuyen.model';
 })
 export class CvtxServiceService {
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
     departmentId: 0, nestId: 0, rankrole: 0
   };
   CheckLength = 0;

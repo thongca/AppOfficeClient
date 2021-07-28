@@ -8,7 +8,7 @@
                         <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-config-user-handel (changeCongtys)="selectCompany($event)"
+                    <app-config-user-handel
                         (changeQuyTrinhs)="changeQuyTrinh($event)" (changeSteps)="changeSteps($event)">
                     </app-config-user-handel>
                 </div>

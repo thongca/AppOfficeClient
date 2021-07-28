@@ -13,7 +13,7 @@ import { CommonService } from '../../../../common/common.service';
 export class CauhinhnguoinhanComponent implements OnInit {
   options: OptionQuyTrinh = {
     BuocId: 0,
-    CompanyId: 0,
+
     LenhTuongTacId: 0,
     QuyTrinhId: 0,
     BuocLenhTuongTacId: 0
@@ -32,7 +32,7 @@ export class CauhinhnguoinhanComponent implements OnInit {
   }
   r1GetDataLenhTuongTac() {
     const qt = {
-      'CompanyId': this.options.CompanyId,
+
       'QuyTrinhId': this.options.QuyTrinhId,
       'BuocId': this.options.BuocId
     };
@@ -93,10 +93,6 @@ export class CauhinhnguoinhanComponent implements OnInit {
       default:
         value.IsNguoiGui = !value.IsNguoiGui;
     }
-    if (Number(this.options.CompanyId) === 0 || this.options.CompanyId === null) {
-      this.toastr.warning('Bạn phải chọn công ty trước khi thực hiện phân quyền', 'Thông báo');
-      return;
-    }
     value.BuocLenhTuongTacId = this.options.BuocLenhTuongTacId;
 
     this._apiService.r2_Add_Data_Model(value, 'api/QuyTrinhVanBan/r2AddListDataNNToNhomQuyen')
@@ -116,10 +112,7 @@ export class CauhinhnguoinhanComponent implements OnInit {
     this.options.BuocLenhTuongTacId = buocLenhId;
     this.r1GetDataNNtoGroupRole();
   }
-  selectCompany(value) {
-    this.options.CompanyId = Number(value);
-    this.r1GetDataNNtoGroupRole();
-  }
+
   changeQuyTrinh(value) {
     this.options.QuyTrinhId = Number(value);
   }

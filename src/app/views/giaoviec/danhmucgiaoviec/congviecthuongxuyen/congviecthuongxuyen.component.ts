@@ -13,7 +13,7 @@ import { CvtxServiceService } from './cvtx-service.service';
 export class CongviecthuongxuyenComponent implements OnInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
     departmentId: 0, nestId: 0
   };
   modeltitle = '';
@@ -54,9 +54,7 @@ export class CongviecthuongxuyenComponent implements OnInit {
       this.cvtxservice.CheckLength = 0;
     }
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
-  }
+
   selectDepartment(value) {
     this.cvtxservice.model.DepartmentId = value;
     this.options.departmentId = value;

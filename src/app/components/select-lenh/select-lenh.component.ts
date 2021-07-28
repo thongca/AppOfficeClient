@@ -58,7 +58,7 @@ export class SelectLenhComponent implements OnInit {
   }
   r1GetDataLenh() {
     this.options.MenuId = this.MenuId;
-    this.options.GroupRoleId = this._commonService.getGroupUser();
+    this.options.GroupRoleId = this._commonService.readDataTokenGroupRoleId();
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_List_Data_Model_General(this.options, 'api/Common/r1GetListDataLenhTheoUser')
       .subscribe(res => {

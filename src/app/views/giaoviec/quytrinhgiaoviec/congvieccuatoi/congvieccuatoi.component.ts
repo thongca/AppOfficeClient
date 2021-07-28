@@ -297,7 +297,7 @@ ChangeDV(value) {
 
   r1ListUser() {
     const op = {
-      'GroupRoleId': Number(this._commonService.getGroupUser()),
+      'GroupRoleId': Number(this._commonService.readDataTokenGroupRoleId()),
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {

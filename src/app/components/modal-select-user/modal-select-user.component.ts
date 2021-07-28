@@ -29,7 +29,6 @@ export class ModalSelectUserComponent implements OnInit {
   treeControl = new NestedTreeControl<MoHinhToChuc>(node => node.children);
   dataSource = new MatTreeNestedDataSource<MoHinhToChuc>();
   options: OptionUser = {
-    companyId: 0,
     departmentId: 0,
     nestId: 0,
     s: ''
@@ -58,7 +57,7 @@ export class ModalSelectUserComponent implements OnInit {
   r1GetDataMoHinhTC() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     const op = {
-      'GroupRoleId': Number(this._commonService.getGroupUser()),
+      'GroupRoleId': Number(this._commonService.readDataTokenGroupRoleId()),
       'BuocLenhGroupId': this._buocLenhGroupId
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataMohinhToChuc')
@@ -78,19 +77,16 @@ export class ModalSelectUserComponent implements OnInit {
     this.nameDanhSach = 'Danh sách nhân sự của ' + Name;
     switch (Loai) {
       case 0:
-        this.options.companyId = Id;
         this.options.departmentId = 0;
         this.options.nestId = 0;
         this.r1GetDataUser();
         break;
       case 1:
-        this.options.companyId = 0;
         this.options.departmentId = Id;
         this.options.nestId = 0;
         this.r1GetDataUser();
         break;
       default:
-        this.options.companyId = 0;
         this.options.departmentId = 0;
         this.options.nestId = Id;
         this.r1GetDataUser();

@@ -19,7 +19,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   @ViewChild('modalLenh', { static: false }) public modalLenh: ModalDirective;
   userlogin: UserLogin = this._commonService.getValueUserLogin();
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0, rankrole: 0
   };
   selectedItems = [];
@@ -53,20 +53,19 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.options.companyId = Number(this._commonService.getCompanyUser());
 
   }
   ngAfterViewInit(): void {
-      this._s.DataSearch$.subscribe(res => {
-        if (res === undefined || res === '') {
-          this.options.s = '';
-        } else {
-          this.options.s = res;
-        }
-        if (this.loaddata === true) {
+    this._s.DataSearch$.subscribe(res => {
+      if (res === undefined || res === '') {
+        this.options.s = '';
+      } else {
+        this.options.s = res;
+      }
+      if (this.loaddata === true) {
         this.r1GetDataList();
       }
-      });
+    });
   }
   r1GetDataList() {
     this._apiService.r1_Get_List_Data('api/QuyTrinhVanBan/r1GetListDataQT')
@@ -87,7 +86,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     this.modeltitle = 'Cấu hình quy trình văn bản';
     this.QuyTrinhId = Id;
     const qt = {
-      'CompanyId': this.options.companyId,
+
       'QuyTrinhId': Id
     };
     this._apiService.r1_List_Data_Model_General(qt, 'api/QuyTrinhVanBan/r1GetListDataBuoc')
@@ -108,7 +107,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   r1GetDataLenhTuongTac(Id) {
     this.BuocId = Id;
     const qt = {
-      'CompanyId': this.options.companyId,
+
       'QuyTrinhId': this.QuyTrinhId,
       'BuocId': Id
     };
@@ -180,29 +179,29 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     };
     if (check === true) {
       this._apiService.r2_Add_Data_Model(models, 'api/QuyTrinhVanBan/r2AddListDataBuocLenh')
-      .subscribe(res => {
-        if (res === undefined) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+        .subscribe(res => {
+          if (res === undefined) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          if (res['error'] === 1) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          if (res['error'] === 2) {
+            this.toastr.error('Lệnh tương tác đã tồn tại trong bước!, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+          this.r1GetDataBuocQuyTrinh(this.QuyTrinhId);
           return;
-        }
-        if (res['error'] === 1) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-          return;
-        }
-        if (res['error'] === 2) {
-          this.toastr.error('Lệnh tương tác đã tồn tại trong bước!, Vui lòng kiểm tra lại!', 'Thông báo');
-          return;
-        }
-        this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-        this.r1GetDataBuocQuyTrinh(this.QuyTrinhId);
-        return;
-      });
+        });
 
     }
   }
   SelectIDEditModel(Id) {
     this.modeltitle = 'Sửa thông tin người dùng';
-   this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
+    this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
       if (res !== undefined) {
         if (res['error'] === 1) {
           return;
@@ -213,8 +212,8 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     });
     this.modaldata.show();
   }
-   // checked
-   CheckAll(obj) {
+  // checked
+  CheckAll(obj) {
     this.CheckLength = obj.CheckLength;
     this.listBuocLenh = obj.listData;
 
@@ -231,10 +230,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
       this.CheckLength = 0;
     }
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
 
-  }
   selectDepartment(value) {
     this.options.departmentId = value;
   }

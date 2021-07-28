@@ -17,8 +17,10 @@ import { OptionHeader } from '../../../../common/option';
 export class ModuledepartmentComponent implements OnInit {
   treeControl = new NestedTreeControl<IMenuCom>(node => node.children);
   dataSource = new MatTreeNestedDataSource<IMenuCom>();
-  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 3, groupId: 0,
-departmentId: 0 };
+  options: OptionHeader = {
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
+    departmentId: 0
+  };
   listData: IMenuCom[];
   CheckLength: number;
   thongnguyen: string;
@@ -29,7 +31,7 @@ departmentId: 0 };
     private _s: SearchService,
     private _commonService: CommonService,
   ) {
-    this.options.companyId = this._commonService.getDefaultCompanyId();
+
   }
 
   ngOnInit(): void {
@@ -77,20 +79,20 @@ departmentId: 0 };
       this.toastr.warning('Bạn phải chọn phòng ban trước khi thực hiện phân quyền', 'Thông báo');
       return;
     }
-    value.CompanyId = this.options.companyId;
+
     value.DepartmentId = this.options.departmentId;
     value.IsActive = !value.IsActive;
     this._apiService.r2_Add_Data_Model(value, 'api/ModuleCongty/r2AddDataModelDepartment')
-    .subscribe(res => {
-      if (res === undefined) {
-        this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
-        return;
-      }
-      if (res['error'] === 1) {
-        this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
-        return;
-      }
-    });
+      .subscribe(res => {
+        if (res === undefined) {
+          this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
+          return;
+        }
+        if (res['error'] === 1) {
+          this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
+          return;
+        }
+      });
   }
 
 
@@ -100,10 +102,7 @@ departmentId: 0 };
   radiobtnSelect(value) {
     console.log(value);
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
 
-  }
   selectDepartment(value) {
     this.options.departmentId = value;
     console.log(value);

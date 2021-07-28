@@ -16,7 +16,7 @@ import { IMenuPermission } from '../../../../models/systems/systemmanagement/ipe
 export class PermissionmoduleComponent implements OnInit {
   userlogin: UserLogin = this._commonService.getValueUserLogin();
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
     departmentId: 0, nestId: 0, rankrole: this.userlogin.rankrole
   };
   private load = false;
@@ -32,7 +32,7 @@ export class PermissionmoduleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.options.companyId = Number(this._commonService.getCompanyUser());
+
   }
   r2_AddData(value: IMenuPermission, check: boolean, type: number) {
     switch (type) {
@@ -51,11 +51,6 @@ export class PermissionmoduleComponent implements OnInit {
       default:
         value.ExportPer = !value.ExportPer;
     }
-    if (Number(this.options.companyId) === 0 || this.options.companyId === null) {
-      this.toastr.warning('Bạn phải chọn công ty trước khi thực hiện phân quyền', 'Thông báo');
-      return;
-    }
-    value.CompanyId = this.options.companyId;
     value.DepartmentId = this.options.departmentId;
     value.NestId = this.options.nestId;
     value.GroupRoleId = this.options.groupId;
@@ -113,10 +108,7 @@ export class PermissionmoduleComponent implements OnInit {
     this.options.groupId = Id;
     this.r1GetDataList();
   }
-  selectCompany(companyId) {
-    this.options.companyId = companyId;
 
-  }
   selectDepartment(value) {
     this.options.departmentId = value;
   }

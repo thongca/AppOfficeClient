@@ -15,7 +15,7 @@ const jwtHelper = new JwtHelperService();
 })
 export class CommonService {
   userlogin: UserLogin = { // các giá trị của user đang đăng nhập
-    Id: 0, companyId: 0, groupId: 0, departmentId: 0, nestId: 0, rankrole: 4
+    Id: 0,  groupId: 0, departmentId: 0, nestId: 0, rankrole: 4
   };
   private nameMenu = new Subject<string>();
   public nameMenu$ = this.nameMenu.asObservable();
@@ -108,14 +108,6 @@ export class CommonService {
       return 4;
     }
   }
-  getGroupUser() {
-    if (localStorage.getItem('groupUserId') != null) {
-      const groupId = Number(localStorage.getItem('groupUserId'));
-      return groupId;
-    } else {
-      return -1;
-    }
-  }
   getCompanyUser() {
     if (localStorage.getItem('user') != null) {
       const user = JSON.parse(this._hashCode.decrypt(localStorage.getItem('user'))) as IUser;
@@ -150,7 +142,7 @@ export class CommonService {
   }
   getValueUserLogin(): UserLogin {
     this.userlogin = {
-      Id: this.getUserId(), companyId: 0, groupId: this.getGroupUser(), departmentId: this.getDepartmentUser(),
+      Id: this.getUserId(),  groupId: this.readDataTokenGroupRoleId(), departmentId: this.getDepartmentUser(),
       nestId: this.getDepartmentUser(), rankrole: this.getPermissionUser(), fullName: this.getUserFullName()
     };
     return this.userlogin;
@@ -167,6 +159,23 @@ export class CommonService {
       return companyId;
     }
   }
+      /** Đọc dữ liệu token */
+      readDataTokenGroupRoleId(): number {
+        const token = localStorage.getItem('token');
+        // Check whether the token is expired and return
+        // true or false
+        const data = jwtHelper.decodeToken(token);
+        if (data) {
+          const user = JSON.parse(data.User);
+          if (user) {
+            return Number(user.GroupRoleId);
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+      }
     /** Đọc dữ liệu token */
     readDataTokenCompanyId(): number {
       const token = localStorage.getItem('token');

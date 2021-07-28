@@ -19,7 +19,7 @@ export class OptionCongtyComponent implements OnInit {
   @Output() changeDepartments = new EventEmitter();
   @Output() changeNests = new EventEmitter();
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 3, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0
   };
   listCompanys: ICompany[] = [];
@@ -34,7 +34,6 @@ export class OptionCongtyComponent implements OnInit {
 
   ngOnInit(): void {
     this.permission = this._commonService.getPermissionUser();
-    this.options.companyId = this._commonService.readDataTokenCompanyId();
     this.r1GetDepartment();
   }
   r1GetDepartment() {
@@ -99,11 +98,6 @@ export class OptionCongtyComponent implements OnInit {
       } else {
         this.changeNests.emit(this._commonService.getDepartmentUser());
       }
-  }
-  ChangeCongty(value) {
-    this.changeCongtys.emit(Number(value));
-    this.options.companyId = Number(value);
-    this.r1GetDepartment();
   }
   ChangeDepartment(value) {
     this.changeDepartments.emit(Number(value));

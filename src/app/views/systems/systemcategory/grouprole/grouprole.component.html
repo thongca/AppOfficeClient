@@ -21,7 +21,7 @@
                         <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-option-congty isShowDepartment="1" isShowNest="1" (changeCongtys)="selectCompany($event)"
+                    <app-option-congty isShowDepartment="1" isShowNest="1"
                         (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
                     </app-option-congty>
                 </div>
@@ -34,10 +34,6 @@
                                     <app-check-all [list] = listData (checkAll) = "CheckAll($event)"></app-check-all>
                                 </th>
                                 <th>Tên nhóm quyền</th>
-                                <th width=100 class="text-center" *ngIf="permission <= 1">Admin Cty</th>
-                                <th width=100 class="text-center" *ngIf="permission <= 2">Admin phòng</th>
-                                <th width=100 class="text-center" *ngIf="permission <= 3">Admin tổ</th>
-
                                 <th width=100 class="text-center">Trạng thái</th>
                                 <th width=50 title="Chức năng" class="text-center">C/N</th>
                             </tr>
@@ -50,22 +46,6 @@
                                         (click)="CheckedList(!item.check, item.Id)">
                                 </td>
                                 <td>{{item.Name}}</td>
-                                <td class="text-center" *ngIf="permission <= 1">
-                                    <span
-                                        [ngClass]="{'badge': true, ' badge-success' : item.IsAdminCom == true, 'badge-danger' : item.IsAdminCom != true}">
-                                        {{item.IsAdminCom == true ? 'Hoạt động': 'Không'}}</span>
-                                </td>
-                                <td class="text-center" *ngIf="permission <= 2">
-                                    <span
-                                        [ngClass]="{'badge': true, 'badge-success' : item.IsAdminDep == true, 'badge-danger' : item.IsAdminDep != true}">
-                                        {{item.IsAdminDep == true ? 'Hoạt động': 'Không'}}</span>
-                                </td>
-                                <td class="text-center" *ngIf="permission <= 3">
-                                    <span
-                                        [ngClass]="{'badge': true, 'badge-success' : item.IsAdminNest == true,'badge-danger' : item.IsAdminNest != true }">
-                                        {{item.IsAdminNest == true ? 'Hoạt động': 'Không'}}</span>
-                                </td>
-
                                 <td class="text-center">
                                     <span [ngClass]="{'badge': true, 'badge-success' : item.IsActive == true}">
                                         {{item.IsActive == true ? 'Hoạt động': 'Không'}}</span>
@@ -99,9 +79,9 @@
         </div>
         <div class="modal-body">
             <div class="animated fadeIn">
-              <div class="row m-0">
+              <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group row">
+                        <div class="form-group">
                             <label class="title-text col-form-label" for="name"> Tên nhóm
                                 <span>*</span>
                             </label>
@@ -114,57 +94,6 @@
                     <div class="col-md-6" >
                         <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
                         (changeRadio)="radioKichHoat($event)"></app-input-radio-checkbox>
-                    </div>
-                    <div class="col-md-6" *ngIf="permission <= 1">
-                        <div class="form-group row">
-                            <label class="title-text col-form-label" for="inline-radios">Admin cty</label>
-                            <div class="input-text col-form-label">
-                              <div class="form-check form-check-inline mr-1" id="inline-radios">
-                                <input class="form-check-input" type="radio" [(ngModel)]="model.IsAdminCom"
-                                   name="IsAdminCom" id="IsActive1" [value]="true">
-                                <label class="form-check-label" for="inlineRadio1">Có</label>
-                              </div>
-                              <div class="form-check form-check-inline mr-1">
-                                <input class="form-check-input" type="radio" [(ngModel)]="model.IsAdminCom"
-                                  name="IsAdminCom" id="IsActive2" [value]="false">
-                                <label class="form-check-label" for="inlineRadio2">Không</label>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="permission <= 2" >
-                        <div class="form-group row" >
-                            <label class="title-text col-form-label" for="inline-radios">Admin phòng</label>
-                            <div class="input-text col-form-label">
-                              <div class="form-check form-check-inline mr-1" id="inline-radios">
-                                <input [disabled]="model.IsAdminCom === true" class="form-check-input" type="radio" [(ngModel)]="model.IsAdminDep"
-                                   name="IsAdminDep" id="IsActive1" [value]="true">
-                                <label class="form-check-label" for="inlineRadio1">Có</label>
-                              </div>
-                              <div class="form-check form-check-inline mr-1">
-                                <input [disabled]="model.IsAdminCom === true" class="form-check-input" type="radio" [(ngModel)]="model.IsAdminDep"
-                                  name="IsAdminDep" id="IsActive2" [value]="false">
-                                <label class="form-check-label" for="inlineRadio2">Không</label>
-                              </div>
-                            </div>
-                          </div>
-                    </div>
-                    <div class="col-md-6" *ngIf="permission <= 3">
-                        <div class="form-group row">
-                            <label class="title-text col-form-label" for="inline-radios">Admin tổ</label>
-                            <div class="input-text col-form-label">
-                              <div class="form-check form-check-inline mr-1" id="inline-radios">
-                                <input [disabled]="model.IsAdminCom === true || model.IsAdminDep === true" class="form-check-input" type="radio" [(ngModel)]="model.IsAdminNest"
-                                   name="IsAdminNest" id="IsActive1" [value]="true">
-                                <label class="form-check-label" for="inlineRadio1">Có</label>
-                              </div>
-                              <div class="form-check form-check-inline mr-1">
-                                <input [disabled]="model.IsAdminCom === true || model.IsAdminDep === true" class="form-check-input" type="radio" [(ngModel)]="model.IsAdminNest"
-                                  name="IsAdminNest" id="IsActive2" [value]="false">
-                                <label class="form-check-label" for="inlineRadio2">Không</label>
-                              </div>
-                            </div>
-                          </div>
                     </div>
               </div>
               <!--/.row-->

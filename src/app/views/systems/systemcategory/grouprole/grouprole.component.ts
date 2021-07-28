@@ -18,7 +18,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 export class GrouproleComponent implements OnInit, AfterViewInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0
   };
   permission: number;
@@ -28,13 +28,8 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
     Id: 0,
     Name: '',
     IsActive: true,
-    IsAdminCom: false,
-    IsAdminDep: false,
-    IsAdminNest: false,
-    IsAdministrator: false,
     check: false,
-    DepartmentId: this.options.departmentId,
-    CompanyId: this.options.companyId,
+    DepartmentId: this.options.departmentId
   };
   CheckLength: number;
   public loading = false;
@@ -49,7 +44,6 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.options.companyId = Number(this._commonService.getCompanyUser());
   }
   ngAfterViewInit(): void {
     this._s.DataSearch$.subscribe(res => {
@@ -95,10 +89,6 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
       });
   }
   r2_AddData() {
-    if (this.options.companyId === 0) {
-      this.toastr.error('Vui lòng chọn công ty!', 'Thông báo');
-      return;
-    }
     if (this.options.nestId > 0) {
       this.model.DepartmentId = this.options.nestId;
     }
@@ -163,11 +153,6 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
       this.CheckLength = 0;
     }
   }
-  selectCompany(companyId) {
-    this.model.CompanyId = this.options.companyId;
-    this.options.companyId = companyId;
-
-  }
   selectDepartment(value) {
     this.model.DepartmentId = this.options.departmentId;
     this.options.departmentId = value;
@@ -184,13 +169,8 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
       Id: 0,
       Name: '',
       IsActive: true,
-      IsAdminCom: false,
-      IsAdminDep: false,
-      IsAdminNest: false,
-      IsAdministrator: false,
       check: false,
-      DepartmentId: this.options.departmentId,
-      CompanyId: this.options.companyId,
+      DepartmentId: this.options.departmentId
     };
   }
   radioKichHoat(value) {

@@ -6,6 +6,9 @@ export class User {
         this.IsActive = true;
         this.check = false;
         this.PositionId = 0;
+        this.Role = 5;
+        this.NestId = 0;
+        this.DepartmentId = 0;
     }
     Id: number;
     Code: number;
@@ -16,6 +19,7 @@ export class User {
     DepartmentId?: number;
     NestId?: number;
     PositionId: number;
+    GroupRoleId: number;
     Role: number;
     check: boolean;
 }

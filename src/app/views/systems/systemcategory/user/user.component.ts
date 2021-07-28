@@ -16,7 +16,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   userlogin: UserLogin = this._commonService.getValueUserLogin();
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', companyId: 0, groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0, rankrole: 0
   };
   selectedItems = [];
@@ -26,19 +26,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   listData: User[] = [];
   listPosition: [] = [];
   listGroupRole: IGrouprole[];
-  model: User = {
-    Id: 0,
-    FullName: '',
-    Code: 0,
-    IsActive: true,
-    check: false,
-    Username: '',
-    Password: '',
-    DepartmentId: this.options.departmentId,
-    NestId: null,
-    PositionId: 0,
-    Role: 5
-  };
+  model: User = new User();
   groupRoles: any;
   CheckLength: number;
   thongnguyen: string;
@@ -78,7 +66,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.options.companyId = Number(this._commonService.getCompanyUser());
+
     this.r1GetListDataPosition();
     this.r1GetDepartment();
 
@@ -193,10 +181,6 @@ export class UserComponent implements OnInit, AfterViewInit {
       });
   }
   r2_AddData() {
-    if (this.options.companyId === 0) {
-      this.toastr.error('Vui lòng chọn công ty!', 'Thông báo');
-      return;
-    }
     this.model.PositionId = Number(this.model.PositionId);
     const models = {
       'Id': this.model.Id,
@@ -269,11 +253,6 @@ export class UserComponent implements OnInit, AfterViewInit {
       this.CheckLength = 0;
     }
   }
-  selectCompany(companyId) {
-    this.options.companyId = Number(companyId);
-    this.r1GetListDataPosition();
-
-  }
   selectDepartment(value) {
     this.options.departmentId = value;
     this.model.DepartmentId = Number(value);
@@ -287,19 +266,11 @@ export class UserComponent implements OnInit, AfterViewInit {
   showModal() {
     this.modeltitle = 'Thêm mới người sử dụng';
     this.modaldata.show();
-    this.model = {
-      Id: 0,
-      FullName: '',
-      Code: 0,
-      IsActive: true,
-      check: false,
-      Username: '',
-      Password: '',
-      NestId: this.options.nestId,
-      DepartmentId: this.model.DepartmentId,
-      PositionId: 0,
-      Role: 5
-    };
+    this.model = new User();
+  }
+  onChange_Department(DepartmentId: number): void {
+    this.options.departmentId = DepartmentId;
+    this.r1GetDataNest();
   }
   radioKichHoat(value) {
     console.log(value);

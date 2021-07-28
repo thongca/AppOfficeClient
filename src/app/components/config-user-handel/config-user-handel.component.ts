@@ -17,7 +17,6 @@ export class ConfigUserHandelComponent implements OnInit {
   permission: number;
   options: OptionQuyTrinh = {
     BuocId: 0,
-    CompanyId: 0,
     LenhTuongTacId: 0,
     QuyTrinhId: 0
   };
@@ -36,12 +35,10 @@ export class ConfigUserHandelComponent implements OnInit {
     if (this.permission === 0) {
       this.listCompanys = this._commonService.getCongtys();
       if (this.listCompanys.length > 0) {
-        this.options.CompanyId = this._commonService.getDefaultCompanyId();
         this.changeCongtys.emit(this.listCompanys[0].Id);
       }
     } else {
       this.listCompanys = [];
-      this.options.CompanyId = Number(this._commonService.getCompanyUser());
     }
     this.r1GetQuyTrinh();
   }
@@ -83,11 +80,6 @@ export class ConfigUserHandelComponent implements OnInit {
               this.changeSteps.emit(0);
             }
           });
-  }
-  ChangeCongty(value) {
-    this.options.CompanyId = Number(value);
-    this.changeCongtys.emit(value);
-    this.r1GetQuyTrinh();
   }
   ChangeQuyTrinh(value) {
     this.options.QuyTrinhId = Number(value);

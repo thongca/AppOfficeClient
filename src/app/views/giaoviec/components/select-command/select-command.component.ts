@@ -131,7 +131,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   }
   r1GetDataLenh() {
     this.options.MenuId = this.MenuId;
-    this.options.GroupRoleId = this._commonService.getGroupUser();
+    this.options.GroupRoleId = this._commonService.readDataTokenGroupRoleId();
     this._apiSharedService.r1_getListLenhs(this.options);
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
   }
@@ -485,7 +485,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   }
   r1ListUser(Code: string) {
     const op = {
-      'GroupRoleId': Number(this._commonService.getGroupUser()),
+      'GroupRoleId': Number(this._commonService.readDataTokenGroupRoleId()),
       MenuId: this.MenuId,
       MaLenh: Code
     };
