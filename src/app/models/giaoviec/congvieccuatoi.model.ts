@@ -11,3 +11,9 @@ export class InfoWorkFlow {
     CycleWork: number;
     CreateDate: Date;
 }
+
+export class UserTask {
+    Id: number;
+    FullName: string;
+    DepartmentId: string;
+}

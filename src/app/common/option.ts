@@ -20,6 +20,13 @@ export class UserLogin {
     rankrole?: number;
     fullName?: string;
 }
+export class UserLoginFromToken {
+    UserID: number;
+    GroupRoleId: number;
+    DepartmentId?: number;
+    CompanyId?: number;
+    FullName?: string;
+}
 export class OptionUser {
     departmentId?: number;
     nestId?: number;

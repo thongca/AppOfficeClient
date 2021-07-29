@@ -1,4 +1,23 @@
+import { UserLoginFromToken } from '../../common/option';
+
 export class CVQTMyWork {
+    constructor() {
+        this.Id = null;
+        this.Code = 0;
+        this.TaskId = null;
+        this.TaskName = '';
+        this.StartDate = new Date;
+        this.PauseTime = 0.0;
+        this.WorkTime = 0.0;
+        this.EndDate = new Date;
+        this.TimeStart = new Date;
+        this.TimeEnd = new Date;
+        this.TypeTask = 1;
+        this.PointTask = 0;
+        this.PointTime = 0;
+        this.ExpectedDate = new Date;
+        this.Repossibility = 1;
+    }
 Id: string;
 Code: number;
 TaskId: string;

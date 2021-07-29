@@ -51,6 +51,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { SearchService } from './shared/search.service';
 import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
 import { PushNotificationService } from 'ngx-push-notifications';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -79,6 +81,7 @@ import { PushNotificationService } from 'ngx-push-notifications';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
+    TypeaheadModule.forRoot(),
     NgxLoadingModule.forRoot({
       backdropBackgroundColour: 'rgba(0,0,0,0.1)',
       backdropBorderRadius: '8px',

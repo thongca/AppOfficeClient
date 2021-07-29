@@ -5,12 +5,13 @@ import { GiaoviecRoutingModule } from './giaoviec-routing.module';
 import { GiaoviecComponent } from './giaoviec.component';
 import { ModaladdCvComponent } from './components/modaladd-cv/modaladd-cv.component';
 import { MyworkInfoComponent } from './components/mywork-info/mywork-info.component';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   declarations: [GiaoviecComponent, ModaladdCvComponent, MyworkInfoComponent],
   imports: [
     CommonModule,
-    GiaoviecRoutingModule,
+    GiaoviecRoutingModule
   ]
 })
 export class GiaoviecModule { }

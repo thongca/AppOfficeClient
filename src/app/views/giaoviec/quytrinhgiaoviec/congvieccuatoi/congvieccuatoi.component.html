@@ -186,11 +186,10 @@
                                     <span>*</span>
                                 </label>
                                 <div class="input-text">
-                                    <app-input-date require=true 
-                                    (changeDate)="dateSelectkt($event)">
-                                </app-input-date>
+                                    <app-input-date require=true (changeDate)="dateSelectkt($event)">
+                                    </app-input-date>
                                 </div>
-                               
+
                             </div>
                             <div class="col-md-2 px-2 mb-2">
                                 <label class="title-text col-form-label" for="name"> Giờ kết thúc
@@ -226,6 +225,20 @@
                                             <option *ngFor="let item of typeUserTasks" [ngValue]="item.Id">{{item.Name}}
                                             </option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Người nhận việc
+                                    </label>
+                                    <div class="input-text">
+                                        <input [(ngModel)]="model.UserTaskName" [typeahead]="ctassignusers"
+                                            typeaheadOptionField="FullName" [typeaheadScrollable]="true"
+                                            [typeaheadOptionsInScrollableView]="6"
+                                            (typeaheadOnBlur)="onBlur($event)"
+                                            (typeaheadOnSelect)="onSelect_AssignUser($event)" class="form-control"
+                                            name="UserTaskName">
                                     </div>
                                 </div>
                             </div>

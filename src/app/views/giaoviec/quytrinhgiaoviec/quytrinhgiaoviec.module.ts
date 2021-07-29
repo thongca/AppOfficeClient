@@ -35,6 +35,8 @@ import { WorkOvertimeComponent } from '../components/work-overtime/work-overtime
 import { StateOvertimePipe } from '../../../pipes/myworks/state-overtime.pipe';
 import { CvkhoitaosauComponent } from './cvkhoitaosau/cvkhoitaosau.component';
 import { DuyetkhoitaosauComponent } from './duyetkhoitaosau/duyetkhoitaosau.component';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+
 @NgModule({
   declarations: [CongviecmoiComponent, CongvieccuatoiComponent, TreeScheduleComponent, VongDoiCongViecPipe, TypeflowPipe, HanCongViecPipe,
     SelectCommandComponent, WorkflowDetailComponent,
@@ -67,7 +69,8 @@ import { DuyetkhoitaosauComponent } from './duyetkhoitaosau/duyetkhoitaosau.comp
     MatAutocompleteModule,
     AutocompleteLibModule,
     MatCardModule,
-    TimepickerModule.forRoot()
+    TimepickerModule.forRoot(),
+    TypeaheadModule.forRoot()
   ]
 })
 export class QuytrinhgiaoviecModule { }

@@ -8,7 +8,7 @@ import { CVQTMyWork, CVQTFlowWork } from '../../../../models/giaoviec/congviecmo
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TreeDiagramComponent } from '../../../../components/tree-diagram/tree-diagram.component';
 import { TreeScheduleComponent } from '../../components/tree-schedule/tree-schedule.component';
-import { UserLogin } from '../../../../common/option';
+import { UserLogin, UserLoginFromToken } from '../../../../common/option';
 import { OptionsCV } from '../../../../models/giaoviec/optionscv.model';
 import { SelectCommandComponent } from '../../components/select-command/select-command.component';
 import { WorkdetailService } from '../../../../shared/workdetail.service';
@@ -16,6 +16,8 @@ import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service'
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
 import { SearchService } from '../../../../shared/search.service';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { UserTask } from '../../../../models/giaoviec/congvieccuatoi.model';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 
 @Component({
   selector: 'app-congvieccuatoi',
@@ -27,7 +29,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   @ViewChild('treediagram', { static: false }) public treediagram: TreeDiagramComponent;
   @ViewChild('selectLenh', { static: false }) public selectLenh: SelectCommandComponent;
   @ViewChild('treeSchedule', { static: false }) public treeSchedule: TreeScheduleComponent;
-  userlogin: UserLogin = this._commonService.getValueUserLogin();
+  userlogin: UserLoginFromToken = this._commonService.readDataTokenUser();
   optionsCV: OptionsCV = { Id: '', MyWorkId: '', p: 1, pz: 100, totalItem: 100, startPage: 0, endPage: 100 };
   step = 0;
   pdfSrc: string;
@@ -37,26 +39,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   isShowPrecedor = false;
   Predecessor: number; // mã code của công việc tiên quyết
   timeTQ = new Date;
-  model: CVQTMyWork = {
-    Id: null,
-    Code: 0,
-    TaskId: null,
-    TaskName: '',
-    StartDate: new Date,
-    PauseTime: 0.0,
-    WorkTime: 0.0,
-    EndDate: new Date,
-    TimeStart: new Date,
-    TimeEnd: new Date,
-    UserTaskId: this.userlogin.Id,
-    UserTaskName: this.userlogin.fullName,
-    TypeTask: 1,
-    PointTask: 0,
-    PointTime: 0,
-    DepartmentId: this.userlogin.departmentId,
-    ExpectedDate: new Date,
-    Repossibility: 1
-  };
+  ctassignusers: UserTask[] = [];
+  model: CVQTMyWork = new CVQTMyWork();
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
@@ -132,6 +116,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     this.r1ListUser();
     this.r1GetListMyWorks();
     this.r1GetDepartment();
+    this.r1GetDataUser();
   }
   ngAfterViewInit(): void {
     this._apiSharedService.reloadListMyWorks$.subscribe(res => {
@@ -158,6 +143,19 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
         // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
+  r1GetDataUser() {
+    // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
+    this._apiService.r1_Get_List_Data('api/Common/r1GetListUserByGroup')
+      .subscribe(res => {
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.ctassignusers = res['data'];
+      });
+  }
   r1GetDepartment() {
     this._apiService.r1_Get_List_Data('api/Common/r1GetListDataDepforUser')
       .subscribe(res => {
@@ -169,8 +167,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
         }
       });
   }
-ChangeDV(value) {
-}
+  ChangeDV(value) {
+  }
   SelectIDEditModel(item: CVQTFlowWork) {
     const workFlow = {
       Id: item.Id,
@@ -294,7 +292,17 @@ ChangeDV(value) {
       //   });
     }
   }
-
+  onBlur(event: TypeaheadMatch) {
+    console.log(event);
+  }
+  onSelect_AssignUser(event: TypeaheadMatch): void {
+    if (event && event.item) {
+      const user: UserTask = event.item;
+      this.model.UserTaskId = user.Id;
+      this.model.UserTaskName = user.FullName;
+    }
+    console.log(event);
+  }
   r1ListUser() {
     const op = {
       'GroupRoleId': Number(this._commonService.readDataTokenGroupRoleId()),
@@ -356,7 +364,7 @@ ChangeDV(value) {
   }
   searchData(data: string) {
     this.listCongViecs = this.listTotals.filter(x => x.TaskName.toUpperCase().includes(data.toUpperCase())
-    || x.Code.toString().includes(data)
+      || x.Code.toString().includes(data)
     );
   }
   pageChanged(event: PageChangedEvent) {
@@ -368,6 +376,13 @@ ChangeDV(value) {
     this.modaldata.show();
     this.selectedItemPHs = [];
     this.selectedItems = [];
+    this.model = new CVQTMyWork();
+    this.onSet_initDataModal(this.model);
+  }
+  onSet_initDataModal(model: CVQTMyWork): void {
+    model.UserTaskId = this.userlogin.UserID;
+    model.UserTaskName = this.userlogin.FullName;
+    model.DepartmentId = this.userlogin.DepartmentId;
   }
   RefreshData() {
 

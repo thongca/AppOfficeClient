@@ -4,7 +4,7 @@ import { HashCodeService } from './hashCode.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { IUser } from '../models/systems/systemmanagement/iuser.model';
-import { UserLogin } from './option';
+import { UserLogin, UserLoginFromToken } from './option';
 import { BaseUrlService } from './base-url.service';
 import { Menu } from './menu';
 import { Subject } from 'rxjs';
@@ -15,7 +15,7 @@ const jwtHelper = new JwtHelperService();
 })
 export class CommonService {
   userlogin: UserLogin = { // các giá trị của user đang đăng nhập
-    Id: 0,  groupId: 0, departmentId: 0, nestId: 0, rankrole: 4
+    Id: 0, groupId: 0, departmentId: 0, nestId: 0, rankrole: 4
   };
   private nameMenu = new Subject<string>();
   public nameMenu$ = this.nameMenu.asObservable();
@@ -33,43 +33,43 @@ export class CommonService {
     // true or false
     return !jwtHelper.isTokenExpired(token);
   }
-  setTimeToDateAndChangeTimeZone(date: Date, time: Date ): Date {
+  setTimeToDateAndChangeTimeZone(date: Date, time: Date): Date {
     if (date === null || date === undefined) {
       return null;
     } else {
       const dates = new Date(new Date(date.setHours(time.getHours())).setMinutes(time.getMinutes()));
       const dateresult = new Date(dates.getTime() - (dates.getTimezoneOffset() * 60000));
-       return dateresult;
+      return dateresult;
     }
+  }
+  setTimeToDate(date: Date, time: Date): Date {
+    const hour = time.getHours();
+    if (date === null || date === undefined) {
+      return null;
+    } else {
+      const dates = new Date(new Date(date.setHours(time.getHours())).setMinutes(time.getMinutes()));
+      return dates;
     }
-    setTimeToDate(date: Date, time: Date ): Date {
-      const hour = time.getHours();
-      if (date === null || date === undefined) {
-        return null;
-      } else {
-        const dates = new Date(new Date(date.setHours(time.getHours())).setMinutes(time.getMinutes()));
-         return dates;
-      }
-      }
-    FromDateToDouble(date: Date): number {
-      if (date == null) {
-        return null;
-      } else {
-        const dateDouble: number = date.getTime() - new Date(1970, 0, 1).getTime();
-        return dateDouble / 1000;
-      }
+  }
+  FromDateToDouble(date: Date): number {
+    if (date == null) {
+      return null;
+    } else {
+      const dateDouble: number = date.getTime() - new Date(1970, 0, 1).getTime();
+      return dateDouble / 1000;
     }
-    FromDoubleToDate(date: number): Date {
-      if (date == null) {
-        return null;
-      } else {
-        const dateTime: Date = new Date(new Date(1970, 0, 1).setSeconds(date));
-        return dateTime;
-      }
+  }
+  FromDoubleToDate(date: number): Date {
+    if (date == null) {
+      return null;
+    } else {
+      const dateTime: Date = new Date(new Date(1970, 0, 1).setSeconds(date));
+      return dateTime;
     }
+  }
   getListQuyen(): Menu[] {
     if (localStorage.getItem('listQuyen') != null) {
-      const listQuyen =  JSON.parse(this._hashCode.decrypt(localStorage.getItem('listQuyen')));
+      const listQuyen = JSON.parse(this._hashCode.decrypt(localStorage.getItem('listQuyen')));
       return listQuyen;
     } else {
       return [];
@@ -101,19 +101,19 @@ export class CommonService {
   }
   getUserId(): number {
     const token = localStorage.getItem('token');
-        // Check whether the token is expired and return
-        // true or false
-        const data = jwtHelper.decodeToken(token);
-        if (data) {
-          const user = JSON.parse(data.User);
-          if (user) {
-            return user.UserID;
-          } else {
-            return 0;
-          }
-        } else {
-          return 0;
-        }
+    // Check whether the token is expired and return
+    // true or false
+    const data = jwtHelper.decodeToken(token);
+    if (data) {
+      const user = JSON.parse(data.User);
+      if (user) {
+        return user.UserID;
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
   }
   getPermissionUser() {
     if (localStorage.getItem('user') != null) {
@@ -145,7 +145,7 @@ export class CommonService {
   }
   getValueUserLogin(): UserLogin {
     this.userlogin = {
-      Id: this.getUserId(),  groupId: this.readDataTokenGroupRoleId(), departmentId: this.getDepartmentUser(),
+      Id: this.getUserId(), groupId: this.readDataTokenGroupRoleId(), departmentId: this.getDepartmentUser(),
       nestId: this.getDepartmentUser(), rankrole: this.getPermissionUser(), fullName: this.getUserFullName()
     };
     return this.userlogin;
@@ -162,40 +162,53 @@ export class CommonService {
       return companyId;
     }
   }
-      /** Đọc dữ liệu token */
-      readDataTokenGroupRoleId(): number {
-        const token = localStorage.getItem('token');
-        // Check whether the token is expired and return
-        // true or false
-        const data = jwtHelper.decodeToken(token);
-        if (data) {
-          const user = JSON.parse(data.User);
-          if (user) {
-            return Number(user.GroupRoleId);
-          } else {
-            return 0;
-          }
-        } else {
-          return 0;
-        }
-      }
     /** Đọc dữ liệu token */
-    readDataTokenCompanyId(): number {
+    readDataTokenUser(): UserLoginFromToken {
       const token = localStorage.getItem('token');
       // Check whether the token is expired and return
       // true or false
       const data = jwtHelper.decodeToken(token);
       if (data) {
         const user = JSON.parse(data.User);
-        if (user) {
-          return Number(user.CompanyId);
-        } else {
-          return 0;
-        }
+        return user;
+      } else {
+        return null;
+      }
+    }
+  /** Đọc dữ liệu token */
+  readDataTokenGroupRoleId(): number {
+    const token = localStorage.getItem('token');
+    // Check whether the token is expired and return
+    // true or false
+    const data = jwtHelper.decodeToken(token);
+    if (data) {
+      const user = JSON.parse(data.User);
+      if (user) {
+        return Number(user.GroupRoleId);
       } else {
         return 0;
       }
+    } else {
+      return 0;
     }
+  }
+  /** Đọc dữ liệu token */
+  readDataTokenCompanyId(): number {
+    const token = localStorage.getItem('token');
+    // Check whether the token is expired and return
+    // true or false
+    const data = jwtHelper.decodeToken(token);
+    if (data) {
+      const user = JSON.parse(data.User);
+      if (user) {
+        return Number(user.CompanyId);
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
+  }
   getMenuId(url) {
     if (localStorage.getItem('listQuyen') != null) {
       const listMenu = JSON.parse(this._hashCode.decrypt(localStorage.getItem('listQuyen')));
@@ -205,17 +218,17 @@ export class CommonService {
       return '/';
     }
   }
-    // update
-    replaceUrlImage(url): string {
-      if (url === null) {
-        url = 'assets/logo/picture-size.svg';
-        return url;
-      }
-      url = url.split('\\').join('/');
-      return this._baseUrl.baseUrl + url;
+  // update
+  replaceUrlImage(url): string {
+    if (url === null) {
+      url = 'assets/logo/picture-size.svg';
+      return url;
     }
-        // update
-        showNameMenu(Name) {
-          this.nameMenu.next(Name);
-        }
+    url = url.split('\\').join('/');
+    return this._baseUrl.baseUrl + url;
+  }
+  // update
+  showNameMenu(Name) {
+    this.nameMenu.next(Name);
+  }
 }
