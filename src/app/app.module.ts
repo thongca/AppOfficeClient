@@ -52,7 +52,6 @@ import { SearchService } from './shared/search.service';
 import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
 import { PushNotificationService } from 'ngx-push-notifications';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
-
 @NgModule({
   imports: [
     BrowserModule,

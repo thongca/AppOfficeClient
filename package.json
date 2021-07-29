@@ -61,7 +61,7 @@
     "mutationobserver-shim": "^0.3.5",
     "ng-multiselect-dropdown": "^0.2.10",
     "ng2-charts": "^2.3.0",
-    "ngx-bootstrap": "^5.6.1",
+    "ngx-bootstrap": "^5.6.2",
     "ngx-doc-viewer": "^1.2.0",
     "ngx-loading": "^8.0.0",
     "ngx-perfect-scrollbar": "^9.0.0",

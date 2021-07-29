@@ -105,40 +105,31 @@
                 <div class="modal-body px-2">
                     <div class="animated fadeIn">
                         <div class="row m-0">
-                            <div class="col-md-12 px-2 mb-2">
+                            <div class="col-md-12 px-2">
                                 <div class="form-group">
                                     <label class="title-text col-form-label" for="name"> Công việc
                                         <span>*</span>
                                     </label>
                                     <div class="input-text w-100">
-                                        <div class="ng-autocomplete">
-                                            <ng-autocomplete [data]="listWorks" [searchKeyword]="keywordl"
-                                                (selected)='selectLMyWork($event)'
-                                                (inputChanged)='onChangeMyWork($event)' [itemTemplate]="itemTemplate"
-                                                [notFoundTemplate]="notFoundTemplate">
-                                            </ng-autocomplete>
-
-                                            <ng-template #itemTemplate let-item>
-                                                <a [innerHTML]="item.Name"></a>
-                                            </ng-template>
-
-                                            <ng-template #notFoundTemplate let-notFound>
-                                                <div>
-                                                    Công việc không tồn tại!
-                                                </div>
-                                            </ng-template>
-                                        </div>
+                                        <input [(ngModel)]="model.TaskName" [typeahead]="listWorks"
+                                            typeaheadOptionField="Name" [typeaheadScrollable]="true"
+                                            [typeaheadOptionsInScrollableView]="10"
+                                            (typeaheadOnBlur)="selectLMyWork($event)"
+                                            (typeaheadOnSelect)="selectLMyWork($event)" class="form-control"
+                                            name="TaskName">
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6 px-2 mb-2">
+
+                            <div class="col-md-3 px-2 mb-2">
                                 <div class="form-group my-0">
                                     <label class="title-text col-form-label" for="name"> Độ khó
+                                        <span>*</span>
                                     </label>
                                     <div class="input-text">
                                         <select id="dokho" name="dokho" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTask">
-                                            <option *ngFor="let item of _sharedmyWork.listKhos" 
+                                            [(ngModel)]="model.PointTask" [disabled]="model.TaskId !== null">
+                                            <option *ngFor="let item of _sharedmyWork.listKhos"
                                                 [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
                                                 {{item.Name}}
                                             </option>
@@ -146,21 +137,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
+                            <div class="col-md-3 px-2 mb-2">
                                 <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Độ vội
+                                    <label class="title-text col-form-label" for="name"> Độ ưu tiên
+                                        <span>*</span>
                                     </label>
                                     <div class="input-text">
                                         <select name="dovoi" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTime">
-
+                                            [(ngModel)]="model.PointTime" [disabled]="model.TaskId !== null">
                                             <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id"
                                                 [selected]="item.Id === model.PointTime">{{item.Name}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
+                            <div class="col-md-6 px-2 mb-2">
+                                <div class="form-group my-0">
+                                    <label class="title-text col-form-label" for="name"> Người thực hiện
+                                        <a class="hover-cusor" (click)="assignToMe()"> (gán cho tôi)</a>
+                                    </label>
+                                    <div class="input-text">
+                                        <input [(ngModel)]="model.UserTaskName" [typeahead]="ctassignusers"
+                                            typeaheadOptionField="FullName" [typeaheadScrollable]="true"
+                                            [typeaheadOptionsInScrollableView]="6"
+                                            (typeaheadOnBlur)="onSelect_AssignUser($event)"
+                                            (typeaheadOnSelect)="onSelect_AssignUser($event)" class="form-control"
+                                            name="UserTaskName">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-4 px-2 mb-2">
                                 <label class="title-text col-form-label" for="name"> Ngày bắt đầu dự kiến
                                     <span>*</span>
@@ -228,20 +234,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 px-2 mb-2">
-                                <div class="form-group my-0">
-                                    <label class="title-text col-form-label" for="name"> Người nhận việc
-                                    </label>
-                                    <div class="input-text">
-                                        <input [(ngModel)]="model.UserTaskName" [typeahead]="ctassignusers"
-                                            typeaheadOptionField="FullName" [typeaheadScrollable]="true"
-                                            [typeaheadOptionsInScrollableView]="6"
-                                            (typeaheadOnBlur)="onBlur($event)"
-                                            (typeaheadOnSelect)="onSelect_AssignUser($event)" class="form-control"
-                                            name="UserTaskName">
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-2 px-2 mb-2">
                                 <div class="form-group my-0">
                                     <label class="title-text col-form-label" for="name"> Mã công việc liên kết

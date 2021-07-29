@@ -145,7 +145,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   }
   r1GetDataUser() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
-    this._apiService.r1_Get_List_Data('api/Common/r1GetListUserByGroup')
+    this._apiService.r1_Get_List_Data('api/Common/r1GetListUserByDepartmentId')
       .subscribe(res => {
         if (res === undefined) {
           return;
@@ -262,12 +262,11 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     this.model.EndDate = this._commonService.setTimeToDateAndChangeTimeZone(this.model.EndDate, this.model.TimeEnd);
     this.model.PreWorkDeadline = this._commonService.setTimeToDateAndChangeTimeZone(this.model.PreWorkDeadline, this.timeTQ);
     if (this.model.Id === null) {
-
       this._apiFileService.r2_addFileModel(this.vbattach, models, 'api/MyWork/r2AddDataMywork')
         .subscribe(next => {
           if (next.type === HttpEventType.Response) {
             if (next === undefined) {
-              this.toastr.error('Lỗi khi trình phê duyệt thời hạn hoàn thành!', 'Thông báo');
+              this.toastr.error('Lỗi khi tạo mới công việc!', 'Thông báo');
               return;
             }
             if (next['body']['error'] === 1) {
@@ -292,16 +291,12 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
       //   });
     }
   }
-  onBlur(event: TypeaheadMatch) {
-    console.log(event);
-  }
   onSelect_AssignUser(event: TypeaheadMatch): void {
     if (event && event.item) {
       const user: UserTask = event.item;
       this.model.UserTaskId = user.Id;
       this.model.UserTaskName = user.FullName;
     }
-    console.log(event);
   }
   r1ListUser() {
     const op = {
@@ -355,9 +350,26 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   dateSelectkt(value) {
     this.model.EndDate = value;
   }
-  selectLMyWork(value) {
-    this.model.TaskId = value.Id;
-    this.model.TaskName = value.Name;
+  selectLMyWork(event: TypeaheadMatch) {
+    if (event && event.item) {
+      if (typeof event.item === 'string') {
+        this.model.TaskName = event.item;
+        this.model.TaskId = null;
+      } else {
+        const task = event.item;
+        this.model.TaskId = task.Id;
+        if (task.Id !== '' && task.Id) {
+          this.model.PointTask = task.LevelTask;
+          this.model.PointTime = task.LevelTime;
+        }
+        this.model.TaskName = task.Name;
+      }
+    }
+  }
+  /** Gán người nhận việc cho tôi */
+  assignToMe(): void {
+    this.model.UserTaskId = this.userlogin.UserID;
+    this.model.UserTaskName = this.userlogin.FullName;
   }
   onChangeMyWork(value) {
     this.model.TaskName = value;
