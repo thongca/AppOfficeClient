@@ -64,8 +64,10 @@ export class TrangThaiXuLyPipe implements PipeTransform {
             return 'Khởi tạo sau không được duyệt';
           case 16:
             return 'Khởi tạo sau đã được duyệt';
-            case 17:
+          case 17:
             return 'Trình giải quyết phối hợp công tác';
+          case 18:
+            return 'Công việc chuyển tiếp';
           default:
             return 'Công việc mới';
         }

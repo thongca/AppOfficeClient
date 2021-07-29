@@ -8,6 +8,95 @@
         </ng-container>
     </div>
 </div>
+<!-- Chuyển công việc cho người khác-->
+<div bsModal #modalAssignWork="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-w-600" role="document">
+        <form #formAssignWork="ngForm" (ngSubmit)="r2_AssignWork()" enctype="multipart/form-data"
+            class="form-horizontal" novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{ModalTitle}}</h4>
+                    <button type="button" class="close" (click)="modalAssignWork.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Thời gian:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.Time | date : 'dd/MM/yyyy HH:mm'}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người gửi:
+                                    </label>
+                                    <div class="input-text my-2">
+                                        <strong> {{modelTTH.NameNguoiGui}}</strong>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Người nhận
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người duyệt -----'" [settings]="dropdownSettings" 
+                                            [data]="dropdownList" [(ngModel)]="selectedItems">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Nội dung
+
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Note" [(ngModel)]="modelTTH.Note" class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-1">
+                                <div class="form-group mb-0">
+                                    <label class="title-text col-form-label" for="name"> Yêu cầu
+
+                                    </label>
+                                    <div class="input-text">
+                                        <textarea name="Require" [(ngModel)]="modelTTH.Require"
+                                            class="w-100"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-0 pt-2 pb-2">
+                            <input #filetth type="file" class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filetth.files)" multiple />
+                        </div>
+                        <!--/.row-->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modalAssignWork.hide()">Đóng</button>
+                    <button [disabled]="formAssignWork.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- Thêm trình ký-->
 <div bsModal #modalTrinhThoiHan="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
     aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"

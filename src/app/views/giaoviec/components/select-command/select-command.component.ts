@@ -91,6 +91,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   @ViewChild('modalTrinhKTS', { static: false }) public modalTrinhKTS: ModalDirective;
   @ViewChild('modalDuyetKts', { static: false }) public modalDuyetKts: ModalDirective;
   @ViewChild('modalTrinhPhoiHop', { static: false }) public modalTrinhPhoiHop: ModalDirective;
+  @ViewChild('modalAssignWork', { static: false }) public modalAssignWork: ModalDirective;
   ModalTitle = 'Trình';
   isShowBtn = false;
   listLenh: BuocLenhGroupSelect[] = [];
@@ -209,15 +210,15 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         }
       });
   }
-    // add quy trình chuyển xử lý
-    r2_TrinhGiaiQuyetPhoiHop() {
+    // assign work chuyển công việc cho người khác
+    r2_AssignWork() {
       this.modelTTH.UserDelivers = this.selectedItems;
-      this.modalTrinhThoiHan.hide();
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowPHCT')
+      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AssignWork')
         .subscribe(res => {
           if (res.type === HttpEventType.Response) {
+            this.modalAssignWork.hide();
             if (res === undefined) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
+              this.toastr.error('Lỗi khi chuyển công việc!', 'Thông báo');
               return;
             }
             if (res['body']['error'] === 1) {
@@ -232,6 +233,29 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
           }
         });
     }
+  // add quy trình chuyển xử lý
+  r2_TrinhGiaiQuyetPhoiHop() {
+    this.modelTTH.UserDelivers = this.selectedItems;
+    this.modalTrinhThoiHan.hide();
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowPHCT')
+      .subscribe(res => {
+        if (res.type === HttpEventType.Response) {
+          if (res === undefined) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          if (res['body']['error'] === 1) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
   // add quy trình duyệt thời hạn
   r2_PheThoiHan() {
     this.modelTTH.UserDelivers = this.selectedItems;
@@ -440,6 +464,10 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
       case 'CV_TRINHTHOIHAN':
         this.modalTrinhThoiHan.show();
         this.ModalTitle = 'Trình phê duyệt thời hạn';
+        break;
+      case 'CV_ASSIGNWORK':
+        this.modalAssignWork.show();
+        this.ModalTitle = 'Chuyển tiếp công việc';
         break;
       case 'CV_DUYETTHOIHAN':
         this.modelTTH.DateChange = this.modelLocal.DateChange;

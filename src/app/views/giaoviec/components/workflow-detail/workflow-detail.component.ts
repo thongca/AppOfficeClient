@@ -7,7 +7,7 @@ import { HistoryWorkFlow } from '../../../../models/giaoviec/congvieccuatoi.mode
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ApiService } from '../../../../shared/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { UserLogin } from '../../../../common/option';
+import { UserLogin, UserLoginFromToken } from '../../../../common/option';
 import { SignalRealTimeService } from '../../../../shared/signal-real-time.service';
 
 @Component({
@@ -18,7 +18,7 @@ import { SignalRealTimeService } from '../../../../shared/signal-real-time.servi
 export class WorkflowDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('treediagram', { static: false }) public treediagram: TreeDiagramComponent;
   @ViewChild('modalAddCV', { static: false }) public modalAddCV: ModalDirective;
-  userlogin: UserLogin = this._commonService.getValueUserLogin();
+  userlogin: UserLoginFromToken = this._commonService.readDataTokenUser();
   modelSchedule: KeHoachCV = {
     Id: 0,
     TaskName: '',
@@ -99,7 +99,7 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
     this._commonService.setTimeToDateAndChangeTimeZone(this.modelSchedule.StartDate, this.modelSchedule.TimeStart);
     this.modelSchedule.EndDate = this._commonService.setTimeToDateAndChangeTimeZone(this.modelSchedule.EndDate, this.modelSchedule.TimeEnd);
     if (this.modelSchedule.UserDeliverId == null) {
-      this.modelSchedule.UserDeliverId = this.userlogin.Id;
+      this.modelSchedule.UserDeliverId = this.userlogin.UserID;
     }
       this._apiService.r2_Add_Data_Model(this.modelSchedule, 'api/MyWork/r2AddScheduleMyWork')
       .subscribe(res => {

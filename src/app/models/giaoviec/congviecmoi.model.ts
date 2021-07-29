@@ -51,6 +51,7 @@ Suporter?: any;
 DepSuporter?: any;
 TotalPoint?: any;
 SpaceTimeId?: number;
+ReporterName?: string;
 }
 export class CVQTFlowWork {
     Id: string;
