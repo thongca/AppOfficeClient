@@ -8,6 +8,7 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { MoHinhToChuc } from '../../models/systems/systemcategory/congty.model';
 import { OptionUser } from '../../common/option';
 import { User } from '../../models/systems/systemcategory/user.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-modal-select-user',
@@ -34,8 +35,9 @@ export class ModalSelectUserComponent implements OnInit {
     s: ''
   };
   nameDanhSach = 'Danh sách nhân sự';
-    constructor(
+  constructor(
     private _apiService: ApiService,
+    private spinner: NgxSpinnerService,
     private _commonService: CommonService
   ) { }
 
@@ -62,6 +64,7 @@ export class ModalSelectUserComponent implements OnInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataMohinhToChuc')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -97,6 +100,7 @@ export class ModalSelectUserComponent implements OnInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_List_Data_Model_General(this.options, 'api/Common/r1GetListUser')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }

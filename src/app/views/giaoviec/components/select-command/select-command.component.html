@@ -50,10 +50,15 @@
                                         <span>*</span>
                                     </label>
                                     <div class="input-text">
-                                        <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
-                                            [placeholder]="'----- Người duyệt -----'" [settings]="dropdownSettings" 
+                                        <input [(ngModel)]="modelTTH.UserNextName" [typeahead]="dropdownList"
+                                            typeaheadOptionField="FullName" [typeaheadScrollable]="true"
+                                            [typeaheadOptionsInScrollableView]="10"
+                                            (typeaheadOnBlur)="onSelect_UserAssign($event)"
+                                            (typeaheadOnSelect)="onSelect_UserAssign($event)" class="form-control">
+                                        <!-- <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
+                                            [placeholder]="'----- Người duyệt -----'" [settings]="dropdownSettings"
                                             [data]="dropdownList" [(ngModel)]="selectedItems">
-                                        </ng-multiselect-dropdown>
+                                        </ng-multiselect-dropdown> -->
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +145,7 @@
                                     </label>
                                     <div class="input-text">
                                         <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
-                                            [placeholder]="'----- Người duyệt -----'" [settings]="dropdownSettings" 
+                                            [placeholder]="'----- Người duyệt -----'" [settings]="dropdownSettings"
                                             [data]="dropdownList" [(ngModel)]="selectedItems">
                                         </ng-multiselect-dropdown>
                                     </div>
@@ -333,8 +338,8 @@
                                     </label>
                                     <div class="input-text">
                                         <ng-multiselect-dropdown name="selectedItems" class="multiple-select"
-                                            [placeholder]="'----- Người theo dõi -----'" [settings]="dropdownSettings" [data]="dropdownList"
-                                             [(ngModel)]="selectedItems">
+                                            [placeholder]="'----- Người theo dõi -----'" [settings]="dropdownSettings"
+                                            [data]="dropdownList" [(ngModel)]="selectedItems">
                                         </ng-multiselect-dropdown>
                                     </div>
                                 </div>
@@ -1011,8 +1016,8 @@
                                     </label>
                                     <div class="input-text">
                                         <ng-multiselect-dropdown name="selectedUsers" class="multiple-select"
-                                            [placeholder]="'----- Chọn người nhận -----'" [settings]="dropuserSettings" [data]="dropdownUserList"
-                                             [(ngModel)]="selectedUsers">
+                                            [placeholder]="'----- Chọn người nhận -----'" [settings]="dropuserSettings"
+                                            [data]="dropdownUserList" [(ngModel)]="selectedUsers">
                                         </ng-multiselect-dropdown>
                                     </div>
                                 </div>

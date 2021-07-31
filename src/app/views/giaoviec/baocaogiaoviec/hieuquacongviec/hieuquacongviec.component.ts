@@ -16,14 +16,14 @@ import { ToastrService } from 'ngx-toastr';
 export class HieuquacongviecComponent implements OnInit {
   @ViewChild('TableBody', { static: false }) TableBody: ElementRef;
   totalErrorhead = 0;
-listError = [];
-listKpis = [];
-TotalPoint = 0;
-perUser: number = this._commonService.getUser().Permission;
-TotalKpi = 0;
-userId: number = 0;
-listUser: [];
-report: ReportDate = new ReportDate();
+  listError = [];
+  listKpis = [];
+  TotalPoint = 0;
+  perUser: number = this._commonService.getUser().Permission;
+  TotalKpi = 0;
+  userId: number = 0;
+  listUser: [];
+  report: ReportDate = new ReportDate();
   constructor(
     private _apiService: ApiService,
     private _exportService: ExportExcelService,
@@ -40,6 +40,7 @@ report: ReportDate = new ReportDate();
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorhqcv')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -56,6 +57,7 @@ report: ReportDate = new ReportDate();
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -69,17 +71,17 @@ report: ReportDate = new ReportDate();
     this._apiService.r1_List_Data_Model_General(this.report, 'api/MyWorkReport/r1EvalueKPIOneUser').pipe(
       map(preres => {
         this.TotalPoint = 1;
-          this.TotalPoint =  preres['data'].reduce(((accumulator, currentValue) => {// toong diem lam viec cua mot cong viec
-            currentValue.ChildrenError = JSON.parse(currentValue.ChildrenError);
-            currentValue.TotalPointE = currentValue.ChildrenError.reduce(((acc, curr) => {// toong diem loi cua mot cong viec
-              if ( Number(curr.Point) !== NaN) { // phải là số thì mới cộng dồn điểm lỗi
-                acc +=  Number(curr.Point) * 0.5; // sum tong diem loi
-              }
-              return acc;
-            }), 0);
-            accumulator += currentValue.Point; // sum tong diem lam viec
-            currentValue.KpiPoint = currentValue.TotalPointE * 0.5;
-            return accumulator;
+        this.TotalPoint = preres['data'].reduce(((accumulator, currentValue) => {// toong diem lam viec cua mot cong viec
+          currentValue.ChildrenError = JSON.parse(currentValue.ChildrenError);
+          currentValue.TotalPointE = currentValue.ChildrenError.reduce(((acc, curr) => {// toong diem loi cua mot cong viec
+            if (Number(curr.Point) !== NaN) { // phải là số thì mới cộng dồn điểm lỗi
+              acc += Number(curr.Point) * 0.5; // sum tong diem loi
+            }
+            return acc;
+          }), 0);
+          accumulator += currentValue.Point; // sum tong diem lam viec
+          currentValue.KpiPoint = currentValue.TotalPointE * 0.5;
+          return accumulator;
         }), 0);
         this.TotalKpi = 0;
         preres['data'].forEach(element => {
@@ -90,15 +92,16 @@ report: ReportDate = new ReportDate();
         return preres;
       })
     ).subscribe(res => {
-        if (res === undefined) {
-          return;
-        }
-        if (res['error'] === 1) {
-          return;
-        }
-        this.toarts.success('Tải báo cáo thành công!', 'Thông báo');
-        this.listKpis = res['data'];
-      });
+      this._apiService.hidespinner();
+      if (res === undefined) {
+        return;
+      }
+      if (res['error'] === 1) {
+        return;
+      }
+      this.toarts.success('Tải báo cáo thành công!', 'Thông báo');
+      this.listKpis = res['data'];
+    });
   }
   fromDateClick(date: Date) {
     this.report.dates = this._commonService.FromDateToDouble(date);
@@ -107,8 +110,8 @@ report: ReportDate = new ReportDate();
     this.report.datee = this._commonService.FromDateToDouble(date);
   }
   ExportKpiClick() {
-  this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_Kpi', 1,
-  this.report.UserId, this.report);
+    this._exportService.exportExcel(this.TableBody.nativeElement, moment(new Date()).format('yyyy_MM_DD_HH_mm_ss') + '_Kpi', 1,
+      this.report.UserId, this.report);
   }
   RefreshData() {
 

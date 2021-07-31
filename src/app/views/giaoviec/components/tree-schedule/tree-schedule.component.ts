@@ -50,60 +50,62 @@ export class TreeScheduleComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this._workdetailService.listSchedule$.subscribe(res => {
-     this.list = res;
-   });
- }
+      this.list = res;
+    });
+  }
 
   r1ListUser() {
     const op = {
       'GroupRoleId': Number(this._commonService.readDataTokenGroupRoleId()),
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListUserNhanViec')
-    .subscribe(res => {
-      if (res === undefined) {
-        return;
-      }
-      if (res['error'] === 1) {
-        return;
-      }
-      this.dropdownList = res['data'];
-      this.selectedItems = [
-      ];
-      this.dropdownSettings = {
-        singleSelection: false,
-        idField: 'Id',
-        textField: 'FullName',
-        selectAllText: 'Chọn tất cả',
-        unSelectAllText: 'Bỏ chọn tất cả',
-        itemsShowLimit: 3,
-        allowSearchFilter: true
-      };
-    });
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.dropdownList = res['data'];
+        this.selectedItems = [
+        ];
+        this.dropdownSettings = {
+          singleSelection: false,
+          idField: 'Id',
+          textField: 'FullName',
+          selectAllText: 'Chọn tất cả',
+          unSelectAllText: 'Bỏ chọn tất cả',
+          itemsShowLimit: 3,
+          allowSearchFilter: true
+        };
+      });
   }
   r4RemoveSchedule(Id, MyWorkId) {
     const model = {
       Id: Id
     };
     this._apiService.r4DelListDataForcheckBox(model, 'api/MyWork/r4RemoveScheduleMyWork')
-    .subscribe(res => {
-      if (res === undefined) {
-        this.toarst.error('Lỗi khi xóa kế hoạch công việc!', 'Thông báo');
-        return;
-      }
-      if (res['error'] === 1) {
-        this.toarst.error(res['ms'], 'Thông báo');
-        return;
-      }
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          this.toarst.error('Lỗi khi xóa kế hoạch công việc!', 'Thông báo');
+          return;
+        }
+        if (res['error'] === 1) {
+          this.toarst.error(res['ms'], 'Thông báo');
+          return;
+        }
         // tải lại danh sách kế hoạch công việc
-      const workFlow = {
-        Id: '12',
-        MyWorkId: MyWorkId
-      };
-      this._workdetailService.r1_ChangeScheduleWork(workFlow);
+        const workFlow = {
+          Id: '12',
+          MyWorkId: MyWorkId
+        };
+        this._workdetailService.r1_ChangeScheduleWork(workFlow);
         // tải lại danh sách kế hoạch công việc
-      this.toarst.success(res['ms'], 'Thông báo');
-      return;
-    });
+        this.toarst.success(res['ms'], 'Thông báo');
+        return;
+      });
   }
   hasChild = (_: string, node: TreeSchedule) => !!node.children && node.children.length > 0;
 
@@ -115,24 +117,25 @@ export class TreeScheduleComponent implements OnInit, AfterViewInit {
       item.StatusWork = Number(item.StatusWork);
     }
     this._apiService.r1_List_Data_Model_General(item, 'api/MyWork/r2TrangThaiScheduleMyWork')
-    .subscribe(res => {
-      if (res === undefined) {
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          this.toarst.error('Cập nhật trạng thái công việc không thành công!', 'Thông báo');
+          return;
+        }
+        // tải lại danh sách kế hoạch công việc
+        const workFlow = {
+          Id: '12',
+          MyWorkId: item.MyWorkId
+        };
+        this._workdetailService.r1_ChangeScheduleWork(workFlow);
+        // tải lại danh sách kế hoạch công việc
+        this.toarst.success('Cập nhật trạng thái công việc thành công!', 'Thông báo');
         return;
-      }
-      if (res['error'] === 1) {
-        this.toarst.error('Cập nhật trạng thái công việc không thành công!', 'Thông báo');
-      return;
-      }
-      // tải lại danh sách kế hoạch công việc
-      const workFlow = {
-        Id: '12',
-        MyWorkId: item.MyWorkId
-      };
-      this._workdetailService.r1_ChangeScheduleWork(workFlow);
-      // tải lại danh sách kế hoạch công việc
-      this.toarst.success('Cập nhật trạng thái công việc thành công!', 'Thông báo');
-      return;
-    });
+      });
   }
 }
 

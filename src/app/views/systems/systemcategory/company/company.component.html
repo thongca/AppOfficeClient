@@ -4,14 +4,10 @@
             <div class="card m-0">
                 <div class="card-header">
 
-                    <ng-container *appPermitadd='true'>
-                        <app-modaladd titleModal="Thêm mới công ty">
-                            <ng-container *ngTemplateOutlet="formAdd">
-                            </ng-container>
-                            <button type="submit" class="btn-add btn btn-primary" (click)="r2_AddData()">Lưu
-                                lại</button>
-                        </app-modaladd>
-                    </ng-container>
+                    <button type="button" class="btn btn-outline-primary" (click)="showmodal()">
+                        <i class="btnicon-font-size fa fa-plus"
+                                aria-hidden="true"></i>
+                        Thêm mới</button>
                     <button type="button" class="btn btn-outline-primary" title="Làm mới" (click)="RefreshData()">
                         <span class="btntext-middle"><i class="btnicon-font-size fa fa-refresh"
                                 aria-hidden="true"></i></span>
@@ -37,7 +33,7 @@
                     <table class="table table-sm table-bordered">
                         <thead>
                             <tr>
-                                <th *appPermitdel="true" width=40></th>
+                                <th *appPermitdel="true" width=40>STT</th>
                                 <th class="text-center">Mã công ty</th>
                                 <th>Tên công ty</th>
                                 <th width=100 class="text-center">Ngày tạo</th>
@@ -77,29 +73,92 @@
     <!--/.row-->
 </div>
 
-<ng-template #formAdd>
-    <form #form="ngForm" autocomplete="off" class="form-horizontal">
-        <div class="animated fadeIn">
-            <div class="card box-card-md mb-0 border-0">
-                <div class="card-body box-cardbody-md border-0 p-0">
-                    <div class="row ml-0 mr-0">
-                        <div class="col-md-8">
-                            <app-input-date require=true label="Ngày tạo" (changeDate)="dateSelect($event)">
-                            </app-input-date>
-                            <app-input-radio-checkbox nameRadio="Kích hoạt" nameTrue="Có" nameFalse="Không"
-                                (changeRadio)="radiobtnSelect($event)"></app-input-radio-checkbox>
-                        </div>
-                        <div class="col-md-4">
-                            <app-input-file-image (changeImage)="fileSelect($event)"></app-input-file-image>
+<!-- Thêm sửa-->
+<div bsModal #modal="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+    data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <form #groupRoleForm="ngForm" (ngSubmit)="r2_AddData()" enctype="multipart/form-data" class="form-horizontal"
+            novalidate autocomplete="off">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm công ty</h4>
+                    <button type="button" class="close" (click)="modal.hide()" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </button>
+                </div>
+                <div class="modal-body px-2">
+                    <div class="animated fadeIn">
+                        <div class="row m-0">
+                            <div class="col-md-3 px-2 mb-2">
+                                <div class="form-group mx-0">
+                                    <label class="title-text col-form-label" for="Code"> Mã công ty
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="text" class="form-control rounded-0" required #Code="ngModel"
+                                            [class.is-invalid]="Code.invalid && Code.touched" name="Code"
+                                            [(ngModel)]="model.Code">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9 px-2 mb-2">
+                                <div class="form-group mx-0">
+                                    <label class="title-text col-form-label" for="name"> Tên công ty
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="text" class="form-control rounded-0" required #Name="ngModel"
+                                            [class.is-invalid]="Name.invalid && Name.touched" name="Name"
+                                            [(ngModel)]="model.Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 px-2 mb-2">
+                                <div class="form-group mx-0">
+                                    <label class="title-text col-form-label" for="Phone"> Số điện thoại
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="text" class="form-control rounded-0" required #Phone="ngModel"
+                                            [class.is-invalid]="Phone.invalid && Phone.touched" name="Phone"
+                                            [(ngModel)]="model.Phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9 px-2 mb-2">
+                                <div class="form-group mx-0">
+                                    <label class="title-text col-form-label" for="Address"> Địa chỉ
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input type="text" class="form-control rounded-0" required #Address="ngModel"
+                                            [class.is-invalid]="Address.invalid && Address.touched" name="Address"
+                                            [(ngModel)]="model.Address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 px-2 mb-2">
+                                <div class="form-group mx-0">
+                                    <label class="title-text col-form-label" for="Address"> File
+                                        <span>*</span>
+                                    </label>
+                                    <div class="input-text">
+                                        <input #filetth type="file" class="inputimgFileWorks avataruser" placeholder="Chọn file"
+                                (change)="onSelectFile(filetth.files)" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
-
                 </div>
-            </div>
-            <!--/.row-->
-        </div>
-
-    </form>
-
-</ng-template>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.hide()">Đóng</button>
+                    <button [disabled]="groupRoleForm.form.invalid" type="submit" class="btn btn-primary">Lưu
+                        lại</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

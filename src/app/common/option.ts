@@ -11,6 +11,7 @@ export class OptionHeader {
     departmentId?: number;
     rankrole?: number;
     nestId?: number;
+    checkLength?: number;
 }
 export class UserLogin {
     Id: number;

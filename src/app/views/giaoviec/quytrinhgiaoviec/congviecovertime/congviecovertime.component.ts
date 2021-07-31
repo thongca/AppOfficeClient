@@ -35,26 +35,7 @@ export class CongviecovertimeComponent implements OnInit, AfterViewInit {
   isShowPrecedor = false;
   Predecessor: number; // mã code của công việc tiên quyết
   timeTQ = new Date;
-  model: CVQTMyWork = {
-    Id: null,
-    Code: 0,
-    TaskId: null,
-    TaskName: '',
-    StartDate: new Date,
-    PauseTime: 0.0,
-    WorkTime: 0.0,
-    EndDate: new Date,
-    TimeStart: new Date,
-    TimeEnd: new Date,
-    UserTaskId: this.userlogin.Id,
-    UserTaskName: this.userlogin.fullName,
-    TypeTask: 1,
-    PointTask: 0,
-    PointTime: 0,
-    DepartmentId: this.userlogin.departmentId,
-    ExpectedDate: new Date,
-    Repossibility: 1
-  };
+  model: CVQTMyWork = new CVQTMyWork();
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
@@ -118,6 +99,7 @@ export class CongviecovertimeComponent implements OnInit, AfterViewInit {
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorkOverTimes')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -126,9 +108,9 @@ export class CongviecovertimeComponent implements OnInit, AfterViewInit {
         // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
-ChangeDV(value) {
-console.log(value);
-}
+  ChangeDV(value) {
+    console.log(value);
+  }
   SelectIDEditModel(item: CVQTFlowWork) {
     const workFlow = {
       Id: item.Id,
@@ -194,6 +176,7 @@ console.log(value);
       Predecessor: this.Predecessor // khi công việc tiên quyết chưa hoàn thành thì không được bắt đầu công việc sau
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           this.toastr.error(res['ms'], 'Thông báo');
@@ -260,6 +243,7 @@ console.log(value);
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -283,6 +267,7 @@ console.log(value);
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListWorks')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }

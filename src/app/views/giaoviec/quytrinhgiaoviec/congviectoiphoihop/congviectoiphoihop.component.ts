@@ -33,24 +33,7 @@ export class CongviectoiphoihopComponent implements OnInit, AfterViewInit {
   WorkFlowId = '';
   MyWorkId = '';
   isShowPrecedor = false;
-  model: CVQTMyWork = {
-    Id: null,
-    Code: 0,
-    TaskId: null,
-    TaskName: '',
-    StartDate: new Date,
-    PauseTime: 0.0,
-    WorkTime: 0.0,
-    EndDate: new Date,
-    TimeStart: new Date,
-    TimeEnd: new Date,
-    UserTaskId: this.userlogin.Id,
-    UserTaskName: this.userlogin.fullName,
-    TypeTask: 1,
-    PointTask: 0,
-    PointTime: 0,
-    DepartmentId: this.userlogin.departmentId,
-  };
+  model: CVQTMyWork = new CVQTMyWork();
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
@@ -105,6 +88,7 @@ export class CongviectoiphoihopComponent implements OnInit, AfterViewInit {
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorksMySupport')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -113,9 +97,9 @@ export class CongviectoiphoihopComponent implements OnInit, AfterViewInit {
         // tam thoi su dung 2 danh sách để thực hiện where trong html sau này sẽ chỉnh lại trong backend
       });
   }
-ChangeDV(value) {
-console.log(value);
-}
+  ChangeDV(value) {
+    console.log(value);
+  }
   SelectIDEditModel(item: CVQTFlowWork) {
     const workFlow = {
       Id: item.Id,
@@ -177,6 +161,7 @@ console.log(value);
       Id: this.MyWorkId
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           this.toastr.error(res['ms'], 'Thông báo');
@@ -242,6 +227,7 @@ console.log(value);
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -265,6 +251,7 @@ console.log(value);
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListWorks')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }

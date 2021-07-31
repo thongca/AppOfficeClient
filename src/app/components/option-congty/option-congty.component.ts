@@ -28,7 +28,7 @@ export class OptionCongtyComponent implements OnInit {
   permission: number;
 
   constructor(
-    private _apiService: ApiService,
+    private api: ApiService,
     private _commonService: CommonService
   ) { }
 
@@ -38,29 +38,30 @@ export class OptionCongtyComponent implements OnInit {
   }
   r1GetDepartment() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
-      if (this.isShowDepartment === '1' && this.permission <= 1) {
-        this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataCommonDep')
-          .subscribe(res => {
-            if (res === undefined) {
-              return;
-            }
-            if (res['error'] === 1) {
-              return;
-            }
-            this.listPhongBans = res['data'];
-            if (this.listPhongBans.length > 0) {
-              this.changeDepartments.emit(this.listPhongBans[0].Id);
-              this.options.departmentId = this.listPhongBans[0].Id;
-            } else {
-              this.changeDepartments.emit(0);
-            }
-            this.r1GetDataNest();
-          });
-      } else {
-        this.changeDepartments.emit(this._commonService.getDepartmentUser());
-        this.options.departmentId = this._commonService.getDepartmentUser();
-        this.r1GetDataNest();
-      }
+    if (this.isShowDepartment === '1' && this.permission <= 1) {
+      this.api.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataCommonDep')
+        .subscribe(res => {
+          this.api.hidespinner();
+          if (res === undefined) {
+            return;
+          }
+          if (res['error'] === 1) {
+            return;
+          }
+          this.listPhongBans = res['data'];
+          if (this.listPhongBans.length > 0) {
+            this.changeDepartments.emit(this.listPhongBans[0].Id);
+            this.options.departmentId = this.listPhongBans[0].Id;
+          } else {
+            this.changeDepartments.emit(0);
+          }
+          this.r1GetDataNest();
+        });
+    } else {
+      this.changeDepartments.emit(this._commonService.getDepartmentUser());
+      this.options.departmentId = this._commonService.getDepartmentUser();
+      this.r1GetDataNest();
+    }
 
   }
   // r1GetDepartment() {
@@ -76,28 +77,29 @@ export class OptionCongtyComponent implements OnInit {
   //     }
 
   // }
- r1GetDataNest() {
+  r1GetDataNest() {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
-      if (this.isShowDepartment === '1' && this.isShowNest === '1' && this.permission <= 2) {
-        this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataNest')
-          .subscribe(res => {
-            if (res === undefined) {
-              return;
-            }
-            if (res['error'] === 1) {
-              return;
-            }
-            this.listNests = res['data'];
-            if (this.listNests.length > 0) {
-              this.changeNests.emit(this.listNests[0].Id);
-              this.options.nestId = this.listNests[0].Id;
-            } else {
-              this.changeNests.emit(0);
-            }
-          });
-      } else {
-        this.changeNests.emit(this._commonService.getDepartmentUser());
-      }
+    if (this.isShowDepartment === '1' && this.isShowNest === '1' && this.permission <= 2) {
+      this.api.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataNest')
+        .subscribe(res => {
+          this.api.hidespinner();
+          if (res === undefined) {
+            return;
+          }
+          if (res['error'] === 1) {
+            return;
+          }
+          this.listNests = res['data'];
+          if (this.listNests.length > 0) {
+            this.changeNests.emit(this.listNests[0].Id);
+            this.options.nestId = this.listNests[0].Id;
+          } else {
+            this.changeNests.emit(0);
+          }
+        });
+    } else {
+      this.changeNests.emit(this._commonService.getDepartmentUser());
+    }
   }
   ChangeDepartment(value) {
     this.changeDepartments.emit(Number(value));

@@ -39,27 +39,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   isShowPrecedor = false;
   Predecessor: number; // mã code của công việc tiên quyết
   timeTQ = new Date;
-  model: CVQTMyWork = {
-    Id: null,
-    Code: 0,
-    TaskId: null,
-    TaskName: '',
-    StartDate: new Date,
-    PauseTime: 0.0,
-    WorkTime: 0.0,
-    EndDate: new Date,
-    TimeStart: new Date,
-    TimeEnd: new Date,
-    UserTaskId: this.userlogin.Id,
-    UserTaskName: this.userlogin.fullName,
-    TypeTask: 1,
-    PointTask: 0,
-    PointTime: 0,
-    DepartmentId: this.userlogin.departmentId,
-    ExpectedDate: new Date,
-    Repossibility: 1,
-    SpaceTimeId: null
-  };
+  model: CVQTMyWork = new CVQTMyWork();
   nameBtn = 'Bắt đầu';
   nextCycleWorks = 0;
   modelView: CVQTMyWork = new CVQTMyWork();
@@ -131,6 +111,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   r1TinhThoiGianTrong() {
     this._apiService.r1_Get_List_Data('api/MyWorkReport/r1SpaceTimeOnDay')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -140,6 +121,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorksOld')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -155,6 +137,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   r1GetListOldWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetMyWorkSpaceTime')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -224,6 +207,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
       Predecessor: this.Predecessor // khi công việc tiên quyết chưa hoàn thành thì không được bắt đầu công việc sau
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           this.toastr.error(res['ms'], 'Thông báo');
@@ -257,11 +241,11 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
       SpaceTimeId: this.model.SpaceTimeId
     };
     this.model.ExpectedDate =
-    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.ExpectedDate), new Date(this.model.TimeStart));
+      this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.ExpectedDate), new Date(this.model.TimeStart));
     this.model.EndDate =
-    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.EndDate), new Date(this.model.TimeEnd));
+      this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.EndDate), new Date(this.model.TimeEnd));
     this.model.PreWorkDeadline =
-    this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.PreWorkDeadline), new Date(this.timeTQ));
+      this._commonService.setTimeToDateAndChangeTimeZone(new Date(this.model.PreWorkDeadline), new Date(this.timeTQ));
     if (this.model.Id === null) {
 
       this._apiFileService.r2_addFileModel(this.vbattach, models, 'api/MyWork/r2AddDataMyworkOldTime')
@@ -300,6 +284,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -323,6 +308,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListWorks')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -335,7 +321,7 @@ export class CvkhoitaosauComponent implements OnInit, AfterViewInit {
     this.model.TimeEnd = data.SpaceEnd;
     this.model.EndDate = data.SpaceEnd;
     this.model.WorkTime = data.Time;
-    this.model.SpaceTimeId =  data.Id;
+    this.model.SpaceTimeId = data.Id;
   }
   refreshList() {
     this.r1GetListMyWorks();

@@ -128,9 +128,8 @@
                                     </label>
                                     <div class="input-text">
                                         <select id="dokho" name="dokho" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTask" [disabled]="model.TaskId !== null">
-                                            <option *ngFor="let item of _sharedmyWork.listKhos"
-                                                [selected]="model.PointTask == item.Id" [ngValue]="item.Id">
+                                            [(ngModel)]="model.LevelTaskId" [disabled]="model.TaskId !== null">
+                                            <option *ngFor="let item of ctleveltasks" [ngValue]="item.Id">
                                                 {{item.Name}}
                                             </option>
                                         </select>
@@ -144,9 +143,9 @@
                                     </label>
                                     <div class="input-text">
                                         <select name="dovoi" class="form-control padding-select-congty"
-                                            [(ngModel)]="model.PointTime" [disabled]="model.TaskId !== null">
-                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id"
-                                                [selected]="item.Id === model.PointTime">{{item.Name}}
+                                            [(ngModel)]="model.LevelTimeId" [disabled]="model.TaskId !== null">
+                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id">
+                                                {{item.Name}}
                                             </option>
                                         </select>
                                     </div>

@@ -38,6 +38,7 @@ export class CauhinhnguoinhanComponent implements OnInit {
     };
     this._apiService.r1_List_Data_Model_General(qt, 'api/QuyTrinhVanBan/r1GetListDataLTTCHNguoiNhan')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -52,6 +53,7 @@ export class CauhinhnguoinhanComponent implements OnInit {
   r1GetDataNNtoGroupRole() {
     this._apiService.r1_List_Data_Model_General(this.options, 'api/QuyTrinhVanBan/r2GetCauHinhNN')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -97,6 +99,7 @@ export class CauhinhnguoinhanComponent implements OnInit {
 
     this._apiService.r2_Add_Data_Model(value, 'api/QuyTrinhVanBan/r2AddListDataNNToNhomQuyen')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
           return;

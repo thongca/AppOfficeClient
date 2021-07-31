@@ -31,7 +31,7 @@ export class VanbanminhdaduyetComponent implements OnInit {
     private toastr: ToastrService,
     private _apiService: ApiService,
     private _commonService: CommonService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.r1GetListVanBan();
@@ -39,34 +39,36 @@ export class VanbanminhdaduyetComponent implements OnInit {
   r1GetListVanBan() {
     this._apiService.r1_Get_List_Data('api/VanBanDaPheDuyet/r1GetListVBMinhDaPheDuyet')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
         this.listSoHoaVbs = res['data'];
       });
-}
-SelectIDEditModel(Id) {
- this._apiService.r1_GetDataByID(Id, 'api/VanBanDaPheDuyet').subscribe(res => {
-    if (res !== undefined) {
-      if (res['error'] === 1) {
-        return;
-      }
-      this.modelView = res['data'];
-      this.filesView = res['files'];
-      this.listLcvb = res['lcvbs'];
-      this.treediagram.getStart(this.listLcvb);
-    this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
-    }
-  });
-  this.selectaRow(Id);
-}
-selectaRow(Id) {
-  this.IdVb = Id;
-  this.selectLenh.showBtn(true);
   }
-changeUrlpdf(pathDb) {
-  this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
-}
+  SelectIDEditModel(Id) {
+    this._apiService.r1_GetDataByID(Id, 'api/VanBanDaPheDuyet').subscribe(res => {
+      this._apiService.hidespinner();
+      if (res !== undefined) {
+        if (res['error'] === 1) {
+          return;
+        }
+        this.modelView = res['data'];
+        this.filesView = res['files'];
+        this.listLcvb = res['lcvbs'];
+        this.treediagram.getStart(this.listLcvb);
+        this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
+      }
+    });
+    this.selectaRow(Id);
+  }
+  selectaRow(Id) {
+    this.IdVb = Id;
+    this.selectLenh.showBtn(true);
+  }
+  changeUrlpdf(pathDb) {
+    this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
+  }
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
   }

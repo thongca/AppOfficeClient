@@ -10,12 +10,12 @@ import { ApiService } from '../../../../shared/api.service';
 })
 export class DelMyWorkComponent implements OnInit {
   MyWorkId: string;
-@Input() set setMyWorkId(myWorkId: string) {
-this.MyWorkId = myWorkId;
-}
-@Output() xacNhanXoa = new EventEmitter();
-@ViewChild('delModal', { static: false }) public delModal: ModalDirective;
-titleDetail: '';
+  @Input() set setMyWorkId(myWorkId: string) {
+    this.MyWorkId = myWorkId;
+  }
+  @Output() xacNhanXoa = new EventEmitter();
+  @ViewChild('delModal', { static: false }) public delModal: ModalDirective;
+  titleDetail: '';
   constructor(
     private _apiService: ApiService,
     private toastr: ToastrService,
@@ -24,7 +24,7 @@ titleDetail: '';
   ngOnInit(): void {
   }
   r4_DelMyWork() {
-      this.delModal.show();
+    this.delModal.show();
   }
   XacNhan() {
     const workFlow = {
@@ -32,6 +32,7 @@ titleDetail: '';
       MyWorkId: this.MyWorkId
     };
     this._apiService.r4DelListDataForcheckBox(workFlow, 'api/MyWork/r4RemoveMyWork').subscribe(res => {
+      this._apiService.hidespinner();
       this.delModal.hide();
       if (res['error'] === 1) {
         this.toastr.error(res['ms'], 'Thông báo');

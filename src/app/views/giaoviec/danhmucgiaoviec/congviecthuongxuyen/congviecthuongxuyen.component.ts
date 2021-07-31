@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 import { CommonService } from '../../../../common/common.service';
 import { OptionHeader, UserLogin } from '../../../../common/option';
+import { ApiService } from '../../../../shared/api.service';
 import { SharedmyworksService } from '../../sharedmyworks/sharedmyworks.service';
+import { CongViecThuongXuyen } from '../models/congviecthuongxuyen.model';
 import { CvtxServiceService } from './cvtx-service.service';
 
 @Component({
@@ -13,22 +16,52 @@ import { CvtxServiceService } from './cvtx-service.service';
 export class CongviecthuongxuyenComponent implements OnInit {
   @ViewChild('modaldata', { static: false }) public modaldata: ModalDirective;
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0
   };
+  ctleveltasks = [];
+  ctleveltimes = [];
   modeltitle = '';
   constructor(
     public cvtxservice: CvtxServiceService,
-    private _commonService: CommonService
+    private api: ApiService,
+    private _toastr: ToastrService
   ) { }
-  userlogin: UserLogin = this._commonService.getValueUserLogin();
   ngOnInit(): void {
     this.cvtxservice.r1getListCVtx();
+    this.r1_GetTasks();
+    this.r1_GetTime();
+  }
+  r1_GetTasks(): void {
+    this.api.r1_Get_List_Data('api/Common/r1GetDataLevelTask').subscribe(res => {
+      this.api.hidespinner();
+      if (res['error'] !== 0) {
+        this._toastr.error(res['ms'], 'Thông báo');
+        return;
+      }
+      this.ctleveltasks = res['data'];
+      if (this.ctleveltasks) {
+        this.cvtxservice.model.LevelTaskId = this.ctleveltasks[0].Id;
+      }
+    });
+  }
+  r1_GetTime(): void {
+    this.api.r1_Get_List_Data('api/Common/r1GetDataLevelTime').subscribe(res => {
+      this.api.hidespinner();
+      if (res['error'] !== 0) {
+        this._toastr.error(res['ms'], 'Thông báo');
+        return;
+      }
+      this.ctleveltimes = res['data'];
+      if (this.ctleveltimes) {
+        this.cvtxservice.model.LevelTimeId = this.ctleveltimes[0].Id;
+      }
+    });
   }
   r2_AddData() {
     if (this.cvtxservice.model.Id === '') {
       this.cvtxservice.r2_AddDataService();
-    this.modaldata.hide();
+      this.modaldata.hide();
     } else {
       this.cvtxservice.r3_UpdateDataService();
       this.modaldata.hide();
@@ -68,19 +101,14 @@ export class CongviecthuongxuyenComponent implements OnInit {
     this.modaldata.show();
   }
   showModal() {
-    this.cvtxservice.model  = {
-      Id: '',
-      Code: '',
-      Name: '',
-      GroupTaskId: 0,
-      CreateDate: new Date,
-      LevelTask: 0,
-      LevelTime: 0,
-      PointTime: 0,
-      PointTask: 0,
-      DepartmentId: this.userlogin.departmentId
-      };
+    this.cvtxservice.model = new CongViecThuongXuyen();
     this.modeltitle = 'Thêm mới công việc thường xuyên';
+    if (this.ctleveltimes) {
+      this.cvtxservice.model.LevelTimeId = this.ctleveltimes[0].Id;
+    }
+    if (this.ctleveltasks) {
+      this.cvtxservice.model.LevelTaskId = this.ctleveltasks[0].Id;
+    }
     this.modaldata.show();
   }
   RefreshData() {

@@ -33,6 +33,7 @@ export class NhatkycongviecComponent implements OnInit {
   r1GetDataError() {
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorCTG')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -49,6 +50,7 @@ export class NhatkycongviecComponent implements OnInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -63,6 +65,7 @@ export class NhatkycongviecComponent implements OnInit {
   // }
   r1GetReportKpi() {
     this._apiService.r1_List_Data_Model_General(this.report, 'api/MyWorkReport/r1ReportNoteWorks').subscribe(res => {
+      this._apiService.hidespinner();
       if (res === undefined) {
         return;
       }

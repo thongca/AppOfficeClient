@@ -96,29 +96,30 @@ export class WorkflowDetailComponent implements OnInit, AfterViewInit {
   }
   r2AddScheduleWork() {
     this.modelSchedule.StartDate =
-    this._commonService.setTimeToDateAndChangeTimeZone(this.modelSchedule.StartDate, this.modelSchedule.TimeStart);
+      this._commonService.setTimeToDateAndChangeTimeZone(this.modelSchedule.StartDate, this.modelSchedule.TimeStart);
     this.modelSchedule.EndDate = this._commonService.setTimeToDateAndChangeTimeZone(this.modelSchedule.EndDate, this.modelSchedule.TimeEnd);
     if (this.modelSchedule.UserDeliverId == null) {
       this.modelSchedule.UserDeliverId = this.userlogin.UserID;
     }
-      this._apiService.r2_Add_Data_Model(this.modelSchedule, 'api/MyWork/r2AddScheduleMyWork')
+    this._apiService.r2_Add_Data_Model(this.modelSchedule, 'api/MyWork/r2AddScheduleMyWork')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
         if (res['error'] === 1) {
-         this.toastr.error(res['ms'], 'Thông báo');
-         return;
+          this.toastr.error(res['ms'], 'Thông báo');
+          return;
         }
-          // tải lại danh sách kế hoạch công việc
+        // tải lại danh sách kế hoạch công việc
         const workFlow = {
           Id: '12',
           MyWorkId: res['data']
         };
         this.modalAddCV.hide();
         this._workFlowDetail.r1_ChangeScheduleWork(workFlow);
-          // tải lại danh sách kế hoạch công việc
-      this.toastr.success('Thêm mới kế hoạch thành công!', 'Thông báo');
+        // tải lại danh sách kế hoạch công việc
+        this.toastr.success('Thêm mới kế hoạch thành công!', 'Thông báo');
         return;
       });
   }

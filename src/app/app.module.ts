@@ -47,11 +47,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SearchService } from './shared/search.service';
 import { TinhPointerrorPipe } from './pipes/myworks/tinh-pointerror.pipe';
 import { PushNotificationService } from 'ngx-push-notifications';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   imports: [
     BrowserModule,
@@ -87,7 +88,8 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
       primaryColour: '#00aced',
       secondaryColour: '#00aced',
       tertiaryColour: '#00aced'
-  }),
+    }),
+    NgxSpinnerModule,
     NgbModule,
     MatTooltipModule,
   ],
@@ -103,6 +105,6 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     provide: LocationStrategy,
     useClass: PathLocationStrategy
   }, AuthGuard],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

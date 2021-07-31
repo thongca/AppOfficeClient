@@ -16,44 +16,45 @@
         </div>
       </div>
     </li>
-  
+
   </ul>
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item d-md-down-none" dropdown placement="bottom right">
-      <a class="nav-link" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="false"
-        dropdownToggle (click)="updateAllDaXem()">
+      <a class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
+        (click)="updateAllDaXem()">
         <i class="icon-bell" style="font-size: 24px;" matTooltip="Thông báo"></i>
         <span class="badge badge-pill badge-danger badge-overide" *ngIf="total > 0">{{total}}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right widthdropdown overscroll-he" *dropdownMenu
         aria-labelledby="simple-dropdown">
         <div class="p-1 text-center"><strong style="font-size: 24px;">Thông báo</strong></div>
-          <ng-container *ngFor="let item of listThongbaos">
-            <a [routerLink]="[item.RouterLink]" (click)="updateDaXemThongBao(item.Id)">
-              <div class="message" class="dropdown-item">
-                <!-- <div class="py-3 pb-5 mr-3 float-left">
+        <ng-container *ngFor="let item of listThongbaos">
+          <a [routerLink]="[item.RouterLink]" (click)="updateDaXemThongBao(item.Id)">
+            <div class="message" class="dropdown-item">
+              <!-- <div class="py-3 pb-5 mr-3 float-left">
                   <div class="avatar">
                     <img src="assets/img/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
                     <span class="avatar-status badge-success"></span>
                   </div>
                 </div> -->
-                <div>
-                  <small class="font-weight-bold" style="font-size: 14px;">{{item.TenNguoiGui}} </small><span>đã gửi đến</span>
-                  <small class="float-right mt-1">{{item.NgayGui|date:'dd/MM HH:mm'}}</small>
-                </div>
-                <div class="mt-1">
-                  <small class="font-weight-bold workflow-{{item.TrangThaiXuLy}}"
-                    style="color: white;border-radius: 5px;padding: 2px;font-size: 12px;">{{item.TrangThai}}</small>
-                  <small class="float-right mt-1" style="font-style: italic; color: red;">{{item.DaXem}}</small>
-                </div>
-                <div class="mt-1">
-                  <small style="font-size: 12px;">{{item.NoiDung| slice:0:40}}</small>
-                  <small class="float-right mt-1"></small>
-                </div>
-  
+              <div>
+                <small class="font-weight-bold" style="font-size: 14px;">{{item.TenNguoiGui}} </small><span>đã gửi
+                  đến</span>
+                <small class="float-right mt-1">{{item.NgayGui|date:'dd/MM HH:mm'}}</small>
               </div>
-            </a>
-          </ng-container>
+              <div class="mt-1">
+                <small class="font-weight-bold workflow-{{item.TrangThaiXuLy}}"
+                  style="color: white;border-radius: 5px;padding: 2px;font-size: 12px;">{{item.TrangThai}}</small>
+                <small class="float-right mt-1" style="font-style: italic; color: red;">{{item.DaXem}}</small>
+              </div>
+              <div class="mt-1">
+                <small style="font-size: 12px;">{{item.NoiDung| slice:0:40}}</small>
+                <small class="float-right mt-1"></small>
+              </div>
+
+            </div>
+          </a>
+        </ng-container>
       </div>
     </li>
 
@@ -125,12 +126,13 @@
         <div class="p-3">
           <ng-container>
             <div class="widthselect">
-                <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="modelgl.CompanyId" (ngModelChange)="onChange_Company($event)">
-                    <option [ngValue]="0">----- Chọn công ty -----</option>
-                    <option *ngFor="let item of ctcompanies" [ngValue]="item.Id">{{item.Name}}</option>
-                </select>
+              <select id="select2" name="select2" class="form-control padding-select-congty"
+                [(ngModel)]="modelgl.CompanyId" (ngModelChange)="onChange_Company($event)">
+                <option [ngValue]="0">----- Chọn công ty -----</option>
+                <option *ngFor="let item of ctcompanies" [ngValue]="item.Id">{{item.Name}}</option>
+              </select>
             </div>
-        </ng-container>
+          </ng-container>
         </div>
       </tab>
     </tabset>
@@ -138,67 +140,71 @@
 </div>
 <!-- Thêm trình ký-->
 <div bsModal #modaldata="bs-modal" class="modal fade" id="modalUser" tabindex="-1" role="dialog"
-    aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
-    data-keyboard="false">
-    <div class="modal-dialog modal-w-600" role="document">
-        <form #formDoiMatKhau="ngForm" (ngSubmit)="DoiMatKhau()" enctype="multipart/form-data"
-            class="form-horizontal" novalidate autocomplete="off">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Đổi mật khẩu</h4>
-                    <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
-                        <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </button>
+  aria-labelledby="myModalLabel" aria-hidden="true" [config]="{'backdrop':'static', 'keyboard': false}"
+  data-keyboard="false">
+  <div class="modal-dialog modal-w-600" role="document">
+    <form #formDoiMatKhau="ngForm" (ngSubmit)="DoiMatKhau()" enctype="multipart/form-data" class="form-horizontal"
+      novalidate autocomplete="off">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Đổi mật khẩu</h4>
+          <button type="button" class="close" (click)="modaldata.hide()" aria-label="Close">
+            <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+          </button>
+        </div>
+        <div class="modal-body px-2">
+          <div class="animated fadeIn">
+            <div class="row m-0">
+
+              <div class="col-md-12 px-2 mb-1">
+                <div class="form-group mb-0">
+                  <label class="title-text col-form-label" for="name"> Mật khẩu cũ
+
+                  </label>
+                  <div class="input-text">
+                    <input type="password" autocomplete="off" class="form-control rounded-0" #PassOld="ngModel"
+                      name="PassOld" [(ngModel)]="changPass.PassOld">
+                  </div>
                 </div>
-                <div class="modal-body px-2">
-                    <div class="animated fadeIn">
-                        <div class="row m-0">
-           
-                            <div class="col-md-12 px-2 mb-1">
-                                <div class="form-group mb-0">
-                                    <label class="title-text col-form-label" for="name"> Mật khẩu cũ
+              </div>
+              <div class="col-md-12 px-2 mb-1">
+                <div class="form-group mb-0">
+                  <label class="title-text col-form-label" for="name"> Mật khẩu mới
 
-                                    </label>
-                                    <div class="input-text">
-                                      <input type="password" autocomplete="off" class="form-control rounded-0" #PassOld="ngModel"
-                                      name="PassOld" [(ngModel)]="changPass.PassOld" >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 px-2 mb-1">
-                              <div class="form-group mb-0">
-                                  <label class="title-text col-form-label" for="name"> Mật khẩu mới
-
-                                  </label>
-                                  <div class="input-text">
-                                    <input type="password" autocomplete="new-password" class="form-control rounded-0" #PassNew="ngModel"
-                                    name="PassNew" [(ngModel)]="changPass.PassNew" >
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-md-12 px-2 mb-1">
-                            <div class="form-group mb-0">
-                                <label class="title-text col-form-label" for="name"> Xác nhận
-
-                                </label>
-                                <div class="input-text">
-                                  <input type="password" autocomplete="new-password" class="form-control rounded-0" #PassConfirm="ngModel"
-                                  name="PassConfirm" [(ngModel)]="changPass.PassConfirm">
-                                  <small id="emailHelp" *ngIf="changPass.PassConfirm !== changPass.PassNew" class="form-text text-danger">Mật khẩu xác thực không khớp!</small>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-
-                        <!--/.row-->
-                    </div>
+                  </label>
+                  <div class="input-text">
+                    <input type="password" autocomplete="new-password" class="form-control rounded-0" #PassNew="ngModel"
+                      name="PassNew" [(ngModel)]="changPass.PassNew">
+                  </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="modaldata.hide()">Đóng</button>
-                    <button [disabled]="formDoiMatKhau.form.invalid" type="submit" class="btn btn-primary"> Xử lý
-                    </button>
+              </div>
+              <div class="col-md-12 px-2 mb-1">
+                <div class="form-group mb-0">
+                  <label class="title-text col-form-label" for="name"> Xác nhận
+
+                  </label>
+                  <div class="input-text">
+                    <input type="password" autocomplete="new-password" class="form-control rounded-0"
+                      #PassConfirm="ngModel" name="PassConfirm" [(ngModel)]="changPass.PassConfirm">
+                    <small id="emailHelp" *ngIf="changPass.PassConfirm !== changPass.PassNew"
+                      class="form-text text-danger">Mật khẩu xác thực không khớp!</small>
+                  </div>
                 </div>
-            </div><!-- /.modal-content -->
-        </form>
-    </div><!-- /.modal-dialog -->
+              </div>
+            </div>
+
+            <!--/.row-->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modaldata.hide()">Đóng</button>
+          <button [disabled]="formDoiMatKhau.form.invalid" type="submit" class="btn btn-primary"> Xử lý
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="cog">
+  <p style="font-size: 20px; color: white">Đang thực hiện...</p>
+</ngx-spinner>

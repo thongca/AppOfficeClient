@@ -10,6 +10,8 @@ import { CVQTMyWork, WorkFlow } from '../../../../models/giaoviec/congviecmoi.mo
 import { HttpEventType } from '@angular/common/http';
 import { SelectlenhsharedService } from '../../sharedmyworks/selectlenhshared.service';
 import { WorkdetailService } from '../../../../shared/workdetail.service';
+import { UserLoginFromToken } from '../../../../common/option';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 
 @Component({
   selector: 'app-select-command',
@@ -17,13 +19,14 @@ import { WorkdetailService } from '../../../../shared/workdetail.service';
   styleUrls: ['./select-command.component.css']
 })
 export class SelectCommandComponent implements OnInit, AfterViewInit {
+  userlogin: UserLoginFromToken = this._commonService.readDataTokenUser();
   timeHour = new Date; // giờ duyệt kết thúc
   timeStart = new Date; // giờ duyệt bắt đầu
   modelView: CVQTMyWork = new CVQTMyWork();
   modelTTH: FlowModel = {
     Time: new Date(),
-    NguoiGuiId: this._commonService.getUser().Id,
-    NameNguoiGui: this._commonService.getUser().FullName,
+    NguoiGuiId: this.userlogin.UserID,
+    NameNguoiGui: this.userlogin.FullName,
     Id: '',
     MyWorkId: '',
     Note: '',
@@ -36,8 +39,8 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   // không sử dụng ở đâu ngoài dùng cho lưu thời gian của từng công việc hiện tại
   modelLocal: FlowModel = {
     Time: new Date(),
-    NguoiGuiId: this._commonService.getUser().Id,
-    NameNguoiGui: this._commonService.getUser().FullName,
+    NguoiGuiId: this.userlogin.UserID,
+    NameNguoiGui: this.userlogin.FullName,
     Id: '',
     MyWorkId: '',
     Note: '',
@@ -140,6 +143,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListErrorCTG')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -193,6 +197,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modalTrinhThoiHan.hide();
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowTTH')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           if (res === undefined) {
             this.toastr.error('Lỗi khi trình phê duyệt thời hạn hoàn thành!', 'Thông báo');
@@ -210,35 +215,39 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
         }
       });
   }
-    // assign work chuyển công việc cho người khác
-    r2_AssignWork() {
-      this.modelTTH.UserDelivers = this.selectedItems;
-      this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AssignWork')
-        .subscribe(res => {
-          if (res.type === HttpEventType.Response) {
-            this.modalAssignWork.hide();
-            if (res === undefined) {
-              this.toastr.error('Lỗi khi chuyển công việc!', 'Thông báo');
-              return;
-            }
-            if (res['body']['error'] === 1) {
-              this.toastr.error(res['body']['ms'], 'Thông báo');
-              return;
-            }
-            this.toastr.success(res['body']['ms'], 'Thông báo');
-            this._signalService.GetNguoiNhanThongBao('');
-            this._apiSharedService.reloadMyWorkByChangeData();
-            this._apiSharedService.r1_getListLenhs(this.options);
+  // assign work chuyển công việc cho người khác
+  r2_AssignWork() {
+    if (!this.modelTTH.UserNextId) {
+      this.toastr.error('Người thực hiện không được phép để trống', 'Thông báo');
+    }
+    this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AssignWork')
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res.type === HttpEventType.Response) {
+          this.modalAssignWork.hide();
+          if (res === undefined) {
+            this.toastr.error('Lỗi khi chuyển công việc!', 'Thông báo');
             return;
           }
-        });
-    }
+          if (res['body']['error'] !== 0) {
+            this.toastr.error(res['body']['ms'], 'Thông báo');
+            return;
+          }
+          this.toastr.success(res['body']['ms'], 'Thông báo');
+          this._signalService.GetNguoiNhanThongBao('');
+          this._apiSharedService.reloadMyWorkByChangeData();
+          this._apiSharedService.r1_getListLenhs(this.options);
+          return;
+        }
+      });
+  }
   // add quy trình chuyển xử lý
   r2_TrinhGiaiQuyetPhoiHop() {
     this.modelTTH.UserDelivers = this.selectedItems;
     this.modalTrinhThoiHan.hide();
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowPHCT')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           if (res === undefined) {
             this.toastr.error(res['body']['ms'], 'Thông báo');
@@ -265,6 +274,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
       this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateStartChange, this.timeStart));
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetTH')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           if (res === undefined) {
             this.toastr.error('Lỗi khi trình phê duyệt thời hạn hoàn thành!', 'Thông báo');
@@ -287,6 +297,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modelTTH.UserDelivers = this.selectedItems;
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowHTCV')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalTrinhHT.hide();
           if (res === undefined) {
@@ -310,6 +321,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modelTTH.UserDelivers = this.selectedItems;
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowHTCVKTS')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalTrinhKTS.hide();
           if (res === undefined) {
@@ -333,6 +345,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modalDuyetThoiHan.hide();
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDuyetHTCV')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalDuyetHT.hide();
           if (res === undefined) {
@@ -362,6 +375,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modalDuyetKts.hide();
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, url)
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalDuyetHT.hide();
           if (res === undefined) {
@@ -386,6 +400,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowYeuCauChinhSua')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalRejectHT.hide();
           if (res === undefined) {
@@ -414,6 +429,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modelTTH.DEnd = this._commonService.FromDateToDouble(this._commonService.setTimeToDate(this.modelTTH.DateChange, this.timeHour));
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowNhacNhoGiaHan')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           this.modalRejectHT.hide();
           if (res === undefined) {
@@ -439,6 +455,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     this.modalDanhGiaCL.hide();
     this._apiFileService.r2_addFileModel(this.vbattach, this.modelTTH, 'api/MyWorkFlow/r2AddWorkFlowDGCL')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res.type === HttpEventType.Response) {
           if (res === undefined) {
             this.toastr.error('Lỗi khi đánh giá chất lượng công việc không thành công!', 'Thông báo');
@@ -519,6 +536,7 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListUserNhanViec')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -548,6 +566,18 @@ export class SelectCommandComponent implements OnInit, AfterViewInit {
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
   }
+  onSelect_UserAssign(event: TypeaheadMatch): void {
+    if (event && event.item) {
+      if (typeof event.item === 'string') {
+        this.modelTTH.UserNextName = event.item;
+        this.modelTTH.UserNextId = null;
+      } else {
+        const user = event.item;
+        this.modelTTH.UserNextId = user.UserId;
+        this.modelTTH.UserNextName = user.FullName;
+      }
+    }
+  }
 }
 
 export class FlowModel {
@@ -565,6 +595,7 @@ export class FlowModel {
   DateStartChange?: Date;
   UserManagerId?: number;
   UserNextId?: number;
+  UserNextName?: string;
   UserDelivers?: UserDeliver[];
   TypeUserDelis?: TypeUserDeli[];
   Errors?: Error[];

@@ -60,6 +60,7 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
   r1GetDataList() {
     this._apiService.r1_Post_List_Data(this.options, 'api/GroupRole/r1GetListGroupRole')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.load = true;
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
@@ -75,6 +76,7 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
   r4DelData(datas) {
     this._apiService.r4DelListDataForcheckBox(datas, 'api/GroupRole/r4DelSys_Dm_GroupRole')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res['error'] === 2) {
           this.toastr.error(res['ms'], 'Thông báo');
           return;
@@ -93,23 +95,25 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
       this.model.DepartmentId = this.options.nestId;
     }
     if (this.model.Id === 0 || this.model.Id === null) {
-    this._apiService.r2_Add_Data_Model(this.model, 'api/GroupRole/r1AddDataGroupRole')
-      .subscribe(res => {
-        if (res === undefined) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+      this._apiService.r2_Add_Data_Model(this.model, 'api/GroupRole/r1AddDataGroupRole')
+        .subscribe(res => {
+          this._apiService.hidespinner();
+          if (res === undefined) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          if (res['error'] === 1) {
+            this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+            return;
+          }
+          this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
+          this.modaldata.hide();
+          this.r1GetDataList();
           return;
-        }
-        if (res['error'] === 1) {
-          this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-          return;
-        }
-        this.toastr.success('Thêm dữ liệu thành công, Vui lòng kiểm tra lại!', 'Thông báo');
-        this.modaldata.hide();
-        this.r1GetDataList();
-        return;
-      });
+        });
     } else {
-     this._apiService.r3_Put_Data(this.model, 'api/GroupRole').subscribe(res => {
+      this._apiService.r3_Put_Data(this.model, 'api/GroupRole').subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           if (res['error'] === 1) {
             this.toastr.error('Cập nhật dữ liệu không thành công!!', 'Thông báo');
@@ -125,7 +129,8 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
   }
   SelectIDEditModel(Id) {
     this.modeltitle = 'Sửa nhóm quyền';
-   this._apiService.r1_GetDataByID(Id, 'api/GroupRole').subscribe(res => {
+    this._apiService.r1_GetDataByID(Id, 'api/GroupRole').subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           return;
@@ -135,8 +140,8 @@ export class GrouproleComponent implements OnInit, AfterViewInit {
     });
     this.modaldata.show();
   }
-   // checked
-   CheckAll(obj) {
+  // checked
+  CheckAll(obj) {
     this.CheckLength = obj.CheckLength;
     this.listData = obj.listData;
 

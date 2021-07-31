@@ -62,6 +62,7 @@ export class SelectLenhComponent implements OnInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_List_Data_Model_General(this.options, 'api/Common/r1GetListDataLenhTheoUser')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -72,12 +73,13 @@ export class SelectLenhComponent implements OnInit {
       });
   }
   r2_XuLyData() {
-      this.modelChuyenXuLy.MenuNhanId = 'VB0108';
-      this.modelChuyenXuLy.MenuGuiId = this.MenuId;
-      this.modelChuyenXuLy.TrangThaiXuLy = 2;
-      this.modalTrinhKy.hide();
+    this.modelChuyenXuLy.MenuNhanId = 'VB0108';
+    this.modelChuyenXuLy.MenuGuiId = this.MenuId;
+    this.modelChuyenXuLy.TrangThaiXuLy = 2;
+    this.modalTrinhKy.hide();
     this._apiService.r2_Add_Data_Model(this.modelChuyenXuLy, 'api/SoHoaVanBan/r2AddQTChuyenChoPheDuyet')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi trình ký văn bản!', 'Thông báo');
           return;
@@ -107,6 +109,7 @@ export class SelectLenhComponent implements OnInit {
     };
     this._apiService.r2_Add_Data_Model(op, 'api/SoHoaVanBan/r2AddQTChuyenXuLy')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi chuyển xử văn bản!', 'Thông báo');
           return;
@@ -130,6 +133,7 @@ export class SelectLenhComponent implements OnInit {
     };
     this._apiService.r2_Add_Data_Model(op, 'api/VanBanChoPheDuyet/r2AddQTPheDuyetTrinhKy')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi chuyển xử văn bản!', 'Thông báo');
           return;
@@ -154,6 +158,7 @@ export class SelectLenhComponent implements OnInit {
     };
     this._apiService.r2_Add_Data_Model(op, 'api/VanBanChoPheDuyet/r2AddQTTraLaiTrinhKy')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi chuyển xử văn bản!', 'Thông báo');
           return;
@@ -228,6 +233,7 @@ export class SelectLenhComponent implements OnInit {
         };
         this._apiService.r1_List_Data_Model_General(op, 'api/VanBanCommon/r1checkNguoiNhanXNHT')
           .subscribe(res => {
+            this._apiService.hidespinner();
             if (res === undefined) {
               return;
             }
@@ -240,44 +246,46 @@ export class SelectLenhComponent implements OnInit {
             this.modelUserXNHT.isNguoiGui = this.isNguoiGui;
           });
         break;
-        case 'VB_TRALAI':
-          this.modalTraLai.show();
-          this.ModalTitle = 'Trả lại trình ký';
-          this.modelChuyenXuLy.MaLenh = 'VB_TRALAI';
-          const op1 = {
-            'Id': Id
-          };
-          this._apiService.r1_List_Data_Model_General(op1, 'api/VanBanCommon/r1checkNguoiNhanXNHT')
-            .subscribe(res => {
-              if (res === undefined) {
-                return;
-              }
-              if (res['error'] === 1) {
-                return;
-              }
-              this.isNguoiGui = res['IsNguoiGui'];
-              this.isNguoiLap = res['IsNguoiLap'];
-              this.modelUserXNHT.isNguoiLap = this.isNguoiLap;
-              this.modelUserXNHT.isNguoiGui = this.isNguoiGui;
-            });
-          break;
-          case 'GV_GIAOVIEC':
-            this.modelChuyenXuLy.MaLenh = 'GV_GIAOVIEC';
-            const oplccv = {
-              'Id': this.modelChuyenXuLy.Id
-            };
-            this._apiService.r2_Add_Data_Model(oplccv, 'api/CongViecMoi/r2LuanChuyenCongViec')
-            .subscribe(res => {
-              if (res === undefined) {
-                return;
-              }
-              if (res['error'] === 1) {
-                return;
-              }
-              this.toastr.success('Giao việc thành công!', 'Thông báo');
+      case 'VB_TRALAI':
+        this.modalTraLai.show();
+        this.ModalTitle = 'Trả lại trình ký';
+        this.modelChuyenXuLy.MaLenh = 'VB_TRALAI';
+        const op1 = {
+          'Id': Id
+        };
+        this._apiService.r1_List_Data_Model_General(op1, 'api/VanBanCommon/r1checkNguoiNhanXNHT')
+          .subscribe(res => {
+            this._apiService.hidespinner();
+            if (res === undefined) {
               return;
-            });
-            break;
+            }
+            if (res['error'] === 1) {
+              return;
+            }
+            this.isNguoiGui = res['IsNguoiGui'];
+            this.isNguoiLap = res['IsNguoiLap'];
+            this.modelUserXNHT.isNguoiLap = this.isNguoiLap;
+            this.modelUserXNHT.isNguoiGui = this.isNguoiGui;
+          });
+        break;
+      case 'GV_GIAOVIEC':
+        this.modelChuyenXuLy.MaLenh = 'GV_GIAOVIEC';
+        const oplccv = {
+          'Id': this.modelChuyenXuLy.Id
+        };
+        this._apiService.r2_Add_Data_Model(oplccv, 'api/CongViecMoi/r2LuanChuyenCongViec')
+          .subscribe(res => {
+            this._apiService.hidespinner();
+            if (res === undefined) {
+              return;
+            }
+            if (res['error'] === 1) {
+              return;
+            }
+            this.toastr.success('Giao việc thành công!', 'Thông báo');
+            return;
+          });
+        break;
       default:
         break;
     }

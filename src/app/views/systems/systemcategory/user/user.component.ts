@@ -87,6 +87,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataCommonDep')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -101,6 +102,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataNest')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -113,6 +115,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   r1GetDataList() {
     this._apiService.r1_Post_List_Data(this.options, 'api/User/r1GetListUser')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
@@ -128,6 +131,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   r1GetListDataPosition() {
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListDataPosition')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           return;
@@ -142,6 +146,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     this.options.rankrole = this.userlogin.rankrole;
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListGroupRole')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           return;
@@ -167,6 +172,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   r4DelData(datas) {
     this._apiService.r4DelListDataForcheckBox(datas, 'api/User/r4DelSys_Dm_User')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res['error'] === 2) {
           this.toastr.error(res['ms'], 'Thông báo');
           return;
@@ -190,6 +196,7 @@ export class UserComponent implements OnInit, AfterViewInit {
     if (this.model.Id === 0 || this.model.Id === null) {
       this._apiService.r2_Add_Data_Model(models, 'api/User/r1AddDataSysDmUser')
         .subscribe(res => {
+          this._apiService.hidespinner();
           if (res === undefined) {
             this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
             return;
@@ -209,6 +216,7 @@ export class UserComponent implements OnInit, AfterViewInit {
         });
     } else {
       this._apiService.r2_Add_Data_Model(models, 'api/User/r3UpdateDataModel').subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           if (res['error'] === 1) {
             this.toastr.error('Cập nhật dữ liệu không thành công!!', 'Thông báo');
@@ -225,6 +233,7 @@ export class UserComponent implements OnInit, AfterViewInit {
   SelectIDEditModel(Id) {
     this.modeltitle = 'Sửa thông tin người dùng';
     this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           return;

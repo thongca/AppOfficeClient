@@ -23,30 +23,31 @@ export class WorkOvertimeComponent implements OnInit {
 
   ngOnInit(): void {
     this._workFlowDetail.workovertime$
-    .pipe(
-      map(pre => {
-        if (pre !== undefined) {
-          return pre.filter(x => x.WorkTime >= 0.5);
-        }
-        return pre;
-      })
-    )
-    .subscribe(data => {
-      this.listDateOverTime = data;
-    });
+      .pipe(
+        map(pre => {
+          if (pre !== undefined) {
+            return pre.filter(x => x.WorkTime >= 0.5);
+          }
+          return pre;
+        })
+      )
+      .subscribe(data => {
+        this.listDateOverTime = data;
+      });
   }
   r2_DuyetOverTime(item: WorkOverTime) {
     item.State = 1;
     this._apiService.r2_Add_Data_Model(item, 'api/MyWork/r2duyetOverTime')
-.subscribe(res => {
-      if (res === undefined) {
-        return;
-      }
-      if (res['error'] === 0) {
-        this.toastr.success('Duyệt thời hạn làm ngoài giờ thành công!', 'Thông báo');
-        return;
-      }
-    });
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 0) {
+          this.toastr.success('Duyệt thời hạn làm ngoài giờ thành công!', 'Thông báo');
+          return;
+        }
+      });
   }
   r2_KhongDuyetOverTime(item: WorkOverTime) {
     item.State = 2;

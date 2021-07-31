@@ -27,6 +27,8 @@ EndDate: Date;
 UserTaskId: number;
 UserTaskName?: string;
 TypeTask: number;
+LevelTaskId: number;
+LevelTimeId: number;
 PointTask: number;
 PointTime: number;
 DeliverType?: number;

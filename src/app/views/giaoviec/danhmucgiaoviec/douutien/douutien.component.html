@@ -18,12 +18,9 @@
                         </a>
                     </button>
                     <ng-container *appPermitdel='true'>
-                        <app-modaldel *ngIf="cvtxservice.CheckLength > 0" [list]=cvtxservice.listData titleModal="Xác nhận xóa công việc"
+                        <app-modaldel *ngIf="options.checkLength > 0" [list]="listviews" titleModal="Xác nhận xóa công việc"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-option-congty isShowDepartment="1" isShowNest="1"
-                        (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
-                    </app-option-congty>
                 </div>
 
                 <div class="card-body p-0 max-height-card-body">
@@ -31,28 +28,22 @@
                         <thead class="thead-light">
                             <tr>
                                 <th *appPermitdel="true" width=40 class="text-center">
-                                    <app-check-all [list] = cvtxservice.listData (checkAll) = "CheckAll($event)"></app-check-all>
+                                    <app-check-all [list] ="listviews" (checkAll) = "CheckAll($event)"></app-check-all>
                                 </th>
-                                <th class="text-center">Mã công việc</th>
-                                <th>Tên công việc</th>
-                                <th class="text-center">Độ khó</th>
-                                <th class="text-center">Độ ưu tiên</th>
-                               
-                           
+                                <th>Mức ưu tiên</th>
+                                <th class="text-center">Điểm</th>
                                 <th width=50 title="Chức năng" class="text-center">C/N</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of cvtxservice.listData">
+                            <tr *ngFor="let item of listviews">
                                 <td *appPermitdel="true" class="text-center">
                                     <input class="table-checkbox " type="checkbox" id="checkallist" value="checkitem"
                                         [checked]="item.check" [(ngModel)]="item.check" name="check"
                                         (click)="CheckedList(!item.check, item.Id)">
                                 </td>
-                                <td class="text-center">{{item.Code}}</td>
                                 <td >{{item.Name}}</td>
-                                <td class="text-center">{{item.LevelTaskName}}</td>
-                                <td class="text-center">{{item.LevelTimeName}}</td>
+                                <td class="text-center">{{item.Point}}</td>
                                
                                 
                                 <td class="text-center">
@@ -85,73 +76,25 @@
         <div class="modal-body px-2">
             <div class="animated fadeIn">
                 <div class="row m-0">
-                    <div class="col-md-6 px-2 mb-2">
-                        <div class="form-group mx-0">
-                            <label class="title-text col-form-label" for="name"> Mã công việc
-                                <span>*</span>
-                            </label>
-                            <div class="input-text">
-                                <input type="text" class="form-control rounded-0" required #Code="ngModel" [class.is-invalid]="Code.invalid && Code.touched"  name="Code" [(ngModel)]="cvtxservice.model.Code">
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-12 px-2 mb-2">
                         <div class="form-group mx-0">
-                            <label class="title-text col-form-label" for="name"> Tên CV
+                            <label class="title-text col-form-label" for="name"> Mức ưu tiên
                                 <span>*</span>
                             </label>
                             <div class="input-text">
-                                <input type="text" class="form-control rounded-0" required #Name="ngModel" [class.is-invalid]="Name.invalid && Name.touched"  name="Name" [(ngModel)]="cvtxservice.model.Name">
+                                <input type="text" class="form-control rounded-0" required #Name="ngModel" [class.is-invalid]="Name.invalid && Name.touched"  name="Name" [(ngModel)]="model.Name">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 px-2 mb-2">
                         <div class="form-group my-0">
-                            <label class="title-text col-form-label" for="name"> Độ khó
+                            <label class="title-text col-form-label" for="name"> Điểm
                             </label>
                             <div class="input-text">
-                                <select id="dokho" name="dokho" class="form-control padding-select-congty"
-                                  [(ngModel)]="cvtxservice.model.LevelTaskId">
-                                  <option *ngFor="let item of ctleveltasks" [ngValue]="item.Id" >{{item.Name}}
-                                </option>
-                                </select>
+                                <input type="number" class="form-control rounded-0" required #Point="ngModel" [class.is-invalid]="Point.invalid && Point.touched"  name="Point" [(ngModel)]="model.Point">
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 px-2 mb-2">
-                        <div class="form-group my-0">
-                            <label class="title-text col-form-label" for="name"> Độ vội
-                            </label>
-                            <div class="input-text">
-                                <select  name="dovoi" class="form-control padding-select-congty" 
-                                [(ngModel)]="cvtxservice.model.LevelTimeId" >
-                                    <option *ngFor="let item of ctleveltimes" [ngValue]="item.Id">{{item.Name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="col-md-6 px-2 mb-2">
-                        <div class="form-group mx-0">
-                            <label class="title-text col-form-label" for="name"> Điểm khó
-                                <span>*</span>
-                            </label>
-                            <div class="input-text">
-                                <input type="number" class="form-control rounded-0" required #PointTask="ngModel" [class.is-invalid]="PointTask.invalid && PointTask.touched"  name="PointTask" [(ngModel)]="cvtxservice.model.PointTask">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 px-2 mb-2">
-                        <div class="form-group mx-0">
-                            <label class="title-text col-form-label" for="name"> Điểm vội
-                                <span>*</span>
-                            </label>
-                            <div class="input-text">
-                                <input type="number" class="form-control rounded-0" required #PointTime="ngModel" [class.is-invalid]="PointTime.invalid && PointTime.touched"  name="PointTime" [(ngModel)]="cvtxservice.model.PointTime">
-                            </div>
-                        </div>
-                    </div> -->
-
                 </div>
                 
             </div>

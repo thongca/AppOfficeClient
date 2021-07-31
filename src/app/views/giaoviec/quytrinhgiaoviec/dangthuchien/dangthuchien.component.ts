@@ -21,7 +21,7 @@ export class DangthuchienComponent implements OnInit {
   @ViewChild('selectLenh', { static: false }) public selectLenh: SelectCommandComponent;
   @ViewChild('treeSchedule', { static: false }) public treeSchedule: TreeScheduleComponent;
   userlogin: UserLogin = this._commonService.getValueUserLogin();
-  optionsCV: OptionsCV = {Id: '', MyWorkId: '', p: 0, pz: 100};
+  optionsCV: OptionsCV = { Id: '', MyWorkId: '', p: 0, pz: 100 };
   step = 0;
   pdfSrc: string;
   WorkFlowId = '';
@@ -66,6 +66,7 @@ export class DangthuchienComponent implements OnInit {
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWorkFlow/r1GetListPerform')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -119,7 +120,7 @@ export class DangthuchienComponent implements OnInit {
           this.url = '';
           this.nameBtn = '';
           this.nextCycleWorks = 0;
-         return;
+          return;
       }
     } else {
       this.url = '';
@@ -134,6 +135,7 @@ export class DangthuchienComponent implements OnInit {
       Id: this.MyWorkId
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           this.toastr.error(res['ms'], 'Thông báo');
@@ -152,6 +154,7 @@ export class DangthuchienComponent implements OnInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListUserNhanViec')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }

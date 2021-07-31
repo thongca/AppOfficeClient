@@ -35,7 +35,7 @@ export class VanbanchopheduyetComponent implements OnInit {
     private toastr: ToastrService,
     private _apiService: ApiService,
     private _commonService: CommonService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.r1GetListLinhVuc();
@@ -44,35 +44,38 @@ export class VanbanchopheduyetComponent implements OnInit {
   r1GetListVanBan() {
     this._apiService.r1_Get_List_Data('api/VanBanChoPheDuyet/r1GetListVanBanChoPheDuyet')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
         this.listSoHoaVbs = res['data'];
       });
-}
-SelectIDEditModel(Id) {
- this._apiService.r1_GetDataByID(Id, 'api/SoHoaVanBan').subscribe(res => {
-    if (res !== undefined) {
-      if (res['error'] === 1) {
-        return;
+  }
+  SelectIDEditModel(Id) {
+    this._apiService.r1_GetDataByID(Id, 'api/SoHoaVanBan').subscribe(res => {
+      this._apiService.hidespinner();
+      if (res !== undefined) {
+        if (res['error'] === 1) {
+          return;
+        }
+        this.modelView = res['data'];
+        this.filesView = res['files'];
+        this.listLcvb = res['lcvbs'];
+        const lcvb = res['lcvb'];
+        this.treediagram.getStart(this.listLcvb);
+        this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
       }
-      this.modelView = res['data'];
-      this.filesView = res['files'];
-      this.listLcvb = res['lcvbs'];
-      const lcvb = res['lcvb'];
-      this.treediagram.getStart(this.listLcvb);
-    this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
-    }
-  });
-  this.selectaRow(Id);
-}
-selectaRow(Id) {
-  this.IdVb = Id;
-  this.selectLenh.showBtn(true);
+    });
+    this.selectaRow(Id);
+  }
+  selectaRow(Id) {
+    this.IdVb = Id;
+    this.selectLenh.showBtn(true);
   }
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/VanBanCommon/r1GetListNhanSu')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -90,13 +93,13 @@ selectaRow(Id) {
           allowSearchFilter: true
         };
       });
-}
-refreshList() {
-  this.r1GetListVanBan();
-}
-changeUrlpdf(pathDb) {
-  this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
-}
+  }
+  refreshList() {
+    this.r1GetListVanBan();
+  }
+  changeUrlpdf(pathDb) {
+    this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
+  }
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
   }

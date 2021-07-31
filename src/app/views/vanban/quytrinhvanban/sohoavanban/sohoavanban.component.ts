@@ -38,7 +38,7 @@ export class SohoavanbanComponent implements OnInit {
     private _apiService: ApiService,
     private _commonService: CommonService,
     private _apiFileService: ApifileService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.r1GetListLinhVuc();
@@ -47,40 +47,42 @@ export class SohoavanbanComponent implements OnInit {
   r1GetListVanBan() {
     this._apiService.r1_Get_List_Data('api/SoHoaVanBan/r1GetListDanhSachVBSoHoa')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
         this.listSoHoaVbs = res['data'];
       });
-}
-SelectIDEditModel(item: VbMoiSoHoa) {
- this._apiService.r1_GetDataByID(item.Id, 'api/SoHoaVanBan').subscribe(res => {
-    if (res !== undefined) {
-      if (res['error'] === 1) {
-        return;
+  }
+  SelectIDEditModel(item: VbMoiSoHoa) {
+    this._apiService.r1_GetDataByID(item.Id, 'api/SoHoaVanBan').subscribe(res => {
+      this._apiService.hidespinner();
+      if (res !== undefined) {
+        if (res['error'] === 1) {
+          return;
+        }
+        this.modelView = res['data'];
+        this.filesView = res['files'];
+        this.listLcvb = res['lcvbs'];
+        this.treediagram.getStart(this.listLcvb);
+        this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
       }
-      this.modelView = res['data'];
-      this.filesView = res['files'];
-      this.listLcvb = res['lcvbs'];
-      this.treediagram.getStart(this.listLcvb);
-    this.pdfSrc = this._commonService.replaceUrlImage(res['files'][0].Path);
+    });
+    this.selectaRow(item.Id, item.NgayXuLy);
+  }
+  selectaRow(Id, NgayXuLy: Date) {
+    console.log(NgayXuLy);
+    this.IdVb = Id;
+    if (NgayXuLy == null) {
+      this.selectLenh.showBtn(true);
+    } else {
+      this.selectLenh.showBtn(false);
     }
-  });
-  this.selectaRow(item.Id, item.NgayXuLy);
-}
-selectaRow(Id, NgayXuLy: Date) {
-  console.log(NgayXuLy);
-this.IdVb = Id;
-if (NgayXuLy == null) {
-  this.selectLenh.showBtn(true);
-} else {
-  this.selectLenh.showBtn(false);
-}
 
-}
+  }
   r3_AddinfoUnitCode() {
     if (this.selectedItems !== undefined) {
-      this.model.NguoiKyId =  this.selectedItems[0].Id;
+      this.model.NguoiKyId = this.selectedItems[0].Id;
     }
     if (this.model.Id === undefined) {
       this.model.Id = 0;
@@ -108,6 +110,7 @@ if (NgayXuLy == null) {
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/VanBanCommon/r1GetListNhanSu')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           return;
         }
@@ -125,16 +128,16 @@ if (NgayXuLy == null) {
           allowSearchFilter: true
         };
       });
-}
-refreshList() {
-  this.r1GetListVanBan();
-}
-RefreshData() {
+  }
+  refreshList() {
+    this.r1GetListVanBan();
+  }
+  RefreshData() {
 
-}
-changeUrlpdf(pathDb) {
-  this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
-}
+  }
+  changeUrlpdf(pathDb) {
+    this.pdfSrc = this._commonService.replaceUrlImage(pathDb);
+  }
   onSelectFile(fileInput: any) {
     this.vbattach = fileInput;
   }
@@ -145,13 +148,13 @@ changeUrlpdf(pathDb) {
     this.modaldata.hide();
   }
   dateSelect(value) {
-this.model.NgayBanHanh = value;
+    this.model.NgayBanHanh = value;
   }
   setStep(index: number) {
     this.step = index;
   }
   selectLoaiVb(value) {
-  this.model.LoaiVanBanId = value;
+    this.model.LoaiVanBanId = value;
   }
   selectLinhVuc(value) {
     this.model.LinhVucId = value;

@@ -70,6 +70,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   r1GetDataList() {
     this._apiService.r1_Get_List_Data('api/QuyTrinhVanBan/r1GetListDataQT')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
@@ -91,6 +92,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r1_List_Data_Model_General(qt, 'api/QuyTrinhVanBan/r1GetListDataBuoc')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
@@ -113,6 +115,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r1_List_Data_Model_General(qt, 'api/QuyTrinhVanBan/r1GetListDataLTT')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
@@ -130,6 +133,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     this.options.rankrole = this.userlogin.rankrole;
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListGroupRole')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.loaddata = true;
         if (res === undefined) {
           return;
@@ -159,6 +163,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r4DelListDataForcheckBox(models, 'api/QuyTrinhVanBan/r4DelListDataBuocLenh')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res['error'] === 2) {
           this.toastr.error(res['ms'], 'Thông báo');
           return;
@@ -180,6 +185,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     if (check === true) {
       this._apiService.r2_Add_Data_Model(models, 'api/QuyTrinhVanBan/r2AddListDataBuocLenh')
         .subscribe(res => {
+          this._apiService.hidespinner();
           if (res === undefined) {
             this.toastr.error('Thêm dữ liệu không thành công, Vui lòng kiểm tra lại!', 'Thông báo');
             return;
@@ -202,6 +208,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   SelectIDEditModel(Id) {
     this.modeltitle = 'Sửa thông tin người dùng';
     this._apiService.r1_GetDataByID(Id, 'api/User').subscribe(res => {
+      this._apiService.hidespinner();
       if (res !== undefined) {
         if (res['error'] === 1) {
           return;

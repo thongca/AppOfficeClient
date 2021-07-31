@@ -14,21 +14,22 @@ export class SelectlenhsharedService {
     private _apiService: ApiService,
   ) {
 
-   }
-   reloadMyWorkByChangeData() {
+  }
+  reloadMyWorkByChangeData() {
     this.reloadListMyWorks.next(true);
-   }
+  }
   r1_getListLenhs(options) {
     this._apiService.r1_List_Data_Model_General(options, 'api/MyWorkCommon/r1GetListDataLenhTheoUser')
-    .subscribe(res => {
-      if (res === undefined) {
-        return;
-      }
-      if (res['error'] === 1) {
-        return;
-      }
-      this.listCommands.next(res['data']);
-    });
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.listCommands.next(res['data']);
+      });
   }
 }
 

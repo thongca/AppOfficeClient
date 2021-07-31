@@ -12,14 +12,15 @@ export class DashboardComponent implements OnInit {
   }
   @ViewChild('revenueLineChart', { static: false }) chart: ElementRef;
   listDataDV: DVBieuDo[];
-      // total
-      canvas: any;
-      ctx: any;
+  // total
+  canvas: any;
+  ctx: any;
   ngOnInit() {
     // this.r1_ListDataWorkTimeInDepartment();
   }
   r1_ListDataWorkTimeInDepartment() {
     this.api.r1_Get_List_Data('api/MyWorkReport/r1WorkTimeForDepartment').subscribe(res => {
+      this.api.hidespinner();
       this.listDataDV = res['data'];
       // this.barChartDV();
     });

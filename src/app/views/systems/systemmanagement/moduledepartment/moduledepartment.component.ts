@@ -39,6 +39,7 @@ export class ModuledepartmentComponent implements OnInit {
   r1GetDataList() {
     this._apiService.r1_Post_List_Data(this.options, 'api/ModuleCongty/r1GetListDataDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Dữ liệu công ty không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -58,6 +59,7 @@ export class ModuledepartmentComponent implements OnInit {
   r4DelData(datas) {
     this._apiService.r4DelListDataForcheckBox(datas, 'api/Company/r4DelSys_Dm_Company')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res['error'] === 3) {
           this.toastr.error('Xóa danh sách công ty không thành công! Vui lòng xóa sản phẩm của công ty trước.', 'Thông báo');
           return;
@@ -84,6 +86,7 @@ export class ModuledepartmentComponent implements OnInit {
     value.IsActive = !value.IsActive;
     this._apiService.r2_Add_Data_Model(value, 'api/ModuleCongty/r2AddDataModelDepartment')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
           return;

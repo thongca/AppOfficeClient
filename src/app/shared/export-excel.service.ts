@@ -39,7 +39,8 @@ export class ExportExcelService {
   }
   public saveExcelFileTotalTime(model, fileName): void {
     this._apiService.r1_File_Data_Model_General(model, 'api/MyWorkReport/ExportSumTimeExcel').subscribe(res => {
-        saveAs(res, fileName + this.fileExtension);
+      this._apiService.hidespinner();
+      saveAs(res, fileName + this.fileExtension);
     });
   }
 
@@ -51,6 +52,7 @@ export class ExportExcelService {
       ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/r1ExcelKpi').subscribe(res => {
+      this._apiService.hidespinner();
       if (res.type === HttpEventType.Response) {
         if (res.status === 404) {
           this.toarts.error('Xuất File không thành công!');
@@ -68,6 +70,7 @@ export class ExportExcelService {
       ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/ExportNkCvExcel').subscribe(res => {
+      this._apiService.hidespinner();
       if (res.type === HttpEventType.Response) {
         if (res.status === 204) {
           this.toarts.error('Xuất File không thành công!');
@@ -85,6 +88,7 @@ export class ExportExcelService {
       ReportDate: report
     };
     this.apiFile.r2_addonlyFileExcel(myFile, model, 'api/MyWorkReport/ExportTotalWorkExcel').subscribe(res => {
+      this._apiService.hidespinner();
       if (res.type === HttpEventType.Response) {
         if (res.status === 204) {
           this.toarts.error('Xuất File không thành công!');

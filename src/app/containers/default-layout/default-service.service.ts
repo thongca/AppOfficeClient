@@ -19,6 +19,7 @@ export class DefaultServiceService {
   ) { }
   getNotify() {
     this._apiService.r1_Get_List_Data('api/Common/r1GetListThongBao').subscribe(res => {
+      this._apiService.hidespinner();
       if (res === undefined) {
         return;
       }
@@ -30,7 +31,7 @@ export class DefaultServiceService {
     });
   }
   requirePushNotify() {
-      this._pushNotificationService.requestPermission();
+    this._pushNotificationService.requestPermission();
   }
   PushNotifyToWindows(data: NotifyContent) {
     let title = 'Thông báo';
@@ -51,8 +52,8 @@ export class DefaultServiceService {
         }, 30000);
       }
     },
-    (err) => {
-         console.log(err);
-    });
-}
+      (err) => {
+        console.log(err);
+      });
+  }
 }

@@ -18,6 +18,7 @@ import { SearchService } from '../../../../shared/search.service';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { UserTask } from '../../../../models/giaoviec/congvieccuatoi.model';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-congvieccuatoi',
@@ -98,6 +99,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     itemsShowLimit: 2,
     allowSearchFilter: true
   };
+  ctleveltasks = [];
+  ctleveltimes = [];
   constructor(
     private toastr: ToastrService,
     private _apiService: ApiService,
@@ -106,7 +109,9 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     private _workFlowDetail: WorkdetailService,
     public _sharedmyWork: SharedmyworksService,
     public _apiSharedService: SelectlenhsharedService,
-    private _searchService: SearchService
+    private _toastr: ToastrService,
+    private _searchService: SearchService,
+    private spinner: NgxSpinnerService
   ) {
     this.model.TypeTask = 1;
   }
@@ -117,6 +122,8 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     this.r1GetListMyWorks();
     this.r1GetDepartment();
     this.r1GetDataUser();
+    this.r1_GetTasks();
+    this.r1_GetTime();
   }
   ngAfterViewInit(): void {
     this._apiSharedService.reloadListMyWorks$.subscribe(res => {
@@ -128,9 +135,36 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
       this.searchData(res);
     });
   }
+  r1_GetTasks(): void {
+    this._apiService.r1_Get_List_Data('api/Common/r1GetDataLevelTask').subscribe(res => {
+      this.spinner.hide();
+      if (res['error'] !== 0) {
+        this._toastr.error(res['ms'], 'Thông báo');
+        return;
+      }
+      this.ctleveltasks = res['data'];
+      if (this.ctleveltasks) {
+        this.model.LevelTaskId = this.ctleveltasks[0].Id;
+      }
+    });
+  }
+  r1_GetTime(): void {
+    this._apiService.r1_Get_List_Data('api/Common/r1GetDataLevelTime').subscribe(res => {
+      this.spinner.hide();
+      if (res['error'] !== 0) {
+        this._toastr.error(res['ms'], 'Thông báo');
+        return;
+      }
+      this.ctleveltimes = res['data'];
+      if (this.ctleveltimes) {
+        this.model.LevelTimeId = this.ctleveltimes[0].Id;
+      }
+    });
+  }
   r1GetListMyWorks() {
     this._apiService.r1_Get_List_Data('api/MyWork/r1GetListMyWorks')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -147,6 +181,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
     this._apiService.r1_Get_List_Data('api/Common/r1GetListUserByDepartmentId')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -159,6 +194,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   r1GetDepartment() {
     this._apiService.r1_Get_List_Data('api/Common/r1GetListDataDepforUser')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -226,6 +262,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
       Predecessor: this.Predecessor // khi công việc tiên quyết chưa hoàn thành thì không được bắt đầu công việc sau
     };
     this._apiService.r1_List_Data_Model_General(model, this.url).subscribe(res => {
+      this.spinner.hide();
       if (res !== undefined) {
         if (res['error'] === 1) {
           this.toastr.error(res['ms'], 'Thông báo');
@@ -304,6 +341,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     };
     this._apiService.r1_List_Data_Model_General(op, 'api/Common/r1GetListDataUserForDepartment')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -318,6 +356,7 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
   r1GetListLinhVuc() {
     this._apiService.r1_Get_List_Data('api/MyWorkCommon/r1GetListWorks')
       .subscribe(res => {
+        this.spinner.hide();
         if (res === undefined) {
           return;
         }
@@ -389,6 +428,12 @@ export class CongvieccuatoiComponent implements OnInit, AfterViewInit {
     this.selectedItemPHs = [];
     this.selectedItems = [];
     this.model = new CVQTMyWork();
+    if (this.ctleveltimes) {
+      this.model.LevelTimeId = this.ctleveltimes[0].Id;
+    }
+    if (this.ctleveltasks) {
+      this.model.LevelTaskId = this.ctleveltasks[0].Id;
+    }
     this.onSet_initDataModal(this.model);
   }
   onSet_initDataModal(model: CVQTMyWork): void {

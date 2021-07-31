@@ -5,6 +5,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './login.service';
 import { HashCodeService } from '../../common/hashCode.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private _hashCode: HashCodeService,
+    private spinner: NgxSpinnerService
   ) {
   }
   ngOnInit() {
@@ -37,14 +39,15 @@ export class LoginComponent implements OnInit {
     this.toastr.info('Vui lòng liên hệ với quản trị viên, để được cấp lại mật khẩu!', 'Thông báo');
   }
   LoginClick() {
-    this.loading = true;
+    this.spinner.show();
     if (this.User.Password === '' || this.User.Password === null || this.User.Username === '' || this.User.Username === null) {
       this.toastr.error('Tên đăng nhập hoặc mật khẩu không được để trống. Vui lòng kiểm tra lại!', 'Thông báo');
-      this.loading = false;
+      this.spinner.hide();
       return false;
     }
     this.login.CheckLogin(this.User).subscribe(
       (res: any) => {
+        this.spinner.hide();
         if (res !== undefined) {
 
           if (res['error'] === 1) {
@@ -56,7 +59,6 @@ export class LoginComponent implements OnInit {
             this.errormodal = res['ms'];
             return false;
           } else {
-            const dt = new Date();
             localStorage.setItem('listQuyen', this._hashCode.encrypt(JSON.stringify(res._listQuyen)));
             localStorage.setItem('listNhomQuyen', this._hashCode.encrypt(JSON.stringify(res._listNhomQuyen)));
             localStorage.setItem('user', this._hashCode.encrypt(JSON.stringify(res.u)));
@@ -73,6 +75,7 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
+        this.spinner.hide();
         if (err.status === 500) {
           this.toastr.error('Mất kết nối máy chủ, vui lòng kiểm tra lại đường dẫn!', 'Thông báo');
           return false;

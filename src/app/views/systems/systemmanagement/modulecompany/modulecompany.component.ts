@@ -16,8 +16,10 @@ export class ModulecompanyComponent implements OnInit {
   treeControl = new NestedTreeControl<IMenuCom>(node => node.children);
   dataSource = new MatTreeNestedDataSource<IMenuCom>();
   modeltitle = '';
-  options: OptionHeader = { s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
-departmentId: 0 };
+  options: OptionHeader = {
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
+    departmentId: 0
+  };
   listData: IMenuCom[];
   CheckLength: number;
   thongnguyen: string;
@@ -36,6 +38,7 @@ departmentId: 0 };
   r1GetDataList() {
     this._apiService.r1_Post_List_Data(this.options, 'api/ModuleCongty/r1GetListData')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Dữ liệu công ty không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -55,6 +58,7 @@ departmentId: 0 };
   r4DelData(datas) {
     this._apiService.r4DelListDataForcheckBox(datas, 'api/Company/r4DelSys_Dm_Company')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res['error'] === 3) {
           this.toastr.error('Xóa danh sách công ty không thành công! Vui lòng xóa sản phẩm của công ty trước.', 'Thông báo');
           return;
@@ -74,16 +78,17 @@ departmentId: 0 };
   r2_AddData(value: IMenuComPara) {
     value.IsActive = !value.IsActive;
     this._apiService.r2_Add_Data_Model(value, 'api/ModuleCongty/r2AddDataModel')
-    .subscribe(res => {
-      if (res === undefined) {
-        this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
-        return;
-      }
-      if (res['error'] === 1) {
-        this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
-        return;
-      }
-    });
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
+          return;
+        }
+        if (res['error'] === 1) {
+          this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
+          return;
+        }
+      });
   }
 
 

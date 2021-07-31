@@ -16,7 +16,7 @@ import { IMenuPermission } from '../../../../models/systems/systemmanagement/ipe
 export class PermissionmoduleComponent implements OnInit {
   userlogin: UserLogin = this._commonService.getValueUserLogin();
   options: OptionHeader = {
-    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '',  groupId: 0,
+    s: '', p: 1, pz: 100, totalpage: 0, total: 1000, paxpz: 0, mathP: 0, userName: '', groupId: 0,
     departmentId: 0, nestId: 0, rankrole: this.userlogin.rankrole
   };
   private load = false;
@@ -56,6 +56,7 @@ export class PermissionmoduleComponent implements OnInit {
     value.GroupRoleId = this.options.groupId;
     this._apiService.r2_Add_Data_Model(value, 'api/PermissionGroup/r2AddDataModel')
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Lỗi khi lưu thông tin, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -79,6 +80,7 @@ export class PermissionmoduleComponent implements OnInit {
     this.options.rankrole = this.userlogin.rankrole;
     this._apiService.r1_Post_List_Data(this.options, url)
       .subscribe(res => {
+        this._apiService.hidespinner();
         if (res === undefined) {
           this.toastr.error('Dữ liệu không tồn tại, Vui lòng kiểm tra lại!', 'Thông báo');
           return;
@@ -93,6 +95,7 @@ export class PermissionmoduleComponent implements OnInit {
   r1GetDataGroupRole() {
     this._apiService.r1_Post_List_Data(this.options, 'api/Common/r1GetListGroupRole')
       .subscribe(res => {
+        this._apiService.hidespinner();
         this.load = true;
         if (res === undefined) {
           return;

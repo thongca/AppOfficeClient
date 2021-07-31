@@ -82,6 +82,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
       'Id': Id
     };
     this._apiService.r2_Add_Data_Model(op, 'api/Common/r1PostUpdateThongBao').subscribe(res => {
+      this._apiService.hidespinner();
       if (res === undefined) {
         return;
       }
@@ -93,6 +94,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   }
   updateAllDaXem() {
     this._apiService.r1_Get_List_Data('api/Common/r1GetUpdateAllThongBao').subscribe(res => {
+      this._apiService.hidespinner();
       if (res === undefined) {
         return;
       }
@@ -107,6 +109,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   }
   DoiMatKhau() {
     this._apiService.r2_Add_Data_Model(this.changPass, 'api/login/ChangePassword').subscribe(res => {
+      this._apiService.hidespinner();
       this.modaldata.hide();
       if (res['error'] === 1) {
         this._toastr.error('Đổi mật khẩu không thành công!', 'Thông báo');
@@ -134,6 +137,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   }
   r1_onChange_Token() {
     this._apiService.r2_Add_Data_Model(this.modelgl, 'api/Login/ChangeTokenAdmin').subscribe(res => {
+      this._apiService.hidespinner();
       if (res === undefined) {
         return;
       }
@@ -153,9 +157,9 @@ export class ChangePass {
     this.PassOld = null;
     this.PassNew = null;
   }
-PassOld: string;
-PassNew: string;
-PassConfirm: string;
+  PassOld: string;
+  PassNew: string;
+  PassConfirm: string;
 }
 
 class GlobalData {
