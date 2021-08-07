@@ -3,5 +3,6 @@ export class ErrorCat {
     ErrorName: string;
     Point: number;
     check?: boolean;
+    Active?: boolean;
     DepartmentId?: number;
     }

@@ -7,7 +7,7 @@
                 Thêm mới
             </a>
         </button>
-        <app-select-command #selectLenh MenuId="GV0101" (refreshPaList)="refreshList()">
+        <app-select-command #selectLenh MenuId="GV0102" (refreshPaList)="refreshList()">
         </app-select-command>
         <ng-container *appPermitdel='true'>
             <app-modaldel *ngIf="CheckLength > 0" [list]=listData titleModal="Xác nhận nhóm quyền"
@@ -144,7 +144,7 @@
                                     <div class="input-text">
                                         <select name="dovoi" class="form-control padding-select-congty"
                                             [(ngModel)]="model.LevelTimeId" [disabled]="model.TaskId !== null">
-                                            <option *ngFor="let item of _sharedmyWork.listVois" [ngValue]="item.Id">
+                                            <option *ngFor="let item of ctleveltimes" [ngValue]="item.Id">
                                                 {{item.Name}}
                                             </option>
                                         </select>

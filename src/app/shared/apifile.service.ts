@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 import { BaseUrlService } from '../common/base-url.service';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ApifileService {
-  private _baseUrl: string;
+  private _baseUrl = environment.apiUrl;
   constructor(
-    private _baseURLService_: BaseUrlService,
     private http: HttpClient,
   ) {
-    this._baseUrl = this._baseURLService_.baseUrl;
    }
   // request only file to serve
   r2_addonlyFileExcel(files, model, childUrl) {

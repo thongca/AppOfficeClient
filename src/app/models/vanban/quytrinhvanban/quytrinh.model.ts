@@ -1,13 +1,13 @@
 
 export class IVbQuyTrinh {
-    Id: number;
+    Id: string;
     Name: string;
     IsOrder?: number;
     check: boolean;
 }
 
 export class VbBuocLenh {
-    Id: number;
+    Id: string;
     Name: string;
     IsOrder?: number;
     check: boolean;
@@ -15,25 +15,25 @@ export class VbBuocLenh {
 }
 
 export class VbLenhTuongTac {
-    Id: number;
+    Id: string;
     Name: string;
     Code: string;
     check: boolean;
 }
 export class VbBuoc {
-    Id: number;
+    Id: string;
     Name: string;
 }
 export class OptionQuyTrinh {
-    BuocId: number;
-    QuyTrinhId: number;
-    LenhTuongTacId: number;
-    BuocLenhTuongTacId?: number;
+    BuocId: string;
+    QuyTrinhId: string;
+    LenhTuongTacId: string;
+    BuocLenhTuongTacId?: string;
 }
 export class VBQTBuocLenhGroupRole {
-    BuocId: number;
-    QuyTrinhId: number;
-    BuocLenhTuongTacId: number;
+    BuocId: string;
+    QuyTrinhId: string;
+    BuocLenhTuongTacId: string;
     CompanyId: number;
     GroupRoleId: number;
     Name: string;

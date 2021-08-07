@@ -10,6 +10,7 @@ import { DefaultServiceService } from './default-service.service';
 import { NotificationModel } from '../../models/systems/notifi/Notifi.model';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { OptionHeader, UserLoginFromToken } from '../../common/option';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,14 +24,16 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   public listThongbaos: NotificationModel[] = [];
   userNhanTbs: UserNhanThongBao[] = [];
   changPass: ChangePass = new ChangePass();
+  userLogin: UserLoginFromToken = this._commonService.readDataTokenUser();
   s: string;
   total = 0;
   fullName = '';
   cthongbao: string;
   load = false;
-  userLoginId: number = this._commonService.getUserId();
+  userLoginId: number = 0;
   menuName: string;
   ctcompanies = [];
+  ctdepartments = [];
   modelgl: GlobalData = new GlobalData();
   constructor(
     private _signalSer: SignalRealTimeService,
@@ -44,7 +47,10 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     this.navItems = this._menuService.getDataMenu();
   }
   ngOnInit(): void {
-    this.fullName = this._commonService.getUserFullName();
+    this.userLoginId = this.userLogin.UserID;
+    this.fullName = this.userLogin.FullName;
+    this.modelgl.CompanyId = this.userLogin.CompanyId;
+    this.modelgl.DepartmentId = this.userLogin.DepartmentId;
     this._defaultService.getNotify();
     this.search.DataSearch$.subscribe(res => {
       let ss = '';
@@ -57,10 +63,7 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     });
     this._defaultService.requirePushNotify();
     this.getCongtys();
-  }
-  getCongtys() {
-    this.ctcompanies = this._commonService.getCongtys();
-    this.modelgl.CompanyId = this._commonService.readDataTokenCompanyId();
+    this.r1GetDepartment();
   }
   ngAfterViewInit() {
     this._signalSer.signal$.subscribe(data => {
@@ -76,6 +79,25 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
     this._commonService.nameMenu$.subscribe(res => {
       this.menuName = res;
     });
+  }
+  getCongtys() {
+    this.ctcompanies = this._commonService.getCongtys();
+    this.modelgl.CompanyId = this._commonService.readDataTokenCompanyId();
+  }
+  r1GetDepartment() {
+    // neu fresh = 1 thì gửi request vào server, không thì gọi từ trên store xuống
+    const options = new OptionHeader();
+    this._apiService.r1_Post_List_Data(options, 'api/Common/r1GetListDataCommonDep')
+      .subscribe(res => {
+        this._apiService.hidespinner();
+        if (res === undefined) {
+          return;
+        }
+        if (res['error'] === 1) {
+          return;
+        }
+        this.ctdepartments = res['data'];
+      });
   }
   updateDaXemThongBao(Id) {
     const op = {
@@ -133,6 +155,11 @@ export class DefaultLayoutComponent implements OnInit, AfterViewInit {
   }
   onChange_Company(companyId: string): void {
     // goi vao server de lau token
+    this.r1_onChange_Token();
+    this.r1GetDepartment();
+  }
+  onChange_Department(data): void {
+    this.modelgl.DepartmentId = data;
     this.r1_onChange_Token();
   }
   r1_onChange_Token() {

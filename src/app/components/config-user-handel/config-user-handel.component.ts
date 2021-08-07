@@ -17,9 +17,9 @@ export class ConfigUserHandelComponent implements OnInit {
   @Output() changeSteps = new EventEmitter();
   permission: number;
   options: OptionQuyTrinh = {
-    BuocId: 0,
-    LenhTuongTacId: 0,
-    QuyTrinhId: 0
+    BuocId: null,
+    LenhTuongTacId: null,
+    QuyTrinhId: null
   };
   QuyTrinhId: number;
   BuocId: number;
@@ -60,7 +60,7 @@ export class ConfigUserHandelComponent implements OnInit {
           this.changeQuyTrinhs.emit(this.listQuyTrinhs[0].Id);
           this.options.QuyTrinhId = this.listQuyTrinhs[0].Id;
         } else {
-          this.changeQuyTrinhs.emit(0);
+          this.changeQuyTrinhs.emit('');
         }
         this.r1GetSteps();
       });
@@ -81,16 +81,16 @@ export class ConfigUserHandelComponent implements OnInit {
           this.changeSteps.emit(this.listBuocs[0].Id);
           this.options.BuocId = this.listBuocs[0].Id;
         } else {
-          this.changeSteps.emit(0);
+          this.changeSteps.emit('');
         }
       });
   }
-  ChangeQuyTrinh(value) {
-    this.options.QuyTrinhId = Number(value);
+  ChangeQuyTrinh(value: string) {
+    this.options.QuyTrinhId = value;
     this.changeQuyTrinhs.emit(value);
     this.r1GetSteps();
   }
-  ChangeBuoc(value) {
+  ChangeBuoc(value: string) {
     this.options.BuocId = value;
     this.changeSteps.emit(value);
   }

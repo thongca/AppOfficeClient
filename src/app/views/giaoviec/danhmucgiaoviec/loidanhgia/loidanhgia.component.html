@@ -21,9 +21,6 @@
                         <app-modaldel *ngIf="dmdgservice.CheckLength > 0" [list]=dmdgservice.listData titleModal="Xác nhận xóa công việc"
                             (xacNhan)="r4DelData($event)"></app-modaldel>
                     </ng-container>
-                    <app-option-congty isShowDepartment="1" isShowNest="1"
-                        (changeDepartments)="selectDepartment($event)" (changeNests)="selectNest($event)">
-                    </app-option-congty>
                 </div>
 
                 <div class="card-body p-0 max-height-card-body">
@@ -83,7 +80,7 @@
                                 <span>*</span>
                             </label>
                             <div class="input-text">
-                                <input type="text" class="form-control rounded-0" required #ErrorName="ngModel" [class.is-invalid]="ErrorName.invalid && ErrorName.touched"  name="ErrorName" [(ngModel)]="dmdgservice.model.ErrorName">
+                                <input type="text" [disabled]="dmdgservice.model.Active == true" class="form-control rounded-0" required #ErrorName="ngModel" [class.is-invalid]="ErrorName.invalid && ErrorName.touched"  name="ErrorName" [(ngModel)]="dmdgservice.model.ErrorName">
                             </div>
                         </div>
                     </div>

@@ -126,10 +126,21 @@
         <div class="p-3">
           <ng-container>
             <div class="widthselect">
-              <select id="select2" name="select2" class="form-control padding-select-congty"
+              <select id="CompanyId" name="CompanyId" class="form-control padding-select-congty"
                 [(ngModel)]="modelgl.CompanyId" (ngModelChange)="onChange_Company($event)">
                 <option [ngValue]="0">----- Chọn công ty -----</option>
                 <option *ngFor="let item of ctcompanies" [ngValue]="item.Id">{{item.Name}}</option>
+              </select>
+            </div>
+          </ng-container>
+        </div>
+        <div class="p-3">
+          <ng-container>
+            <div class="widthselect">
+              <select id="DepartmentId" name="DepartmentId" class="form-control padding-select-congty"
+                [(ngModel)]="modelgl.DepartmentId" (ngModelChange)="onChange_Department($event)">
+                <option [ngValue]="0">----- Chọn phòng ban -----</option>
+                <option *ngFor="let item of ctdepartments" [ngValue]="item.Id">{{item.Name}}</option>
               </select>
             </div>
           </ng-container>

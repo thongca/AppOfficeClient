@@ -7,12 +7,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
   providedIn: 'root'
 })
 export class ApiService {
-  private _baseUrl: string;
+  private _baseUrl = environment.apiUrl;
   constructor(
     private http: HttpClient,
     private spinner: NgxSpinnerService
   ) {
-    this._baseUrl = environment.apiUrl;
   }
   showspinner(): void {
     this.spinner.show();

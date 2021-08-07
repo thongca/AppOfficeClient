@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { CommonService } from '../../../../common/common.service';
 import { OptionHeader, UserLogin } from '../../../../common/option';
+import { ApiService } from '../../../../shared/api.service';
 import { DanhgiadmServiceService } from './danhgiadm-service.service';
 
 @Component({
@@ -16,11 +17,11 @@ export class LoidanhgiaComponent implements OnInit {
     departmentId: 0, nestId: 0
   };
   modeltitle = '';
+  ctdepartments = [];
   constructor(
     public dmdgservice: DanhgiadmServiceService,
-    private _commonService: CommonService
+    private api: ApiService
   ) { }
-  userlogin: UserLogin = this._commonService.getValueUserLogin();
   ngOnInit(): void {
     this.dmdgservice.r1getListCVtx();
   }
@@ -74,7 +75,7 @@ export class LoidanhgiaComponent implements OnInit {
       Id: 0,
       Point: 0,
       ErrorName: '',
-      DepartmentId: this.userlogin.departmentId ?? 0
+      DepartmentId: 0
     };
     this.modeltitle = 'Thêm mới công việc thường xuyên';
     this.modaldata.show();

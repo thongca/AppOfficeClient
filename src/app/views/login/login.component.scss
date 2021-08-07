@@ -1,5 +1,5 @@
 .body-login{
-  background-image: url(../../../assets/img/brand/back1.jpg);
+  background-image: url(../../../assets/img/brand/bg-login.jpg);
   background-position: 50% 50%;
   background-size: cover;
   background-repeat: no-repeat;
@@ -42,7 +42,7 @@ h6 {
   padding: 1rem 1rem 1rem 1rem;
 }
 .box-logo img{
-width: 150px;
+width: 80px;
 margin-top: 10px;
 object-fit: cover;
 }
@@ -85,7 +85,7 @@ hr{
   color: #f8b20c;
 }
 .logocty{
-  background-image: url('../../../assets/img/login/appprin.png');
+  background-image: url('../../../assets/img/login/group.png');
   width: 120px;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -100,7 +100,4 @@ h4{
   color: #2f982f;
   font-weight: bold;
   font-size: 28px;
-}
-.dangnhap-hethong {
-    float: right;
 }

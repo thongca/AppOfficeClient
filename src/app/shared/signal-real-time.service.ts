@@ -6,6 +6,7 @@ import {  HubConnection } from '@aspnet/signalr';
 import { UserNhanThongBao } from '../models/usernhantb.interface';
 import { CommonService } from '../common/common.service';
 import { BaseUrlService } from '../common/base-url.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,13 @@ export class SignalRealTimeService {
   private typeflow = new Subject<number[]>();
   public typeflow$ = this.typeflow.asObservable();
   constructor(
-    private _common: CommonService,
-    private _baseUrl: BaseUrlService
+    private _common: CommonService
   ) {
     this.createConnection();
   }
   private async createConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this._baseUrl.baseUrl + 'signalrtc')
+      .withUrl(environment.apiUrl + 'signalrtc')
       .build();
 
     await this.hubConnection

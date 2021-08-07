@@ -2,7 +2,7 @@
     <div class="widthselect">
         <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="options.QuyTrinhId" (change)="ChangeQuyTrinh(options.QuyTrinhId)">
             <option value=0>----- Chọn quy trình -----</option>
-            <option *ngFor="let item of listQuyTrinhs" [value]="item.Id">{{item.Name}}</option>
+            <option *ngFor="let item of listQuyTrinhs" [ngValue]="item.Id">{{item.Name}}</option>
         </select>
     </div>
 </ng-container>
@@ -10,7 +10,7 @@
     <div class="widthselect">
         <select id="select2" name="select2" class="form-control padding-select-congty" [(ngModel)]="options.BuocId" (change)="ChangeBuoc(options.BuocId)">
             <option value=0>----- Chọn bước -----</option>
-            <option *ngFor="let item of listBuocs" [value]="item.Id">{{item.Name}}</option>
+            <option *ngFor="let item of listBuocs" [ngValue]="item.Id">{{item.Name}}</option>
         </select>
     </div>
 </ng-container>

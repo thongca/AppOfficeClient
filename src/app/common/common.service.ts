@@ -9,6 +9,7 @@ import { BaseUrlService } from './base-url.service';
 import { Menu } from './menu';
 import { Subject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../environments/environment';
 const jwtHelper = new JwtHelperService();
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,6 @@ export class CommonService {
   public nameMenu$ = this.nameMenu.asObservable();
   constructor(
     private router: Router,
-    private _baseUrl: BaseUrlService,
     private toastr: ToastrService,
     private _hashCode: HashCodeService,
   ) {
@@ -225,7 +225,7 @@ export class CommonService {
       return url;
     }
     url = url.split('\\').join('/');
-    return this._baseUrl.baseUrl + url;
+    return environment.apiUrl + url;
   }
   // update
   showNameMenu(Name) {

@@ -31,7 +31,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
   listLenhTuongTac: VbLenhTuongTac[] = [];
   listGroupRole: IGrouprole[];
   model: IVbQuyTrinh = {
-    Id: 0,
+    Id: null,
     Name: '',
     check: false,
     IsOrder: 0
@@ -250,7 +250,7 @@ export class QuytrinhvanbanComponent implements OnInit, AfterViewInit {
     this.modeltitle = 'Thêm mới người sử dụng';
     this.modaldata.show();
     this.model = {
-      Id: 0,
+      Id: null,
       Name: '',
       check: false,
       IsOrder: 0

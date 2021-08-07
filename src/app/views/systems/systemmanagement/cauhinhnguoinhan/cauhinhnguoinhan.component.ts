@@ -12,11 +12,11 @@ import { CommonService } from '../../../../common/common.service';
 })
 export class CauhinhnguoinhanComponent implements OnInit {
   options: OptionQuyTrinh = {
-    BuocId: 0,
+    BuocId: null,
 
-    LenhTuongTacId: 0,
-    QuyTrinhId: 0,
-    BuocLenhTuongTacId: 0
+    LenhTuongTacId: null,
+    QuyTrinhId: null,
+    BuocLenhTuongTacId: null
   };
   NameMenu = 'Cấu hình người nhận';
   listLenhTuongTac: VbLenhTuongTac[] = [];
@@ -117,10 +117,10 @@ export class CauhinhnguoinhanComponent implements OnInit {
   }
 
   changeQuyTrinh(value) {
-    this.options.QuyTrinhId = Number(value);
+    this.options.QuyTrinhId = value;
   }
   changeSteps(value) {
-    this.options.BuocId = Number(value);
+    this.options.BuocId = value;
     this.r1GetDataLenhTuongTac();
   }
 }
